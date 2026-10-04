@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* Modo oscuro manual: se activa con la clase "dark" en <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Tema claro (por defecto) */
+:root {
+  --bg: #faf9ff;
+  --surface: #ffffff;
+  --text: #1b1633;
+  --text-muted: #5b5678;
+  --accent: #6d28d9;
+  --accent-2: #2563eb;
+}
+
+/* Tema oscuro */
+.dark {
+  --bg: #0e0b1a;
+  --surface: #17132a;
+  --text: #edebfa;
+  --text-muted: #a09bbf;
+  --accent: #8b5cf6;
+  --accent-2: #3b82f6;
+}
+
+/* Expone las variables como utilidades de Tailwind: bg-bg, text-text, etc. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+
+  --font-display: "Space Grotesk Variable", sans-serif;
+  --font-sans: "Inter Variable", sans-serif;
+  --font-mono: "JetBrains Mono Variable", monospace;
+}
+
+@layer base {
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+  }
+}

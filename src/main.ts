@@ -1,0 +1,13 @@
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+import './assets/main.css'
+import '@fontsource-variable/space-grotesk'
+import '@fontsource-variable/inter'
+import '@fontsource-variable/jetbrains-mono'
+
+const app = createApp(App)
+
+app.use(router)
+
+app.mount('#app')
