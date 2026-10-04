@@ -6,6 +6,7 @@ export interface Profile {
   email: string
   github: string
   linkedin: string
+  about: string[]
 }
 
 export type SkillLevel = 'con-proyectos' | 'conocimientos-base' | 'siguiente-paso'
