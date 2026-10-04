@@ -38,7 +38,13 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 
     <nav aria-label="Principal" class="mx-auto max-w-6xl px-6">
       <div class="flex items-center justify-between py-4">
-        <a href="#" class="font-display text-lg font-semibold text-text">Mario Díaz</a>
+        <a
+          href="#"
+          class="flex items-center gap-2.5 font-display text-lg font-semibold text-text focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+        >
+          <img src="/logo-mk.webp" alt="" width="158" height="96" class="h-7 w-auto" />
+          
+        </a>
 
         <div class="flex items-center gap-2 md:gap-6">
           <ul class="hidden items-center gap-6 md:flex">
