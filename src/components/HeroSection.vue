@@ -78,6 +78,13 @@ function hideSpot() {
           >
             GitHub
           </a>
+          <a
+            href="/CV-Mario-Diaz-Gonzalez.pdf"
+            download
+            class="rounded-md border border-muted/40 px-5 py-3 text-sm font-semibold text-text transition-colors hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            Descargar CV<span class="sr-only"> en PDF</span>
+          </a>
         </div>
       </div>
     </div>

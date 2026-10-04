@@ -83,6 +83,15 @@ async function copyEmail() {
             LinkedIn
           </a>
         </li>
+        <li>
+          <a
+            href="/CV-Mario-Diaz-Gonzalez.pdf"
+            download
+            class="text-accent underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            Descargar CV (PDF)
+          </a>
+        </li>
       </ul>
     </div>
   </section>
