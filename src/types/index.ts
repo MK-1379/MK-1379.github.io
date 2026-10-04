@@ -26,3 +26,21 @@ export interface Project {
   repo: string
   download?: string
 }
+
+export interface ChampionStat {
+  name: string
+  games: number
+  winRate: number
+}
+
+export interface GamingProfile {
+  game: string
+  server: string
+  role: string
+  currentRank: string
+  winRate: number
+  games: number
+  champions: ChampionStat[]
+  profileUrl: string
+  updatedAt: string
+}
