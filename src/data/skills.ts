@@ -1,0 +1,28 @@
+
+import type { Skill } from '@/types'
+
+export const skills: Skill[] = [
+  { name: 'HTML', level: 'con-proyectos' },
+  { name: 'CSS', level: 'con-proyectos' },
+  { name: 'JavaScript', level: 'con-proyectos' },
+  { name: 'Vue 3', level: 'con-proyectos' },
+  { name: 'Tailwind CSS', level: 'con-proyectos' },
+  { name: 'TypeScript', level: 'con-proyectos' },
+  { name: 'Java (POO, JDBC)', level: 'con-proyectos' },
+  { name: 'PHP (MVC, PDO)', level: 'con-proyectos' },
+  { name: 'MySQL / SQL Server', level: 'con-proyectos' },
+  { name: 'Git', level: 'con-proyectos' },
+
+  { name: 'Python', level: 'conocimientos-base' },
+  { name: 'C++', level: 'conocimientos-base' },
+  { name: 'XML / XSD / XSLT', level: 'conocimientos-base' },
+  { name: 'Electron', level: 'conocimientos-base' },
+  { name: 'Docker', level: 'conocimientos-base' },
+  { name: 'Linux', level: 'conocimientos-base' },
+  { name: 'Azure', level: 'conocimientos-base' },
+  { name: 'Apache', level: 'conocimientos-base' },
+  { name: 'Nuxt', level: 'conocimientos-base' },
+
+  { name: 'Laravel', level: 'siguiente-paso' },
+  { name: 'Angular', level: 'siguiente-paso' },
+]
