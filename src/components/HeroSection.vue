@@ -1,14 +1,41 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { profile } from '@/data/profile'
+
+// Posición del brillo que sigue al ratón, en coordenadas de la sección
+const spotX = ref('70%')
+const spotY = ref('40%')
+const spotActive = ref(false)
+
+function moveSpot(event: PointerEvent) {
+  // Solo con ratón: en pantallas táctiles no hay "hover"
+  if (event.pointerType !== 'mouse') return
+  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
+  spotX.value = `${event.clientX - rect.left}px`
+  spotY.value = `${event.clientY - rect.top}px`
+  spotActive.value = true
+}
+
+function hideSpot() {
+  spotActive.value = false
+}
 </script>
 
 <template>
   <section
     class="relative isolate flex min-h-[32rem] items-center overflow-hidden bg-bg md:min-h-[calc(100svh-4.25rem)]"
+    @pointermove="moveSpot"
+    @pointerleave="hideSpot"
   >
     <div class="hero-bg animate-hero-bg absolute -inset-[4%] -z-20" aria-hidden="true"></div>
     <div
       class="absolute inset-0 -z-10 bg-gradient-to-r from-bg via-bg/70 to-transparent md:via-bg/40"
+      aria-hidden="true"
+    ></div>
+    <div
+      class="hero-spotlight pointer-events-none absolute inset-0 -z-10"
+      :class="{ 'is-active': spotActive }"
+      :style="{ '--spot-x': spotX, '--spot-y': spotY }"
       aria-hidden="true"
     ></div>
 

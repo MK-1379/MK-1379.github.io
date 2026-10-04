@@ -11,6 +11,7 @@
   --text-muted: #5b5678;
   --accent: #6d28d9;
   --accent-2: #2563eb;
+  --accent-3: #0e7490;
 }
 
 /* Tema oscuro */
@@ -21,6 +22,7 @@
   --text-muted: #a09bbf;
   --accent: #8b5cf6;
   --accent-2: #3b82f6;
+  --accent-3: #22d3ee;
 }
 
 /* Expone las variables como utilidades de Tailwind: bg-bg, text-text, etc. */
@@ -31,6 +33,7 @@
   --color-muted: var(--text-muted);
   --color-accent: var(--accent);
   --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
 
     --font-display: "Bricolage Grotesque Variable", sans-serif;
     --font-sans: "Source Sans 3 Variable", sans-serif;
@@ -117,4 +120,100 @@
   html {
     scroll-behavior: smooth;
   }
+}
+
+/* ---------- Proyectos: grafo tipo "git log --graph" ---------- */
+
+/* Línea vertical del grafo: degradado de morado a azul */
+.graph-line {
+  background: linear-gradient(to bottom, var(--accent), var(--accent-2));
+  transform-origin: top;
+}
+
+/* Nodo de cada proyecto */
+.graph-node {
+  background-color: var(--bg);
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 0 4px var(--bg);
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.graph-node-2 {
+  border-color: var(--accent-2);
+}
+
+.project-entry:hover .graph-node,
+.project-entry:focus-within .graph-node {
+  background-color: currentColor;
+  box-shadow:
+    0 0 0 4px var(--bg),
+    0 0 18px 2px color-mix(in srgb, currentColor 55%, transparent);
+}
+
+/* Captura del proyecto: se eleva un poco al pasar el ratón */
+.project-shot {
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease;
+}
+
+.project-entry:hover .project-shot {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px -18px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+/* Con scroll: la línea se dibuja y cada proyecto aparece al llegar a él.
+   Solo en navegadores que soportan animaciones ligadas al scroll; en el resto
+   todo se ve directamente, sin animación. */
+@keyframes graph-draw {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes entry-in {
+  from {
+    opacity: 0.15;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .graph-line {
+      animation: graph-draw linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 55%;
+    }
+
+    .project-entry {
+      animation: entry-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+  }
+}
+
+/* ---------- Hero: brillo que sigue al ratón ---------- */
+.hero-spotlight {
+  background: radial-gradient(
+    28rem circle at var(--spot-x, 70%) var(--spot-y, 40%),
+    color-mix(in srgb, var(--accent-2) 22%, transparent),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.hero-spotlight.is-active {
+  opacity: 1;
 }

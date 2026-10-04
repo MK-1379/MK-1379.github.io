@@ -25,6 +25,14 @@ export interface Project {
   stack: string[]
   repo: string
   download?: string
+  image?: ProjectImage
+}
+
+export interface ProjectImage {
+  src: string
+  alt: string
+  width: number
+  height: number
 }
 
 export interface ChampionStat {

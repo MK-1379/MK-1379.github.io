@@ -14,6 +14,12 @@ export const projects: Project[] = [
     ],
     stack: ['PHP', 'PDO', 'MariaDB / MySQL', 'HTML', 'CSS', 'JavaScript'],
     repo: 'https://github.com/MK-1379/medicita',
+    image: {
+      src: '/img/projects/medicita.webp',
+      alt: 'Panel del paciente en MediCita con el resumen de citas y el historial',
+      width: 1108,
+      height: 410,
+    },
   },
   {
     slug: 'kumafy',
@@ -29,6 +35,12 @@ export const projects: Project[] = [
     stack: ['Electron', 'JavaScript', 'HTML', 'CSS', 'electron-builder'],
     repo: 'https://github.com/MK-1379/kumafy',
     download: 'https://github.com/MK-1379/kumafy/releases',
+    image: {
+      src: '/img/projects/kumafy.webp',
+      alt: 'Ventana de Kumafy reproduciendo una canción de la lista de piano',
+      width: 399,
+      height: 716,
+    },
   },
   {
     slug: 'hospital-jdbc',
