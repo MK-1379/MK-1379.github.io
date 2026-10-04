@@ -21,9 +21,20 @@ async function copyEmail() {
   <section
     id="contacto"
     aria-labelledby="contacto-titulo"
-    class="scroll-mt-20 border-t border-muted/20 py-20 md:py-28"
+    class="relative isolate scroll-mt-20 overflow-hidden border-t border-muted/20 py-20 md:py-28"
   >
-    <div class="mx-auto max-w-6xl px-6">
+    <div class="relative mx-auto max-w-6xl px-6">
+      <!-- Figura de cristal decorativa: cierra la página con el mismo material del hero -->
+      <img
+        src="/img/contacto-cristal.webp"
+        alt=""
+        width="600"
+        height="479"
+        loading="lazy"
+        decoding="async"
+        class="animate-float pointer-events-none absolute -right-20 -top-6 -z-10 w-60 opacity-35 md:right-0 md:top-1/2 md:w-[22rem] md:-translate-y-1/2 md:opacity-100"
+      />
+
       <h2
         id="contacto-titulo"
         class="mt-2 font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
