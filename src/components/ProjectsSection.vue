@@ -9,7 +9,6 @@ import { projects } from '@/data/projects'
     class="scroll-mt-20 border-t border-muted/20 py-20 md:py-28"
   >
     <div class="mx-auto max-w-6xl px-6">
-      <p class="font-mono text-sm text-accent">changelog</p>
       <h2
         id="proyectos-titulo"
         class="mt-2 font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
