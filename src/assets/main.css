@@ -217,3 +217,80 @@
 .hero-spotlight.is-active {
   opacity: 1;
 }
+
+/* ---------- Fondo ambiental de la página ---------- */
+/* Manchas de luz de colores repartidas a lo largo de la página y un grano muy suave.
+   Están detrás de todo el contenido y no reciben clics. */
+:root {
+  --blob-opacity: 0.14;
+  --grain-opacity: 0.035;
+}
+
+.dark {
+  --blob-opacity: 0.2;
+  --grain-opacity: 0.05;
+}
+
+.ambient-blob {
+  position: absolute;
+  width: 56rem;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, var(--blob), transparent);
+  opacity: var(--blob-opacity);
+  animation: ambient-drift 40s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.ambient-1 {
+  --blob: var(--accent);
+  top: 16%;
+  left: -20rem;
+}
+
+.ambient-2 {
+  --blob: var(--accent-2);
+  top: 38%;
+  right: -22rem;
+  animation-duration: 48s;
+  animation-delay: -14s;
+}
+
+.ambient-3 {
+  --blob: var(--accent-3);
+  top: 62%;
+  left: -14rem;
+  animation-duration: 54s;
+  animation-delay: -24s;
+}
+
+.ambient-4 {
+  --blob: var(--accent);
+  top: 82%;
+  right: -16rem;
+  animation-duration: 44s;
+  animation-delay: -8s;
+}
+
+@keyframes ambient-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(5rem, -4rem, 0) scale(1.15);
+  }
+}
+
+.ambient-grain {
+  position: absolute;
+  inset: 0;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-blob {
+    animation: none;
+  }
+}
+
