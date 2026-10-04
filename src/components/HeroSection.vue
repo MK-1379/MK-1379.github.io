@@ -23,7 +23,7 @@ import { profile } from '@/data/profile'
           style="animation-delay: 80ms"
         >
           {{ profile.name }}
-          <span class="block text-muted">{{ profile.role }}.</span>
+          <span class="block text-muted">{{ profile.role }}</span>
         </h1>
 
         <p

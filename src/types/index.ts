@@ -14,3 +14,14 @@ export interface Skill {
   name: string
   level: SkillLevel
 }
+
+export interface Project {
+  slug: string
+  title: string
+  context: string
+  summary: string
+  highlights: string[]
+  stack: string[]
+  repo: string
+  download?: string
+}
