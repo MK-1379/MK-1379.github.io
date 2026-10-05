@@ -25,4 +25,6 @@ export const skills: Skill[] = [
 
   { name: 'Laravel', level: 'siguiente-paso' },
   { name: 'Angular', level: 'siguiente-paso' },
+  { name: 'Docker', level: 'siguiente-paso' },
+  { name: 'Vagrant', level: 'siguiente-paso' },
 ]
