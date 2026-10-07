@@ -3,6 +3,7 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 import ThemeToggle from '@/components/ThemeToggle.vue'
 
 const links = [
+  { label: 'Experiencia', href: '#experiencia' },
   { label: 'Proyectos', href: '#proyectos' },
   { label: 'Skills', href: '#skills' },
   { label: 'Sobre mí', href: '#sobre-mi' },
@@ -42,7 +43,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
           href="#"
           class="flex items-center gap-2.5 font-display text-lg font-semibold text-text focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
         >
-          <img src="/logo-mk.webp" alt="" width="158" height="96" class="h-7 w-auto" />
+          <img src="/logo-mk.webp" alt="Mario Díaz González, ir al inicio" width="158" height="96" class="h-7 w-auto" />
           
         </a>
 

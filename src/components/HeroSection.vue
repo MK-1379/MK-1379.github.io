@@ -42,7 +42,7 @@ function hideSpot() {
     <div class="mx-auto w-full max-w-6xl px-6 py-16 md:py-24">
       <div class="md:max-w-xl">
         <p class="animate-rise font-mono text-sm text-accent">
-          {{ profile.location }}
+          {{ profile.status }} · {{ profile.location }}
         </p>
 
         <h1

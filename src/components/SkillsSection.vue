@@ -15,7 +15,7 @@ const groups: SkillGroup[] = [
   {
     level: 'con-proyectos',
     title: 'Con proyectos',
-    description: 'Lo he usado en proyectos de clase o personales',
+    description: 'Lo he usado en proyectos de clase, personales o en prácticas',
     dotClass: 'bg-accent',
     chipClass: 'border-accent/45 hover:bg-accent/10',
   },
@@ -66,7 +66,7 @@ function skillsByLevel(level: SkillLevel) {
             <li
               v-for="skill in skillsByLevel(group.level)"
               :key="skill.name"
-              class="rounded border px-2 py-1 font-mono text-xs text-text transition-colors"
+              class="rounded border px-2 py-1 font-display text-xs text-text transition-colors"
               :class="group.chipClass"
             >
               {{ skill.name }}

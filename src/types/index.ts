@@ -2,6 +2,7 @@ export interface Profile {
   name: string
   role: string
   location: string
+  status: string
   tagline: string
   email: string
   github: string
@@ -51,4 +52,15 @@ export interface GamingProfile {
   champions: ChampionStat[]
   profileUrl: string
   updatedAt: string
+}
+
+export interface Experience {
+  company: string
+  companyUrl?: string
+  role: string
+  period: string
+  highlights: string[]
+  stack: string[]
+  note?: string
+  image?: ProjectImage
 }

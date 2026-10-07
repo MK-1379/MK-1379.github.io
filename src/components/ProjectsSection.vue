@@ -54,7 +54,7 @@ import { projects } from '@/data/projects'
                   <li
                     v-for="tech in project.stack"
                     :key="tech"
-                    class="rounded border border-muted/30 px-2 py-1 font-mono text-xs text-muted"
+                    class="rounded border border-muted/30 px-2 py-1 font-display text-xs text-muted"
                   >
                     {{ tech }}
                   </li>
