@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { profile } from '@/data/profile'
-import LolCard from '@/components/LoLCard.vue'
 </script>
 
 <template>
@@ -33,8 +32,6 @@ import LolCard from '@/components/LoLCard.vue'
         <div class="mt-6 max-w-2xl space-y-4 text-lg text-muted">
           <p v-for="paragraph in profile.about" :key="paragraph">{{ paragraph }}</p>
         </div>
-
-        <LolCard />
       </div>
     </div>
   </section>
