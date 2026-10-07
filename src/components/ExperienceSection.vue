@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { experience } from '@/data/experience'
+import { useLocale } from '@/i18n/locale'
+
+const { t, tr } = useLocale()
 </script>
 
 <template>
@@ -13,7 +16,7 @@ import { experience } from '@/data/experience'
         id="experiencia-titulo"
         class="font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
       >
-        Experiencia
+        {{ t.experience.title }}
       </h2>
 
       <ol class="mt-12 space-y-16">
@@ -26,7 +29,7 @@ import { experience } from '@/data/experience'
           <div class="min-w-0">
             <p class="font-mono text-sm text-muted">{{ job.period }}</p>
             <h3 class="mt-2 font-display text-2xl font-bold tracking-tight text-text md:text-3xl">
-              {{ job.role }}
+              {{ tr(job.role) }}
             </h3>
             <p class="mt-1 text-lg font-semibold">
               <a
@@ -36,16 +39,16 @@ import { experience } from '@/data/experience'
                 rel="noopener noreferrer"
                 class="text-accent-2 underline decoration-accent-2/40 underline-offset-4 transition-colors hover:decoration-accent-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
-                {{ job.company }}<span class="sr-only"> (se abre en una pestaña nueva)</span>
+                {{ job.company }}<span class="sr-only">{{ t.experience.newTab }}</span>
               </a>
               <span v-else class="text-accent-2">{{ job.company }}</span>
             </p>
 
             <ul class="mt-5 max-w-2xl list-disc space-y-2 pl-5 text-lg text-muted marker:text-accent">
-              <li v-for="item in job.highlights" :key="item">{{ item }}</li>
+              <li v-for="item in job.highlights" :key="item.es">{{ tr(item) }}</li>
             </ul>
 
-            <ul class="mt-6 flex flex-wrap gap-2" aria-label="Tecnologías">
+            <ul class="mt-6 flex flex-wrap gap-2" :aria-label="t.tech">
               <li
                 v-for="tech in job.stack"
                 :key="tech"
@@ -55,13 +58,13 @@ import { experience } from '@/data/experience'
               </li>
             </ul>
 
-            <p v-if="job.note" class="mt-5 max-w-2xl text-sm text-muted">{{ job.note }}</p>
+            <p v-if="job.note" class="mt-5 max-w-2xl text-sm text-muted">{{ tr(job.note) }}</p>
           </div>
 
           <img
             v-if="job.image"
             :src="job.image.src"
-            :alt="job.image.alt"
+            :alt="tr(job.image.alt)"
             :width="job.image.width"
             :height="job.image.height"
             loading="lazy"

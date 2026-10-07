@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { profile } from '@/data/profile'
+import { useLocale } from '@/i18n/locale'
+
+const { t, tr } = useLocale()
 
 // Posición del brillo que sigue al ratón, en coordenadas de la sección
 const spotX = ref('70%')
@@ -42,7 +45,7 @@ function hideSpot() {
     <div class="mx-auto w-full max-w-6xl px-6 py-16 md:py-24">
       <div class="md:max-w-xl">
         <p class="animate-rise font-mono text-sm text-accent">
-          {{ profile.status }} · {{ profile.location }}
+          {{ tr(profile.status) }} · {{ profile.location }}
         </p>
 
         <h1
@@ -50,14 +53,14 @@ function hideSpot() {
           style="animation-delay: 80ms"
         >
           {{ profile.name }}
-          <span class="block text-muted">{{ profile.role }}</span>
+          <span class="block text-muted">{{ tr(profile.role) }}</span>
         </h1>
 
         <p
           class="animate-rise mt-6 text-lg text-muted"
           style="animation-delay: 160ms"
         >
-          {{ profile.tagline }}
+          {{ tr(profile.tagline) }}
         </p>
 
         <div
@@ -68,7 +71,7 @@ function hideSpot() {
             href="#proyectos"
             class="rounded-md bg-accent px-5 py-3 text-sm font-semibold text-bg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
-            Ver proyectos
+            {{ t.hero.projects }}
           </a>
           <a
             :href="profile.github"
@@ -79,11 +82,11 @@ function hideSpot() {
             GitHub
           </a>
           <a
-            href="/CV-Mario-Diaz-Gonzalez.pdf"
+            :href="t.cvFile"
             download
             class="rounded-md border border-muted/40 px-5 py-3 text-sm font-semibold text-text transition-colors hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
-            Descargar CV<span class="sr-only"> en PDF</span>
+            {{ t.hero.cv }}<span class="sr-only">{{ t.hero.cvSr }}</span>
           </a>
         </div>
       </div>

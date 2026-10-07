@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { projects } from '@/data/projects'
+import { useLocale } from '@/i18n/locale'
+
+const { t, tr } = useLocale()
 </script>
 
 <template>
@@ -13,7 +16,7 @@ import { projects } from '@/data/projects'
         id="proyectos-titulo"
         class="font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
       >
-        Proyectos
+        {{ t.projects.title }}
       </h2>
 
       <div class="relative mt-14">
@@ -40,17 +43,17 @@ import { projects } from '@/data/projects'
               :class="project.image ? 'lg:grid-cols-[minmax(0,1fr)_26rem] lg:gap-12' : ''"
             >
               <div class="min-w-0">
-                <p class="font-mono text-sm text-muted">{{ project.context }}</p>
+                <p class="font-mono text-sm text-muted">{{ tr(project.context) }}</p>
                 <h3 class="mt-2 font-display text-2xl font-bold tracking-tight text-text md:text-3xl">
                   {{ project.title }}
                 </h3>
-                <p class="mt-3 max-w-2xl text-lg text-muted">{{ project.summary }}</p>
+                <p class="mt-3 max-w-2xl text-lg text-muted">{{ tr(project.summary) }}</p>
 
                 <ul class="mt-5 max-w-2xl list-disc space-y-2 pl-5 text-muted marker:text-accent-2">
-                  <li v-for="item in project.highlights" :key="item">{{ item }}</li>
+                  <li v-for="item in project.highlights" :key="item.es">{{ tr(item) }}</li>
                 </ul>
 
-                <ul class="mt-6 flex flex-wrap gap-2" aria-label="Tecnologías">
+                <ul class="mt-6 flex flex-wrap gap-2" :aria-label="t.tech">
                   <li
                     v-for="tech in project.stack"
                     :key="tech"
@@ -67,7 +70,7 @@ import { projects } from '@/data/projects'
                     rel="noopener noreferrer"
                     class="rounded-md border border-muted/40 px-4 py-2 text-text transition-colors hover:border-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   >
-                    Ver código<span class="sr-only"> de {{ project.title }} en GitHub</span>
+                    {{ t.projects.code }}<span class="sr-only">{{ t.projects.codeSr(project.title) }}</span>
                   </a>
                   <a
                     v-if="project.download"
@@ -76,7 +79,7 @@ import { projects } from '@/data/projects'
                     rel="noopener noreferrer"
                     class="rounded-md bg-accent px-4 py-2 text-bg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   >
-                    Descargar<span class="sr-only"> {{ project.title }} para Windows</span>
+                    {{ t.projects.download }}<span class="sr-only">{{ t.projects.downloadSr(project.title) }}</span>
                   </a>
                 </div>
               </div>
@@ -84,7 +87,7 @@ import { projects } from '@/data/projects'
               <img
                 v-if="project.image"
                 :src="project.image.src"
-                :alt="project.image.alt"
+                :alt="tr(project.image.alt)"
                 :width="project.image.width"
                 :height="project.image.height"
                 loading="lazy"

@@ -9,7 +9,7 @@ export const skills: Skill[] = [
   { name: 'Nuxt', level: 'con-proyectos' },
   { name: 'Tailwind CSS', level: 'con-proyectos' },
   { name: 'TypeScript', level: 'con-proyectos' },
-  { name: 'Java (POO, JDBC)', level: 'con-proyectos' },
+  { name: { es: 'Java (POO, JDBC)', en: 'Java (OOP, JDBC)' }, level: 'con-proyectos' },
   { name: 'PHP (MVC, PDO)', level: 'con-proyectos' },
   { name: 'Electron', level: 'con-proyectos' },
   { name: 'MySQL / SQL Server', level: 'con-proyectos' },

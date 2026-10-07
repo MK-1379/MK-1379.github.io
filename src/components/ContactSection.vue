@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { profile } from '@/data/profile'
+import { useLocale } from '@/i18n/locale'
+
+const { t } = useLocale()
 
 const copied = ref(false)
 let resetTimer: ReturnType<typeof setTimeout> | undefined
@@ -39,10 +42,10 @@ async function copyEmail() {
         id="contacto-titulo"
         class="mt-2 font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
       >
-        Contacto
+        {{ t.contact.title }}
       </h2>
       <p class="mt-4 max-w-2xl text-lg text-muted">
-        Si quieres comentar algo sobre mis proyectos o proponerme algo puedes escribirme
+        {{ t.contact.text }}
       </p>
 
       <div class="mt-10 flex flex-wrap items-center gap-4">
@@ -57,9 +60,9 @@ async function copyEmail() {
           class="rounded-md border border-muted/40 px-3 py-2 text-sm font-semibold text-text transition-colors hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           @click="copyEmail"
         >
-          {{ copied ? 'Copiado' : 'Copiar' }}
+          {{ copied ? t.contact.copied : t.contact.copy }}
         </button>
-        <p role="status" class="sr-only">{{ copied ? 'Email copiado al portapapeles' : '' }}</p>
+        <p role="status" class="sr-only">{{ copied ? t.contact.copiedStatus : '' }}</p>
       </div>
 
       <ul class="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm font-semibold">
@@ -85,11 +88,11 @@ async function copyEmail() {
         </li>
         <li>
           <a
-            href="/CV-Mario-Diaz-Gonzalez.pdf"
+            :href="t.cvFile"
             download
             class="text-accent underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
-            Descargar CV (PDF)
+            {{ t.contact.cv }}
           </a>
         </li>
       </ul>

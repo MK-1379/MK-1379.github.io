@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useTheme } from '@/composables/useTheme'
+import { useLocale } from '@/i18n/locale'
 
 const { theme, init, toggle } = useTheme()
+const { t } = useLocale()
 onMounted(init)
 </script>
 
@@ -10,7 +12,7 @@ onMounted(init)
   <button
     type="button"
     class="rounded-md p-2 text-muted transition-colors hover:text-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-    :aria-label="theme === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'"
+    :aria-label="theme === 'dark' ? t.theme.toLight : t.theme.toDark"
     @click="toggle"
   >
     <svg

@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { profile } from '@/data/profile'
+import { useLocale } from '@/i18n/locale'
+
+const { t, tr } = useLocale()
 </script>
 
 <template>
@@ -26,11 +29,11 @@ import { profile } from '@/data/profile'
           id="sobre-mi-titulo"
           class="mt-2 font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
         >
-          Sobre mí
+          {{ t.about.title }}
         </h2>
 
         <div class="mt-6 max-w-2xl space-y-4 text-lg text-muted">
-          <p v-for="paragraph in profile.about" :key="paragraph">{{ paragraph }}</p>
+          <p v-for="paragraph in profile.about" :key="paragraph.es">{{ tr(paragraph) }}</p>
         </div>
       </div>
     </div>

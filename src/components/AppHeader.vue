@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import ThemeToggle from '@/components/ThemeToggle.vue'
+import LanguageToggle from '@/components/LanguageToggle.vue'
+import { useLocale } from '@/i18n/locale'
 
-const links = [
-  { label: 'Experiencia', href: '#experiencia' },
-  { label: 'Proyectos', href: '#proyectos' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Sobre mí', href: '#sobre-mi' },
-  { label: 'Contacto', href: '#contacto' },
-]
+const { t } = useLocale()
+
+// computed: las etiquetas cambian con el idioma; los href (#proyectos...) son siempre los mismos
+const links = computed(() => [
+  { label: t.value.nav.links.experience, href: '#experiencia' },
+  { label: t.value.nav.links.projects, href: '#proyectos' },
+  { label: t.value.nav.links.skills, href: '#skills' },
+  { label: t.value.nav.links.about, href: '#sobre-mi' },
+  { label: t.value.nav.links.contact, href: '#contacto' },
+])
 
 const menuOpen = ref(false)
 
@@ -34,16 +39,16 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
       href="#contenido"
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:rounded-md focus:bg-surface focus:px-4 focus:py-2 focus:text-text"
     >
-      Saltar al contenido
+      {{ t.nav.skip }}
     </a>
 
-    <nav aria-label="Principal" class="mx-auto max-w-6xl px-6">
+    <nav :aria-label="t.nav.label" class="mx-auto max-w-6xl px-6">
       <div class="flex items-center justify-between py-4">
         <a
           href="#"
           class="flex items-center gap-2.5 font-display text-lg font-semibold text-text focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
         >
-          <img src="/logo-mk.webp" alt="Mario Díaz González, ir al inicio" width="158" height="96" class="h-7 w-auto" />
+          <img src="/logo-mk.webp" :alt="t.nav.logoAlt" width="158" height="96" class="h-7 w-auto" />
           
         </a>
 
@@ -56,6 +61,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
             </li>
           </ul>
 
+          <LanguageToggle />
           <ThemeToggle />
 
           <button
@@ -63,7 +69,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
             class="rounded-md p-2 text-muted transition-colors hover:text-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:hidden"
             :aria-expanded="menuOpen"
             aria-controls="menu-movil"
-            :aria-label="menuOpen ? 'Cerrar menú' : 'Abrir menú'"
+            :aria-label="menuOpen ? t.nav.closeMenu : t.nav.openMenu"
             @click="toggleMenu"
           >
             <svg

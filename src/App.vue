@@ -1,7 +1,13 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { RouterView } from 'vue-router'
+import { useLocale } from '@/i18n/locale'
 import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
+
+// El HTML prerenderizado está en español; al cargar, se aplica el idioma guardado o el del navegador
+const { initLocale } = useLocale()
+onMounted(initLocale)
 </script>
 
 <template>
