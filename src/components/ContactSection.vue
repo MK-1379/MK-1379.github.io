@@ -2,8 +2,15 @@
 import { ref } from 'vue'
 import { profile } from '@/data/profile'
 import { useLocale } from '@/i18n/locale'
+import ContactScene from '@/components/ContactScene.vue'
 
 const { t } = useLocale()
+
+// Igual que en el hero: en escritorio la imagen está oculta (.scene-fallback) y la escena
+// 3D aparece con un fundido. En móvil, con "reducir movimiento" o si la escena falla,
+// se ve la imagen.
+const sceneReady = ref(false)
+const sceneFailed = ref(false)
 
 const copied = ref(false)
 let resetTimer: ReturnType<typeof setTimeout> | undefined
@@ -28,15 +35,26 @@ async function copyEmail() {
   >
     <div class="relative mx-auto max-w-6xl px-6">
       <!-- Figura de cristal decorativa: cierra la página con el mismo material del hero -->
-      <img
-        src="/img/contacto-cristal.webp"
-        alt=""
-        width="600"
-        height="479"
-        loading="lazy"
-        decoding="async"
-        class="animate-float pointer-events-none absolute -right-20 -top-6 -z-10 w-60 opacity-35 md:right-0 md:top-1/2 md:w-[22rem] md:-translate-y-1/2 md:opacity-100"
-      />
+      <div
+        class="pointer-events-none absolute -right-20 -top-6 -z-10 w-60 opacity-35 md:right-0 md:top-1/2 md:w-[22rem] md:-translate-y-1/2 md:opacity-100"
+      >
+        <img
+          src="/img/contacto-cristal.webp"
+          alt=""
+          width="600"
+          height="479"
+          loading="lazy"
+          decoding="async"
+          class="animate-float h-auto w-full scene-fallback"
+          :class="{ 'scene-failed': sceneFailed }"
+        />
+        <ContactScene
+          class="absolute inset-x-0 -inset-y-12 h-[calc(100%+6rem)] w-full transition-opacity duration-700"
+          :class="sceneReady ? 'opacity-100' : 'opacity-0'"
+          @ready="sceneReady = true"
+          @failed="sceneFailed = true"
+        />
+      </div>
 
       <h2
         id="contacto-titulo"

@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { profile } from '@/data/profile'
 import { useLocale } from '@/i18n/locale'
+import HeroScene from '@/components/HeroScene.vue'
 
 const { t, tr } = useLocale()
 
@@ -22,6 +23,11 @@ function moveSpot(event: PointerEvent) {
 function hideSpot() {
   spotActive.value = false
 }
+
+// En escritorio la imagen de fondo está oculta (.scene-fallback) y la escena 3D aparece
+// con un fundido al dibujar su primer fotograma. Si la escena falla, vuelve la imagen.
+const sceneReady = ref(false)
+const sceneFailed = ref(false)
 </script>
 
 <template>
@@ -30,7 +36,17 @@ function hideSpot() {
     @pointermove="moveSpot"
     @pointerleave="hideSpot"
   >
-    <div class="hero-bg animate-hero-bg absolute -inset-[4%] -z-20" aria-hidden="true"></div>
+    <div
+      class="scene-fallback hero-bg animate-hero-bg absolute -inset-[4%] -z-20"
+      :class="{ 'scene-failed': sceneFailed }"
+      aria-hidden="true"
+    ></div>
+    <HeroScene
+      class="absolute top-0 right-0 -z-20 h-full w-1/2 transition-opacity duration-700"
+      :class="sceneReady ? 'opacity-100' : 'opacity-0'"
+      @ready="sceneReady = true"
+      @failed="sceneFailed = true"
+    />
     <div
       class="absolute inset-0 -z-10 bg-gradient-to-r from-bg via-bg/70 to-transparent md:via-bg/40"
       aria-hidden="true"

@@ -314,3 +314,14 @@
   }
 }
 
+
+/* ---------- Imágenes de respaldo de las escenas 3D ---------- */
+/* En escritorio y sin "reducir movimiento" se muestra la escena 3D, así que la imagen
+   que hay en su lugar no se ve ni mientras carga. Se usa visibility (no display) para
+   que siga ocupando su espacio. Si la escena falla, .scene-failed la vuelve a mostrar.
+   La condición coincide con la de useGlassScene.ts */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .scene-fallback:not(.scene-failed) {
+    visibility: hidden;
+  }
+}

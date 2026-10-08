@@ -1,8 +1,16 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { experience } from '@/data/experience'
 import { useLocale } from '@/i18n/locale'
+import ExperienceScene from '@/components/ExperienceScene.vue'
 
 const { t, tr } = useLocale()
+
+// Igual que en el hero: en escritorio la imagen está oculta (.scene-fallback) y la escena
+// 3D aparece con un fundido. En móvil, con "reducir movimiento" o si la escena falla,
+// se ve la imagen.
+const sceneReady = ref(false)
+const sceneFailed = ref(false)
 </script>
 
 <template>
@@ -61,16 +69,24 @@ const { t, tr } = useLocale()
             <p v-if="job.note" class="mt-5 max-w-2xl text-sm text-muted">{{ tr(job.note) }}</p>
           </div>
 
-          <img
-            v-if="job.image"
-            :src="job.image.src"
-            :alt="tr(job.image.alt)"
-            :width="job.image.width"
-            :height="job.image.height"
-            loading="lazy"
-            decoding="async"
-            class="animate-float pointer-events-none mx-auto h-auto w-full max-w-56 self-center lg:max-w-none"
-          />
+          <div v-if="job.image" class="relative mx-auto w-full max-w-56 self-center lg:max-w-none">
+            <img
+              :src="job.image.src"
+              :alt="tr(job.image.alt)"
+              :width="job.image.width"
+              :height="job.image.height"
+              loading="lazy"
+              decoding="async"
+              class="animate-float pointer-events-none h-auto w-full scene-fallback"
+              :class="{ 'scene-failed': sceneFailed }"
+            />
+            <ExperienceScene
+              class="absolute inset-0 h-full w-full transition-opacity duration-700"
+              :class="sceneReady ? 'opacity-100' : 'opacity-0'"
+              @ready="sceneReady = true"
+              @failed="sceneFailed = true"
+            />
+          </div>
         </li>
       </ol>
     </div>
