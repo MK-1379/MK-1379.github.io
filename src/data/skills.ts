@@ -22,6 +22,7 @@ export const skills: Skill[] = [
   { name: 'Azure', level: 'conocimientos-base' },
   { name: 'Apache', level: 'conocimientos-base' },
 
+  { name: 'React.js', level: 'siguiente-paso' },
   { name: 'Laravel', level: 'siguiente-paso' },
   { name: 'Angular', level: 'siguiente-paso' },
   { name: 'Docker', level: 'siguiente-paso' },
