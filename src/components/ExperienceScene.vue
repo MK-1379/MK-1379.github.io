@@ -2,14 +2,10 @@
 import { ref } from 'vue'
 import { useGlassScene } from '@/composables/useGlassScene'
 
-// Escena 3D de Experiencia: esferas de cristal en diagonal, de menor a mayor, como los
-// pasos de una trayectoria. Cada una flota a su ritmo. El fondo es transparente para
-// que se vea la página detrás.
 
 const emit = defineEmits<{ ready: []; failed: [] }>()
 const canvas = ref<HTMLCanvasElement | null>(null)
 
-// Posición (x, y, z) y tamaño de cada esfera, de la más pequeña a la más grande
 const steps = [
   { x: -2.45, y: -2.2, z: 0.5, size: 0.4 },
   { x: -1.3, y: -1.15, z: -0.25, size: 0.6 },
@@ -33,7 +29,6 @@ useGlassScene({
     return {
       object: group,
       update(seconds) {
-        // Cada esfera sube y baja con un desfase distinto; el grupo se balancea despacio
         spheres.forEach((sphere, i) => {
           const step = steps[i]!
           sphere.position.y = step.y + Math.sin(seconds * 0.9 + i * 1.3) * 0.15

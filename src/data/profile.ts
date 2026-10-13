@@ -6,8 +6,8 @@ export const profile: Profile = {
   location: 'Logroño, La Rioja',
   status: { es: 'Estudiante de 2º de DAW', en: '2nd-year Web Development student' },
   tagline: {
-    es: 'Frontend con Vue y TypeScript. Convierto diseños en interfaces cuidadas, responsive y fáciles de mantener.',
-    en: 'Frontend with Vue and TypeScript. I turn designs into polished, responsive and maintainable interfaces.',
+    es: 'Frontend con Vue, React y TypeScript. Backend con Node.js, Express y MySQL.',
+    en: 'Frontend with Vue, React and TypeScript. Backend with Node.js, Express and MySQL.',
   },
   email: 'mariodiaz2007@gmail.com',
   github: 'https://github.com/MK-1379',

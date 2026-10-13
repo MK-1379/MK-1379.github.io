@@ -6,13 +6,11 @@ import HeroScene from '@/components/HeroScene.vue'
 
 const { t, tr } = useLocale()
 
-// Posición del brillo que sigue al ratón, en coordenadas de la sección
 const spotX = ref('70%')
 const spotY = ref('40%')
 const spotActive = ref(false)
 
 function moveSpot(event: PointerEvent) {
-  // Solo con ratón: en pantallas táctiles no hay "hover"
   if (event.pointerType !== 'mouse') return
   const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
   spotX.value = `${event.clientX - rect.left}px`
@@ -24,8 +22,6 @@ function hideSpot() {
   spotActive.value = false
 }
 
-// En escritorio la imagen de fondo está oculta (.scene-fallback) y la escena 3D aparece
-// con un fundido al dibujar su primer fotograma. Si la escena falla, vuelve la imagen.
 const sceneReady = ref(false)
 const sceneFailed = ref(false)
 </script>

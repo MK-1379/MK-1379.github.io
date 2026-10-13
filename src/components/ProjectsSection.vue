@@ -20,7 +20,6 @@ const { t, tr } = useLocale()
       </h2>
 
       <div class="relative mt-14">
-        <!-- Línea del grafo: decorativa, por eso aria-hidden -->
         <div
           class="graph-line absolute bottom-6 left-[0.4375rem] top-2 w-0.5 rounded-full"
           aria-hidden="true"

@@ -6,9 +6,6 @@ import ExperienceScene from '@/components/ExperienceScene.vue'
 
 const { t, tr } = useLocale()
 
-// Igual que en el hero: en escritorio la imagen está oculta (.scene-fallback) y la escena
-// 3D aparece con un fundido. En móvil, con "reducir movimiento" o si la escena falla,
-// se ve la imagen.
 const sceneReady = ref(false)
 const sceneFailed = ref(false)
 </script>

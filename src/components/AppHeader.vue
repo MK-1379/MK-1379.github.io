@@ -6,7 +6,6 @@ import { useLocale } from '@/i18n/locale'
 
 const { t } = useLocale()
 
-// computed: las etiquetas cambian con el idioma; los href (#proyectos...) son siempre los mismos
 const links = computed(() => [
   { label: t.value.nav.links.experience, href: '#experiencia' },
   { label: t.value.nav.links.projects, href: '#proyectos' },

@@ -6,9 +6,6 @@ import ContactScene from '@/components/ContactScene.vue'
 
 const { t } = useLocale()
 
-// Igual que en el hero: en escritorio la imagen está oculta (.scene-fallback) y la escena
-// 3D aparece con un fundido. En móvil, con "reducir movimiento" o si la escena falla,
-// se ve la imagen.
 const sceneReady = ref(false)
 const sceneFailed = ref(false)
 
@@ -22,7 +19,6 @@ async function copyEmail() {
     clearTimeout(resetTimer)
     resetTimer = setTimeout(() => (copied.value = false), 2000)
   } catch {
-    // Si el navegador no deja copiar, el email sigue visible para seleccionarlo a mano
   }
 }
 </script>
@@ -34,7 +30,6 @@ async function copyEmail() {
     class="relative isolate scroll-mt-20 overflow-hidden border-t border-muted/20 py-20 md:py-28"
   >
     <div class="relative mx-auto max-w-6xl px-6">
-      <!-- Figura de cristal decorativa: cierra la página con el mismo material del hero -->
       <div
         class="pointer-events-none absolute -right-20 -top-6 -z-10 w-60 opacity-35 md:right-0 md:top-1/2 md:w-[22rem] md:-translate-y-1/2 md:opacity-100"
       >

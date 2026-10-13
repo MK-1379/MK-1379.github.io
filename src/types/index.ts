@@ -15,7 +15,6 @@ export interface Profile {
 export type SkillLevel = 'con-proyectos' | 'conocimientos-base' | 'siguiente-paso'
 
 export interface Skill {
-  // Un string si se dice igual en los dos idiomas
   name: Localized | string
   level: SkillLevel
 }

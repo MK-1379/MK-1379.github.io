@@ -1,4 +1,3 @@
-// Textos de la interfaz (botones, títulos, etiquetas). El contenido (proyectos, experiencia...) está en src/data.
 const es = {
   meta: {
     title: 'Mario Díaz González · Desarrollador web',
@@ -60,7 +59,6 @@ const es = {
   },
 }
 
-// typeof es: TypeScript avisa si falta algún texto en inglés
 const en: typeof es = {
   meta: {
     title: 'Mario Díaz González · Web Developer',

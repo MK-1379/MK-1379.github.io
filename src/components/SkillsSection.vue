@@ -7,7 +7,6 @@ const { t, tr } = useLocale()
 
 interface SkillGroup {
   level: SkillLevel
-  // Clases de color de cada nivel: punto del título y borde de las etiquetas
   dotClass: string
   chipClass: string
 }

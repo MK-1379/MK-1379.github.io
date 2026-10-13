@@ -1,9 +1,7 @@
 @import "tailwindcss";
 
-/* Modo oscuro manual: se activa con la clase "dark" en <html> */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Tema claro (por defecto) */
 :root {
   --bg: #faf9ff;
   --surface: #ffffff;
@@ -14,7 +12,6 @@
   --accent-3: #0e7490;
 }
 
-/* Tema oscuro */
 .dark {
   --bg: #0e0b1a;
   --surface: #17132a;
@@ -25,7 +22,6 @@
   --accent-3: #22d3ee;
 }
 
-/* Expone las variables como utilidades de Tailwind: bg-bg, text-text, etc. */
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
@@ -48,7 +44,6 @@
   }
 }
 
-/* Capa de fondo del hero: imagen según el tema */
 .hero-bg {
   background-image: image-set(
     url("/img/hero-light-2560.avif") type("image/avif"),
@@ -66,7 +61,6 @@
   );
 }
 
-/* Entrada del texto */
 @keyframes rise {
   from {
     opacity: 0;
@@ -82,7 +76,6 @@
   animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Fondo: aparece suavemente y luego se desplaza muy despacio */
 @keyframes hero-fade {
   from {
     opacity: 0;
@@ -122,15 +115,12 @@
   }
 }
 
-/* ---------- Proyectos: grafo tipo "git log --graph" ---------- */
 
-/* Línea vertical del grafo: degradado de morado a azul */
 .graph-line {
   background: linear-gradient(to bottom, var(--accent), var(--accent-2));
   transform-origin: top;
 }
 
-/* Nodo de cada proyecto */
 .graph-node {
   background-color: var(--bg);
   border: 2px solid var(--accent);
@@ -152,7 +142,6 @@
     0 0 18px 2px color-mix(in srgb, currentColor 55%, transparent);
 }
 
-/* Captura del proyecto: se eleva un poco al pasar el ratón */
 .project-shot {
   transition:
     transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
@@ -164,9 +153,6 @@
   box-shadow: 0 18px 40px -18px color-mix(in srgb, var(--accent) 45%, transparent);
 }
 
-/* Con scroll: la línea se dibuja y cada proyecto aparece al llegar a él.
-   Solo en navegadores que soportan animaciones ligadas al scroll; en el resto
-   todo se ve directamente, sin animación. */
 @keyframes graph-draw {
   from {
     transform: scaleY(0);
@@ -203,7 +189,6 @@
   }
 }
 
-/* ---------- Hero: brillo que sigue al ratón ---------- */
 .hero-spotlight {
   background: radial-gradient(
     28rem circle at var(--spot-x, 70%) var(--spot-y, 40%),
@@ -218,9 +203,6 @@
   opacity: 1;
 }
 
-/* ---------- Fondo ambiental de la página ---------- */
-/* Manchas de luz de colores repartidas a lo largo de la página y un grano muy suave.
-   Están detrás de todo el contenido y no reciben clics. */
 :root {
   --blob-opacity: 0.14;
   --grain-opacity: 0.035;
@@ -294,7 +276,6 @@
   }
 }
 
-/* ---------- Contacto: figura de cristal que flota ---------- */
 @keyframes float {
   from {
     transform: translateY(0) rotate(0deg);
@@ -315,11 +296,6 @@
 }
 
 
-/* ---------- Imágenes de respaldo de las escenas 3D ---------- */
-/* En escritorio y sin "reducir movimiento" se muestra la escena 3D, así que la imagen
-   que hay en su lugar no se ve ni mientras carga. Se usa visibility (no display) para
-   que siga ocupando su espacio. Si la escena falla, .scene-failed la vuelve a mostrar.
-   La condición coincide con la de useGlassScene.ts */
 @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
   .scene-fallback:not(.scene-failed) {
     visibility: hidden;

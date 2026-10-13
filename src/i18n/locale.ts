@@ -3,7 +3,6 @@ import { messages } from '@/i18n/messages'
 
 export type Locale = 'es' | 'en'
 
-/** Texto en los dos idiomas. Se escribe junto en los datos para no olvidar traducir nada. */
 export interface Localized {
   es: string
   en: string
@@ -11,8 +10,6 @@ export interface Localized {
 
 const STORAGE_KEY = 'locale'
 
-// Estado compartido: todos los componentes ven el mismo idioma.
-// Empieza en español porque es el idioma del HTML prerenderizado.
 const locale = ref<Locale>('es')
 
 function readStoredLocale(): Locale | null {
@@ -24,7 +21,6 @@ function readStoredLocale(): Locale | null {
   }
 }
 
-// Actualiza lo que está fuera de Vue: idioma del documento, título y descripción
 function applyToDocument(value: Locale) {
   document.documentElement.lang = value
   document.title = messages[value].meta.title
@@ -39,12 +35,10 @@ function setLocale(value: Locale) {
   try {
     localStorage.setItem(STORAGE_KEY, value)
   } catch {
-    // Si el navegador bloquea el almacenamiento, el cambio funciona igual en esta visita
   }
 }
 
 export function useLocale() {
-  /** Se llama una vez al montar la app: preferencia guardada o, si no hay, idioma del navegador */
   function initLocale() {
     const stored = readStoredLocale()
     const browserPrefersEnglish = navigator.language.toLowerCase().startsWith('en')
@@ -57,7 +51,6 @@ export function useLocale() {
     setLocale(locale.value === 'es' ? 'en' : 'es')
   }
 
-  /** Devuelve el texto en el idioma actual. Los textos iguales en ambos idiomas pueden ser un string normal. */
   function tr(value: Localized | string): string {
     return typeof value === 'string' ? value : value[locale.value]
   }

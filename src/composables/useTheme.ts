@@ -31,7 +31,6 @@ export function useTheme() {
     try {
       localStorage.setItem(STORAGE_KEY, theme.value)
     } catch {
-      // Si el navegador bloquea el almacenamiento, el tema sigue funcionando
     }
   }
 

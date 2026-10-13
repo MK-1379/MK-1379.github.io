@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import { useGlassScene } from '@/composables/useGlassScene'
 
-// Escena 3D del hero: una esfera de cristal con tres más pequeñas en órbita
 
 const emit = defineEmits<{ ready: []; failed: [] }>()
 const canvas = ref<HTMLCanvasElement | null>(null)
@@ -10,7 +9,6 @@ const canvas = ref<HTMLCanvasElement | null>(null)
 useGlassScene({
   canvas,
   background: true,
-  // Las esferas en órbita llegan hasta unas 2,5 unidades del centro (+ margen)
   minHalfWidth: 2.9,
   onReady: () => emit('ready'),
   onFail: () => emit('failed'),
