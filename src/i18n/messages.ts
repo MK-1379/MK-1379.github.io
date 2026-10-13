@@ -58,7 +58,6 @@ const es = {
     copiedStatus: 'Email copiado al portapapeles',
     cv: 'Descargar CV (PDF)',
   },
-  footer: { builtWith: 'Hecho con Vue, TypeScript y Tailwind CSS' },
 }
 
 // typeof es: TypeScript avisa si falta algún texto en inglés

@@ -4,7 +4,6 @@ import { useLocale } from '@/i18n/locale'
 
 const { t } = useLocale()
 
-const year = new Date().getFullYear()
 </script>
 
 <template>
@@ -12,8 +11,7 @@ const year = new Date().getFullYear()
     <div
       class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-8 text-sm text-muted"
     >
-      <p>© {{ year }} {{ profile.name }}</p>
-      <p class="font-mono text-xs">{{ t.footer.builtWith }}</p>
+      <p>{{ profile.name }}</p>
     </div>
   </footer>
 </template>
