@@ -119,8 +119,7 @@ const en: typeof es = {
     copied: 'Copied',
     copiedStatus: 'Email copied to clipboard',
     cv: 'Download CV (PDF)',
-  },
-  footer: { builtWith: 'Built with Vue, TypeScript and Tailwind CSS' },
+  }
 }
 
 export const messages = { es, en }
