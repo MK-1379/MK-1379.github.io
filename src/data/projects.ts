@@ -2,6 +2,40 @@ import type { Project } from '@/types'
 
 export const projects: Project[] = [
   {
+    slug: 'lolstats',
+    title: 'LoLStats',
+    context: { es: 'Proyecto personal', en: 'Personal project' },
+    summary: {
+      es: 'Aplicación web full stack con mis estadísticas de League of Legends: clasificatoria, campeones más jugados e historial con el marcador de cada partida y una puntuación propia de 0 a 10',
+      en: 'Full stack web app with my League of Legends stats: ranked status, most played champions and match history with a per-match scoreboard and a custom 0 to 10 score',
+    },
+    highlights: [
+      {
+        es: 'Worker con node-cron que sincroniza las partidas con la API de Riot cada 30 minutos, respetando sus límites de peticiones',
+        en: 'node-cron worker that syncs matches from the Riot API every 30 minutes while respecting its rate limits',
+      },
+      {
+        es: 'API REST con Express, validación con Zod y Prisma sobre MySQL; tests con Vitest y Supertest',
+        en: 'REST API with Express, Zod validation and Prisma on MySQL; tested with Vitest and Supertest',
+      },
+      {
+        es: 'Cuatro servicios en Docker Compose (MySQL, API, worker y nginx) y CI con GitHub Actions',
+        en: 'Four services in Docker Compose (MySQL, API, worker and nginx) and CI with GitHub Actions',
+      },
+    ],
+    stack: ['React', 'TypeScript', 'Tailwind CSS', 'TanStack Query', 'Node.js', 'Express', 'Prisma', 'MySQL', 'Docker'],
+    repo: 'https://github.com/MK-1379/lol-stats',
+    image: {
+      src: '/img/projects/lolstats.webp',
+      alt: {
+        es: 'Resumen de LoLStats con la clasificatoria, los campeones más jugados y el historial de partidas',
+        en: 'LoLStats overview with ranked status, most played champions and match history',
+      },
+      width: 1186,
+      height: 650,
+    },
+  },
+  {
     slug: 'medicita',
     title: 'MediCita',
     context: { es: 'Proyecto de clase', en: 'Class project' },
