@@ -39,6 +39,12 @@ export interface Project {
   image?: ProjectImage
 }
 
+export interface Language {
+  name: Localized
+  level: Localized
+  credentials?: Localized[]
+}
+
 export interface Experience {
   company: string
   companyUrl?: string

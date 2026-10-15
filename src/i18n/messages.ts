@@ -35,6 +35,7 @@ const es = {
   },
   skills: {
     title: 'Skills',
+    languages: 'Idiomas',
     groups: {
       'con-proyectos': {
         title: 'Con proyectos',
@@ -98,6 +99,7 @@ const en: typeof es = {
   },
   skills: {
     title: 'Skills',
+    languages: 'Languages',
     groups: {
       'con-proyectos': {
         title: 'Used in projects',

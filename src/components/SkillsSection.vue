@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { languages } from '@/data/languages'
 import { skills } from '@/data/skills'
 import type { SkillLevel } from '@/types'
 import { useLocale } from '@/i18n/locale'
@@ -67,6 +68,19 @@ function skillsByLevel(level: SkillLevel) {
             </li>
           </ul>
         </div>
+      </div>
+
+      <div class="mt-14 border-t border-muted/20 pt-10">
+        <h3 class="font-display text-xl font-bold tracking-tight text-text">
+          {{ t.skills.languages }}
+        </h3>
+        <ul class="mt-4 space-y-2 text-muted">
+          <li v-for="language in languages" :key="language.name.es">
+            <span class="font-semibold text-text">{{ tr(language.name) }}</span>
+            · {{ tr(language.level) }}<template v-if="language.credentials">:
+              {{ language.credentials.map((credential) => tr(credential)).join(' · ') }}</template>
+          </li>
+        </ul>
       </div>
     </div>
   </section>
