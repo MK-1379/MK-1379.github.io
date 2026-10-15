@@ -1,9 +1,5 @@
 <script setup lang="ts">
 import { profile } from '@/data/profile'
-import { useLocale } from '@/i18n/locale'
-
-const { t } = useLocale()
-
 </script>
 
 <template>
