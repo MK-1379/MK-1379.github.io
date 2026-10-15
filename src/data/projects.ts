@@ -25,6 +25,7 @@ export const projects: Project[] = [
     ],
     stack: ['React', 'TypeScript', 'Tailwind CSS', 'TanStack Query', 'Node.js', 'Express', 'Prisma', 'MySQL', 'Docker'],
     repo: 'https://github.com/MK-1379/lol-stats',
+    demo: 'https://lolstats-mk.duckdns.org',
     image: {
       src: '/img/projects/lolstats.webp',
       alt: {

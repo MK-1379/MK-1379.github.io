@@ -64,6 +64,15 @@ const { t, tr } = useLocale()
 
                 <div class="mt-6 flex flex-wrap gap-3 text-sm font-semibold">
                   <a
+                    v-if="project.demo"
+                    :href="project.demo"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="rounded-md bg-accent px-4 py-2 text-bg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  >
+                    {{ t.projects.demo }}<span class="sr-only">{{ t.projects.demoSr(project.title) }}</span>
+                  </a>
+                  <a
                     :href="project.repo"
                     target="_blank"
                     rel="noopener noreferrer"

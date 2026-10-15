@@ -34,6 +34,7 @@ export interface Project {
   highlights: Localized[]
   stack: string[]
   repo: string
+  demo?: string
   download?: string
   image?: ProjectImage
 }
