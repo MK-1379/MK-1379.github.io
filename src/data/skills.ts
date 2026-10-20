@@ -12,7 +12,6 @@ export const skills: Skill[] = [
   { name: { es: 'Java (POO, JDBC)', en: 'Java (OOP, JDBC)' }, level: 'con-proyectos', icon: 'java', iconDark: 'java-dark' },
   { name: 'Node.js (Express)', level: 'con-proyectos', icon: 'nodejs' },
   { name: 'PHP (MVC, PDO)', level: 'con-proyectos', icon: 'php' },
-  { name: 'Electron', level: 'con-proyectos', icon: 'electron', iconDark: 'electron-dark' },
   { name: 'MySQL / SQL Server', level: 'con-proyectos', icon: 'mysql', iconDark: 'mysql-dark' },
   { name: 'Git', level: 'con-proyectos', icon: 'git' },
   { name: 'Docker', level: 'con-proyectos', icon: 'docker' },

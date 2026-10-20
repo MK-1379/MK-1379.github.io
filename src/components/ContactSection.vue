@@ -53,7 +53,7 @@ async function copyEmail() {
 
       <h2
         id="contacto-titulo"
-        class="mt-2 font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
+        class="section-title mt-2 font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
       >
         {{ t.contact.title }}
       </h2>

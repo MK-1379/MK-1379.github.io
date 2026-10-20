@@ -30,10 +30,11 @@ useGlassScene({
 
     return {
       object: figure,
-      update(seconds) {
+      update(seconds, scroll) {
+        const spread = 1 + Math.max(0, scroll) * 0.5
         moons.forEach((moon, i) => {
-          const angle = seconds * (0.5 + i * 0.2) + i * 2.1
-          const radius = 1.6 + i * 0.2
+          const angle = seconds * (0.5 + i * 0.2) + i * 2.1 + scroll * 3
+          const radius = (1.6 + i * 0.2) * spread
           moon.position.set(Math.cos(angle) * radius, Math.sin(angle * 1.3) * 0.6, Math.sin(angle) * radius)
         })
       },

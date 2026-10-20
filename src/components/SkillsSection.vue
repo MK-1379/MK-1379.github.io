@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { languages } from '@/data/languages'
 import { skills } from '@/data/skills'
 import type { SkillLevel } from '@/types'
@@ -33,6 +34,30 @@ const groups: SkillGroup[] = [
 function skillsByLevel(level: SkillLevel) {
   return skills.filter((skill) => skill.level === level)
 }
+
+const skillGrid = ref<HTMLElement | null>(null)
+const chipsHidden = ref(false)
+const chipsPlaying = ref(false)
+let observer: IntersectionObserver | null = null
+
+onMounted(() => {
+  const grid = skillGrid.value
+  if (!grid || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  if (grid.getBoundingClientRect().top < window.innerHeight) return
+  chipsHidden.value = true
+  observer = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry?.isIntersecting) return
+      chipsHidden.value = false
+      chipsPlaying.value = true
+      observer?.disconnect()
+    },
+    { rootMargin: '0px 0px -15% 0px' },
+  )
+  observer.observe(grid)
+})
+
+onBeforeUnmount(() => observer?.disconnect())
 </script>
 
 <template>
@@ -44,12 +69,16 @@ function skillsByLevel(level: SkillLevel) {
     <div class="mx-auto max-w-6xl px-6">
       <h2
         id="skills-titulo"
-        class="font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
+        class="section-title font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
       >
         {{ t.skills.title }}
       </h2>
 
-      <div class="mt-12 grid gap-12 md:grid-cols-3 md:gap-10">
+      <div
+        ref="skillGrid"
+        class="mt-12 grid gap-12 md:grid-cols-3 md:gap-10"
+        :class="{ 'chips-hidden': chipsHidden, 'chips-playing': chipsPlaying }"
+      >
         <div v-for="group in groups" :key="group.level">
           <h3 class="flex items-center gap-3 font-display text-xl font-bold tracking-tight text-text">
             <span class="size-2.5 rounded-full" :class="group.dotClass" aria-hidden="true"></span>
@@ -59,10 +88,11 @@ function skillsByLevel(level: SkillLevel) {
 
           <ul class="mt-5 flex flex-wrap gap-2">
             <li
-              v-for="skill in skillsByLevel(group.level)"
+              v-for="(skill, index) in skillsByLevel(group.level)"
               :key="tr(skill.name)"
-              class="inline-flex items-center gap-1.5 rounded border px-2 py-1 font-display text-xs text-text transition-colors"
+              class="skill-chip inline-flex items-center gap-1.5 rounded border px-2 py-1 font-display text-xs text-text transition-colors"
               :class="group.chipClass"
+              :style="{ '--i': index }"
             >
               <img
                 v-if="skill.icon"

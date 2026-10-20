@@ -27,7 +27,7 @@ const { t, tr } = useLocale()
       <div>
         <h2
           id="sobre-mi-titulo"
-          class="mt-2 font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
+          class="section-title mt-2 font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
         >
           {{ t.about.title }}
         </h2>

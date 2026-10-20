@@ -19,7 +19,7 @@ const sceneFailed = ref(false)
     <div class="mx-auto max-w-6xl px-6">
       <h2
         id="experiencia-titulo"
-        class="font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
+        class="section-title font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
       >
         {{ t.experience.title }}
       </h2>

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { profile } from '@/data/profile'
 import { useLocale } from '@/i18n/locale'
 import HeroScene from '@/components/HeroScene.vue'
+import { vMagnetic } from '@/directives/magnetic'
 
 const { t, tr } = useLocale()
 
@@ -24,6 +25,41 @@ function hideSpot() {
 
 const sceneReady = ref(false)
 const sceneFailed = ref(false)
+
+let charIndex = 0
+const nameWords = profile.name
+  .split(' ')
+  .map((word) => [...word].map((letter) => ({ letter, index: charIndex++ })))
+
+const glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ<>/{}=_#'
+const scrambledRole = ref<{ letter: string; scrambled: boolean }[] | null>(null)
+const roleText = computed(() => tr(profile.role))
+let frameId = 0
+
+function scrambleRole() {
+  let start = 0
+  function frame(timestamp: number) {
+    start ||= timestamp
+    const target = roleText.value
+    const revealed = Math.max(0, Math.floor((timestamp - start - 300) / 28))
+    if (revealed >= target.length) {
+      scrambledRole.value = null
+      return
+    }
+    scrambledRole.value = [...target].map((letter, index) =>
+      index < revealed || letter === ' '
+        ? { letter, scrambled: false }
+        : { letter: glyphs.charAt(Math.floor(Math.random() * glyphs.length)), scrambled: true },
+    )
+    frameId = requestAnimationFrame(frame)
+  }
+  frameId = requestAnimationFrame(frame)
+}
+
+onMounted(() => {
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) scrambleRole()
+})
+onBeforeUnmount(() => cancelAnimationFrame(frameId))
 </script>
 
 <template>
@@ -60,32 +96,53 @@ const sceneFailed = ref(false)
           {{ tr(profile.status) }} · {{ profile.location }}
         </p>
 
-        <h1
-          class="animate-rise mt-4 font-display text-4xl font-bold leading-tight tracking-tight text-text md:text-5xl"
-          style="animation-delay: 80ms"
-        >
-          {{ profile.name }}
-          <span class="block text-muted">{{ tr(profile.role) }}</span>
+        <h1 class="mt-4 font-display text-4xl font-bold leading-tight tracking-tight text-text md:text-5xl">
+          <span class="sr-only">{{ profile.name }}</span>
+          <span aria-hidden="true">
+            <template v-for="(word, wordIndex) in nameWords" :key="wordIndex">
+              <span class="inline-block whitespace-nowrap"><span
+                  v-for="char in word"
+                  :key="char.index"
+                  class="hero-char"
+                  :style="{ '--i': char.index }"
+                >{{ char.letter }}</span></span>{{ wordIndex < nameWords.length - 1 ? ' ' : '' }}
+            </template>
+          </span>
+          <span class="animate-rise block text-muted" style="animation-delay: 300ms">
+            <span class="sr-only">{{ roleText }}</span>
+            <span aria-hidden="true">
+              <template v-if="scrambledRole">
+                <span
+                  v-for="(char, index) in scrambledRole"
+                  :key="index"
+                  :class="{ 'text-accent': char.scrambled }"
+                >{{ char.letter }}</span>
+              </template>
+              <template v-else>{{ roleText }}</template>
+            </span>
+          </span>
         </h1>
 
         <p
           class="animate-rise mt-6 text-lg text-muted md:max-w-md"
-          style="animation-delay: 160ms"
+          style="animation-delay: 650ms"
         >
           {{ tr(profile.tagline) }}
         </p>
 
         <div
           class="animate-rise mt-10 flex flex-wrap gap-4"
-          style="animation-delay: 240ms"
+          style="animation-delay: 750ms"
         >
           <a
+            v-magnetic
             href="#proyectos"
             class="rounded-md bg-accent px-5 py-3 text-sm font-semibold text-bg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             {{ t.hero.projects }}
           </a>
           <a
+            v-magnetic
             :href="profile.github"
             target="_blank"
             rel="noopener noreferrer"
@@ -94,6 +151,7 @@ const sceneFailed = ref(false)
             GitHub
           </a>
           <a
+            v-magnetic
             :href="t.cvFile"
             download
             class="rounded-md border border-muted/40 px-5 py-3 text-sm font-semibold text-text transition-colors hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"

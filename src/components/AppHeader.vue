@@ -3,8 +3,10 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import ThemeToggle from '@/components/ThemeToggle.vue'
 import LanguageToggle from '@/components/LanguageToggle.vue'
 import { useLocale } from '@/i18n/locale'
+import { useCommandPalette } from '@/composables/useCommandPalette'
 
 const { t } = useLocale()
+const { open: openPalette } = useCommandPalette()
 
 const links = computed(() => [
   { label: t.value.nav.links.experience, href: '#experiencia' },
@@ -65,6 +67,22 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
             </li>
           </ul>
 
+          <button
+            type="button"
+            class="inline-flex items-center gap-1.5 rounded-md p-2 text-muted transition-colors hover:text-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:border md:border-muted/30 md:px-2 md:py-1 md:hover:border-accent"
+            :aria-label="t.palette.open"
+            aria-keyshortcuts="Control+K Meta+K"
+            @click="openPalette"
+          >
+            <svg
+              width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+            <kbd class="hidden font-mono text-xs md:inline" aria-hidden="true">Ctrl K</kbd>
+          </button>
           <LanguageToggle />
           <ThemeToggle />
 
@@ -113,5 +131,9 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
         </ul>
         </Transition>
     </nav>
+    <div
+      class="scroll-progress pointer-events-none absolute inset-x-0 -bottom-px h-0.5 origin-left"
+      aria-hidden="true"
+    ></div>
   </header>
 </template>

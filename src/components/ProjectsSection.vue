@@ -3,6 +3,29 @@ import { projects } from '@/data/projects'
 import { useLocale } from '@/i18n/locale'
 
 const { t, tr } = useLocale()
+
+function tiltShot(event: PointerEvent) {
+  if (event.pointerType !== 'mouse') return
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  const shot = event.currentTarget as HTMLElement
+  const rect = shot.getBoundingClientRect()
+  const x = (event.clientX - rect.left) / rect.width
+  const y = (event.clientY - rect.top) / rect.height
+  shot.classList.add('is-tilting')
+  shot.style.setProperty('--tilt-x', `${(0.5 - y) * 10}deg`)
+  shot.style.setProperty('--tilt-y', `${(x - 0.5) * 14}deg`)
+  shot.style.setProperty('--glare-x', `${x * 100}%`)
+  shot.style.setProperty('--glare-y', `${y * 100}%`)
+  shot.style.setProperty('--glare', '1')
+}
+
+function resetShot(event: PointerEvent) {
+  const shot = event.currentTarget as HTMLElement
+  shot.classList.remove('is-tilting')
+  shot.style.removeProperty('--tilt-x')
+  shot.style.removeProperty('--tilt-y')
+  shot.style.removeProperty('--glare')
+}
 </script>
 
 <template>
@@ -14,7 +37,7 @@ const { t, tr } = useLocale()
     <div class="mx-auto max-w-6xl px-6">
       <h2
         id="proyectos-titulo"
-        class="font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
+        class="section-title font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
       >
         {{ t.projects.title }}
       </h2>
@@ -92,17 +115,23 @@ const { t, tr } = useLocale()
                 </div>
               </div>
 
-              <img
+              <div
                 v-if="project.image"
-                :src="project.image.src"
-                :alt="tr(project.image.alt)"
-                :width="project.image.width"
-                :height="project.image.height"
-                loading="lazy"
-                decoding="async"
-                class="project-shot h-auto rounded-md border border-muted/20 lg:mt-8"
+                class="project-shot self-start rounded-md lg:mt-8"
                 :class="project.image.height > project.image.width ? 'w-full max-w-56 lg:mx-auto' : 'w-full'"
-              />
+                @pointermove="tiltShot"
+                @pointerleave="resetShot"
+              >
+                <img
+                  :src="project.image.src"
+                  :alt="tr(project.image.alt)"
+                  :width="project.image.width"
+                  :height="project.image.height"
+                  loading="lazy"
+                  decoding="async"
+                  class="block h-auto w-full rounded-md border border-muted/20"
+                />
+              </div>
             </div>
           </li>
         </ol>

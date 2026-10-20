@@ -60,6 +60,36 @@ const es = {
     copiedStatus: 'Email copiado al portapapeles',
     cv: 'Descargar CV (PDF)',
   },
+  palette: {
+    open: 'Abrir paleta de comandos',
+    title: 'Paleta de comandos',
+    placeholder: 'Escribe un comando o busca una sección',
+    empty: 'No hay resultados',
+    copied: 'Email copiado',
+    groups: { navigate: 'Ir a', actions: 'Acciones', links: 'Enlaces' },
+    theme: 'Cambiar tema',
+    language: 'Ver en inglés',
+    copyEmail: 'Copiar email',
+    downloadCv: 'Descargar CV',
+    instructions: 'Usa las flechas para moverte, Intro para elegir y Escape para cerrar',
+  },
+  live: {
+    label: 'En directo',
+    season: 'en clasificatoria',
+    tiers: {
+      IRON: 'Hierro',
+      BRONZE: 'Bronce',
+      SILVER: 'Plata',
+      GOLD: 'Oro',
+      PLATINUM: 'Platino',
+      EMERALD: 'Esmeralda',
+      DIAMOND: 'Diamante',
+      MASTER: 'Maestro',
+      GRANDMASTER: 'Gran Maestro',
+      CHALLENGER: 'Aspirante',
+    } as Record<string, string>,
+    winrate: (value: number) => `${value} % de victorias`,
+  },
 }
 
 const en: typeof es = {
@@ -123,7 +153,37 @@ const en: typeof es = {
     copied: 'Copied',
     copiedStatus: 'Email copied to clipboard',
     cv: 'Download CV (PDF)',
-  }
+  },
+  palette: {
+    open: 'Open command palette',
+    title: 'Command palette',
+    placeholder: 'Type a command or search for a section',
+    empty: 'No results',
+    copied: 'Email copied',
+    groups: { navigate: 'Go to', actions: 'Actions', links: 'Links' },
+    theme: 'Toggle theme',
+    language: 'View in Spanish',
+    copyEmail: 'Copy email',
+    downloadCv: 'Download CV',
+    instructions: 'Use the arrow keys to move, Enter to choose and Escape to close',
+  },
+  live: {
+    label: 'Live',
+    season: 'in ranked',
+    tiers: {
+      IRON: 'Iron',
+      BRONZE: 'Bronze',
+      SILVER: 'Silver',
+      GOLD: 'Gold',
+      PLATINUM: 'Platinum',
+      EMERALD: 'Emerald',
+      DIAMOND: 'Diamond',
+      MASTER: 'Master',
+      GRANDMASTER: 'Grandmaster',
+      CHALLENGER: 'Challenger',
+    },
+    winrate: (value: number) => `${value}% win rate`,
+  },
 }
 
 export const messages = { es, en }

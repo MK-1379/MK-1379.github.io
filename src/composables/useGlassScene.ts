@@ -6,7 +6,7 @@ type Three = typeof ThreeModule
 
 export interface GlassFigure {
   object: ThreeModule.Object3D
-  update?: (seconds: number) => void
+  update?: (seconds: number, scroll: number) => void
   dispose: () => void
 }
 
@@ -191,6 +191,13 @@ export function useGlassScene({
     })
     intersectionObserver.observe(el)
 
+    let scroll = 0
+    function readScroll() {
+      const rect = el.getBoundingClientRect()
+      const offset = (window.innerHeight / 2 - (rect.top + rect.height / 2)) / window.innerHeight
+      return Math.max(-1, Math.min(1, offset))
+    }
+
     const timer = new THREE.Timer()
     let frameId = 0
     let firstFrame = true
@@ -200,10 +207,11 @@ export function useGlassScene({
       timer.update(timestamp)
       const seconds = timer.getElapsed()
 
+      scroll += (readScroll() - scroll) * 0.08
       holder.rotation.x += (tilt.x - holder.rotation.x) * 0.05
-      holder.rotation.y += (tilt.y - holder.rotation.y) * 0.05
+      holder.rotation.y += (tilt.y + scroll * 0.9 - holder.rotation.y) * 0.05
       holder.position.y = Math.sin(seconds * 0.8) * 0.1
-      figure.update?.(seconds)
+      figure.update?.(seconds, scroll)
 
       renderer.render(scene, camera)
       if (firstFrame) {
