@@ -2,7 +2,7 @@ const es = {
   meta: {
     title: 'Mario Díaz González · Desarrollador web',
     description:
-      'Portfolio de Mario Díaz González, estudiante de 2º de Desarrollo de Aplicaciones Web en Logroño. Proyectos en Java, PHP, Vue y Electron.',
+      'Portfolio de Mario Díaz González, estudiante de 2º de Desarrollo de Aplicaciones Web en Logroño. Proyectos con Vue, React, TypeScript, Node.js y MySQL.',
   },
   nav: {
     label: 'Principal',
@@ -66,7 +66,7 @@ const en: typeof es = {
   meta: {
     title: 'Mario Díaz González · Web Developer',
     description:
-      'Portfolio of Mario Díaz González, a second-year Web Application Development student in Logroño, Spain. Projects in Java, PHP, Vue and Electron.',
+      'Portfolio of Mario Díaz González, a second-year Web Application Development student in Logroño, Spain. Projects with Vue, React, TypeScript, Node.js and MySQL.',
   },
   nav: {
     label: 'Main',

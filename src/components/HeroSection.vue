@@ -69,7 +69,7 @@ const sceneFailed = ref(false)
         </h1>
 
         <p
-          class="animate-rise mt-6 text-lg text-muted"
+          class="animate-rise mt-6 text-lg text-muted md:max-w-md"
           style="animation-delay: 160ms"
         >
           {{ tr(profile.tagline) }}

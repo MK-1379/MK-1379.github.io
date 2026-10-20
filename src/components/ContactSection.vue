@@ -31,7 +31,7 @@ async function copyEmail() {
   >
     <div class="relative mx-auto max-w-6xl px-6">
       <div
-        class="pointer-events-none absolute -right-20 -top-6 -z-10 w-60 opacity-35 md:right-0 md:top-1/2 md:w-[22rem] md:-translate-y-1/2 md:opacity-100"
+        class="pointer-events-none absolute -right-14 -top-16 -z-10 w-40 opacity-35 md:right-0 md:top-1/2 md:w-[22rem] md:-translate-y-1/2 md:opacity-100"
       >
         <img
           src="/img/contacto-cristal.webp"
@@ -78,13 +78,13 @@ async function copyEmail() {
         <p role="status" class="sr-only">{{ copied ? t.contact.copiedStatus : '' }}</p>
       </div>
 
-      <ul class="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm font-semibold">
+      <ul class="mt-8 flex flex-wrap gap-x-8 gap-y-1 text-sm font-semibold">
         <li>
           <a
             :href="profile.github"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-accent underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="inline-block py-2 text-accent underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             GitHub
           </a>
@@ -94,7 +94,7 @@ async function copyEmail() {
             :href="profile.linkedin"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-accent underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="inline-block py-2 text-accent underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             LinkedIn
           </a>
@@ -103,7 +103,7 @@ async function copyEmail() {
           <a
             :href="t.cvFile"
             download
-            class="text-accent underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="inline-block py-2 text-accent underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             {{ t.contact.cv }}
           </a>

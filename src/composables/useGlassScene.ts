@@ -43,7 +43,11 @@ export function useGlassScene({
   onMounted(async () => {
     const wideScreen = window.matchMedia('(min-width: 768px)').matches
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (!wideScreen || reduceMotion || !canvas.value) return
+    if (reduceMotion || !canvas.value) return
+    if (!wideScreen) {
+      onFail?.()
+      return
+    }
 
     let THREE: Three
     let RoomEnvironment: typeof import('three/addons/environments/RoomEnvironment.js').RoomEnvironment

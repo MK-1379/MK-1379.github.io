@@ -47,5 +47,5 @@ useGlassScene({
 </script>
 
 <template>
-  <canvas ref="canvas" class="block" aria-hidden="true"></canvas>
+  <canvas ref="canvas" class="block max-md:hidden" aria-hidden="true"></canvas>
 </template>

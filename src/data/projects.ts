@@ -120,5 +120,14 @@ export const projects: Project[] = [
     ],
     stack: ['Java 21', 'Maven', 'JDBC', 'MySQL'],
     repo: 'https://github.com/MK-1379/hospital-jdbc',
+    image: {
+      src: '/img/projects/hospital-jdbc.webp',
+      alt: {
+        es: 'Terminal con la salida de HospitalJDBC: altas, consultas, cambios y bajas de médicos y pacientes',
+        en: 'Terminal showing HospitalJDBC output: creating, reading, updating and deleting doctors and patients',
+      },
+      width: 960,
+      height: 599,
+    },
   },
 ]
