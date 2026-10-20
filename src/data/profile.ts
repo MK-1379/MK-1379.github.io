@@ -18,8 +18,8 @@ export const profile: Profile = {
       en: "I'm in my second year of Web Application Development at Jesuitas Logroño. What I enjoy most is frontend work: turning a design into a polished, consistent interface that works well on any screen.",
     },
     {
-      es: 'Además del frontend, en clase he trabajado con Java, PHP y bases de datos, y sigo aprendiendo por mi cuenta. Este portfolio está hecho con Vue, TypeScript, Tailwind CSS y vite-ssg.',
-      en: "Beyond the frontend, I've worked with Java, PHP and databases in class, and I keep learning on my own. This portfolio is built with Vue, TypeScript, Tailwind CSS and vite-ssg.",
+      es: 'Además del frontend, en clase he trabajado con Java, PHP y bases de datos, y sigo aprendiendo por mi cuenta. Este portfolio está hecho con Vue, TypeScript y Tailwind CSS.',
+      en: "Beyond the frontend, I've worked with Java, PHP and databases in class, and I keep learning on my own. This portfolio is built with Vue, TypeScript and Tailwind CSS.",
     },
   ],
 }
