@@ -503,3 +503,46 @@
     animation: none;
   }
 }
+
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes border-spin {
+  to {
+    --border-angle: 360deg;
+  }
+}
+
+.glow-border {
+  position: relative;
+  isolation: isolate;
+  background: conic-gradient(
+    from var(--border-angle),
+    color-mix(in srgb, var(--accent) 18%, transparent) 0deg 190deg,
+    var(--accent) 250deg,
+    var(--accent-2) 305deg,
+    var(--accent-3) 345deg,
+    color-mix(in srgb, var(--accent) 18%, transparent) 360deg
+  );
+  animation: border-spin 6s linear infinite;
+}
+
+.glow-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: inherit;
+  filter: blur(22px);
+  opacity: 0.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-border {
+    animation: none;
+  }
+}
