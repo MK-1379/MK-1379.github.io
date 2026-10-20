@@ -17,6 +17,8 @@ export type SkillLevel = 'con-proyectos' | 'conocimientos-base' | 'siguiente-pas
 export interface Skill {
   name: Localized | string
   level: SkillLevel
+  icon?: string
+  iconDark?: string
 }
 
 export interface ProjectImage {

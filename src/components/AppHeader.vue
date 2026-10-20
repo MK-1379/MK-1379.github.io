@@ -24,6 +24,10 @@ function closeMenu() {
   menuOpen.value = false
 }
 
+function scrollToTop() {
+  window.scrollTo({ top: 0 })
+}
+
 function onKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape') closeMenu()
 }
@@ -44,7 +48,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     <nav :aria-label="t.nav.label" class="mx-auto max-w-6xl px-6">
       <div class="flex items-center justify-between py-4">
         <a
-          href="#"
+          href="/"
+          @click.prevent="scrollToTop"
           class="flex items-center gap-2.5 font-display text-lg font-semibold text-text focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
         >
           <img src="/logo-mk.webp" :alt="t.nav.logoAlt" width="158" height="96" class="h-7 w-auto" />

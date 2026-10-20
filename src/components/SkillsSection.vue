@@ -61,9 +61,28 @@ function skillsByLevel(level: SkillLevel) {
             <li
               v-for="skill in skillsByLevel(group.level)"
               :key="tr(skill.name)"
-              class="rounded border px-2 py-1 font-display text-xs text-text transition-colors"
+              class="inline-flex items-center gap-1.5 rounded border px-2 py-1 font-display text-xs text-text transition-colors"
               :class="group.chipClass"
             >
+              <img
+                v-if="skill.icon"
+                :src="`/img/skills/${skill.icon}.svg`"
+                alt=""
+                width="16"
+                height="16"
+                loading="lazy"
+                class="size-4"
+                :class="{ 'dark:hidden': skill.iconDark }"
+              />
+              <img
+                v-if="skill.iconDark"
+                :src="`/img/skills/${skill.iconDark}.svg`"
+                alt=""
+                width="16"
+                height="16"
+                loading="lazy"
+                class="hidden size-4 dark:block"
+              />
               {{ tr(skill.name) }}
             </li>
           </ul>
