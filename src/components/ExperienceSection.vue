@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { experience } from '@/data/experience'
 import { useLocale } from '@/i18n/locale'
+import TechIcon from '@/components/TechIcon.vue'
 import ExperienceScene from '@/components/ExperienceScene.vue'
 
 const { t, tr } = useLocale()
@@ -57,8 +58,9 @@ const sceneFailed = ref(false)
               <li
                 v-for="tech in job.stack"
                 :key="tech"
-                class="rounded border border-muted/30 px-2 py-1 font-display text-xs text-muted"
+                class="inline-flex items-center gap-1.5 rounded border border-muted/30 px-2 py-1 font-display text-xs text-muted"
               >
+                <TechIcon :name="tech" />
                 {{ tech }}
               </li>
             </ul>

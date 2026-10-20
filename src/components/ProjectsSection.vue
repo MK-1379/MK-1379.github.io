@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { projects } from '@/data/projects'
 import { useLocale } from '@/i18n/locale'
+import TechIcon from '@/components/TechIcon.vue'
 
 const { t, tr } = useLocale()
 
@@ -79,8 +80,9 @@ function resetShot(event: PointerEvent) {
                   <li
                     v-for="tech in project.stack"
                     :key="tech"
-                    class="rounded border border-muted/30 px-2 py-1 font-display text-xs text-muted"
+                    class="inline-flex items-center gap-1.5 rounded border border-muted/30 px-2 py-1 font-display text-xs text-muted"
                   >
+                    <TechIcon :name="tech" />
                     {{ tech }}
                   </li>
                 </ul>
