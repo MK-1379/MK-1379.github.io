@@ -20,7 +20,18 @@ const es = {
   },
   theme: { toLight: 'Cambiar a tema claro', toDark: 'Cambiar a tema oscuro' },
   language: { switchTo: 'EN', switchLabel: 'Read in English', switchLang: 'en' },
-  hero: { projects: 'Ver proyectos', cv: 'Descargar CV', cvSr: ' en PDF' },
+  hero: {
+    projects: 'Ver proyectos',
+    cv: 'Descargar CV',
+    cvSr: ' en PDF',
+    highlights: 'Datos destacados',
+    stats: {
+      projects: 'proyectos en GitHub',
+      internship: 'prácticas de frontend',
+      english: 'inglés certificado',
+    },
+    scroll: 'Bajar a la experiencia',
+  },
   cvFile: '/CV-Mario-Diaz-Gonzalez.pdf',
   experience: { title: 'Experiencia', newTab: ' (se abre en una pestaña nueva)' },
   tech: 'Tecnologías',
@@ -73,23 +84,6 @@ const es = {
     downloadCv: 'Descargar CV',
     instructions: 'Usa las flechas para moverte, Intro para elegir y Escape para cerrar',
   },
-  live: {
-    label: 'En directo',
-    season: 'en clasificatoria',
-    tiers: {
-      IRON: 'Hierro',
-      BRONZE: 'Bronce',
-      SILVER: 'Plata',
-      GOLD: 'Oro',
-      PLATINUM: 'Platino',
-      EMERALD: 'Esmeralda',
-      DIAMOND: 'Diamante',
-      MASTER: 'Maestro',
-      GRANDMASTER: 'Gran Maestro',
-      CHALLENGER: 'Aspirante',
-    } as Record<string, string>,
-    winrate: (value: number) => `${value} % de victorias`,
-  },
 }
 
 const en: typeof es = {
@@ -114,7 +108,18 @@ const en: typeof es = {
   },
   theme: { toLight: 'Switch to light theme', toDark: 'Switch to dark theme' },
   language: { switchTo: 'ES', switchLabel: 'Ver en español', switchLang: 'es' },
-  hero: { projects: 'View projects', cv: 'Download CV', cvSr: ' as PDF' },
+  hero: {
+    projects: 'View projects',
+    cv: 'Download CV',
+    cvSr: ' as PDF',
+    highlights: 'Highlights',
+    stats: {
+      projects: 'projects on GitHub',
+      internship: 'frontend internship',
+      english: 'certified English',
+    },
+    scroll: 'Scroll to experience',
+  },
   cvFile: '/CV-Mario-Diaz-Gonzalez-EN.pdf',
   experience: { title: 'Experience', newTab: ' (opens in a new tab)' },
   tech: 'Technologies',
@@ -166,23 +171,6 @@ const en: typeof es = {
     copyEmail: 'Copy email',
     downloadCv: 'Download CV',
     instructions: 'Use the arrow keys to move, Enter to choose and Escape to close',
-  },
-  live: {
-    label: 'Live',
-    season: 'in ranked',
-    tiers: {
-      IRON: 'Iron',
-      BRONZE: 'Bronze',
-      SILVER: 'Silver',
-      GOLD: 'Gold',
-      PLATINUM: 'Platinum',
-      EMERALD: 'Emerald',
-      DIAMOND: 'Diamond',
-      MASTER: 'Master',
-      GRANDMASTER: 'Grandmaster',
-      CHALLENGER: 'Challenger',
-    },
-    winrate: (value: number) => `${value}% win rate`,
   },
 }
 

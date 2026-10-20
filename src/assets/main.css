@@ -464,23 +464,60 @@
   animation: hero-fade 0.2s ease-out;
 }
 
-@keyframes live-pulse {
-  from {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-3) 60%, transparent);
-  }
-  to {
-    box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent-3) 0%, transparent);
+@media (prefers-reduced-motion: reduce) {
+  .command-palette[open],
+  .command-palette[open]::backdrop {
+    animation: none;
   }
 }
 
-.live-dot {
-  animation: live-pulse 1.8s ease-out infinite;
+.hero-tech {
+  translate: calc(-50% + var(--hero-px, 0) * var(--depth, 1) * 36px)
+    calc(-50% + var(--hero-py, 0) * var(--depth, 1) * 36px);
+  transition: translate 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes tech-float {
+  from {
+    transform: translateY(-6px) rotate(-1.5deg);
+  }
+  to {
+    transform: translateY(6px) rotate(1.5deg);
+  }
+}
+
+.hero-tech-chip {
+  animation:
+    hero-fade 0.8s ease-out 1s both,
+    tech-float 5s ease-in-out var(--float-delay, 0s) infinite alternate;
+}
+
+@keyframes scroll-cue {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+.scroll-cue-dot {
+  animation: scroll-cue 1.8s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .command-palette[open],
-  .command-palette[open]::backdrop,
-  .live-dot {
+  .hero-tech {
+    translate: -50% -50%;
+    transition: none;
+  }
+
+  .hero-tech-chip,
+  .scroll-cue-dot {
     animation: none;
   }
 }
