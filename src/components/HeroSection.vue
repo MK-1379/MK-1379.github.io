@@ -39,6 +39,8 @@ const heroTech = [
   { name: 'TypeScript', icon: 'typescript', x: '82%', y: '68%', depth: 1, delay: '-3.1s' },
   { name: 'Node.js', icon: 'nodejs', x: '26%', y: '74%', depth: 1.4, delay: '-2.2s' },
   { name: 'Docker', icon: 'docker', x: '56%', y: '86%', depth: 0.6, delay: '-4s' },
+  { name: 'PHP', icon: 'php', x: '88%', y: '40%', depth: 0.9, delay: '-2.7s' },
+  { name: 'MySQL', icon: 'mysql', iconDark: 'mysql-dark', x: '14%', y: '46%', depth: 1.1, delay: '-0.8s' },
 ]
 
 const projectCount = ref(projects.length)
@@ -141,7 +143,22 @@ onBeforeUnmount(() => {
           class="hero-tech-chip inline-flex items-center gap-2 rounded-full border border-muted/25 bg-surface/50 px-3.5 py-1.5 font-display text-sm text-text shadow-lg backdrop-blur-md"
           :style="{ '--float-delay': tech.delay }"
         >
-          <img :src="`/img/skills/${tech.icon}.svg`" alt="" width="18" height="18" class="size-[18px]" />
+          <img
+            :src="`/img/skills/${tech.icon}.svg`"
+            alt=""
+            width="18"
+            height="18"
+            class="size-[18px]"
+            :class="{ 'dark:hidden': tech.iconDark }"
+          />
+          <img
+            v-if="tech.iconDark"
+            :src="`/img/skills/${tech.iconDark}.svg`"
+            alt=""
+            width="18"
+            height="18"
+            class="hidden size-[18px] dark:block"
+          />
           {{ tech.name }}
         </span>
       </span>
@@ -203,7 +220,22 @@ onBeforeUnmount(() => {
             :key="tech.name"
             class="inline-flex items-center gap-1.5 rounded-full border border-muted/25 bg-surface/50 px-3 py-1 font-display text-xs text-text backdrop-blur-md"
           >
-            <img :src="`/img/skills/${tech.icon}.svg`" alt="" width="14" height="14" class="size-3.5" />
+            <img
+              :src="`/img/skills/${tech.icon}.svg`"
+              alt=""
+              width="14"
+              height="14"
+              class="size-3.5"
+              :class="{ 'dark:hidden': tech.iconDark }"
+            />
+            <img
+              v-if="tech.iconDark"
+              :src="`/img/skills/${tech.iconDark}.svg`"
+              alt=""
+              width="14"
+              height="14"
+              class="hidden size-3.5 dark:block"
+            />
             {{ tech.name }}
           </li>
         </ul>
@@ -261,16 +293,5 @@ onBeforeUnmount(() => {
         </dl>
       </div>
     </div>
-
-    <a
-      href="#experiencia"
-      class="animate-rise absolute bottom-6 left-1/2 hidden -translate-x-1/2 rounded-full p-1 text-muted transition-colors hover:text-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:block"
-      style="animation-delay: 1400ms"
-      :aria-label="t.hero.scroll"
-    >
-      <span class="relative block h-9 w-6 rounded-full border-2 border-current" aria-hidden="true">
-        <span class="scroll-cue-dot absolute left-1/2 top-1.5 h-2 w-1 -translate-x-1/2 rounded-full bg-current"></span>
-      </span>
-    </a>
   </section>
 </template>

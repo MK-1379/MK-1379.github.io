@@ -31,9 +31,9 @@
   --color-accent-2: var(--accent-2);
   --color-accent-3: var(--accent-3);
 
-    --font-display: "Bricolage Grotesque Variable", sans-serif;
-    --font-sans: "Source Sans 3 Variable", sans-serif;
-    --font-mono: "IBM Plex Mono", monospace;
+    --font-display: "Plus Jakarta Sans Variable", sans-serif;
+    --font-sans: "Plus Jakarta Sans Variable", sans-serif;
+    --font-mono: "Geist Mono Variable", monospace;
 }
 
 @layer base {
@@ -41,6 +41,7 @@
     background-color: var(--bg);
     color: var(--text);
     font-family: var(--font-sans);
+    word-spacing: 0.06em;
   }
 }
 
@@ -492,32 +493,13 @@
     tech-float 5s ease-in-out var(--float-delay, 0s) infinite alternate;
 }
 
-@keyframes scroll-cue {
-  0% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-  30% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-}
-
-.scroll-cue-dot {
-  animation: scroll-cue 1.8s ease-in-out infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .hero-tech {
     translate: -50% -50%;
     transition: none;
   }
 
-  .hero-tech-chip,
-  .scroll-cue-dot {
+  .hero-tech-chip {
     animation: none;
   }
 }
