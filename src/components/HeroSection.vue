@@ -34,12 +34,12 @@ function hideSpot() {
 }
 
 const heroTech = [
-  { name: 'Vue', icon: 'vuejs', x: '30%', y: '20%', depth: 1.2, delay: '0s' },
-  { name: 'React', icon: 'react', x: '74%', y: '14%', depth: 0.8, delay: '-1.6s' },
+  { name: 'React', icon: 'react', x: '30%', y: '20%', depth: 1.2, delay: '0s' },
+  { name: 'Vue', icon: 'vuejs', x: '74%', y: '14%', depth: 0.8, delay: '-1.6s' },
   { name: 'TypeScript', icon: 'typescript', x: '82%', y: '68%', depth: 1, delay: '-3.1s' },
   { name: 'Node.js', icon: 'nodejs', x: '26%', y: '74%', depth: 1.4, delay: '-2.2s' },
   { name: 'Docker', icon: 'docker', x: '56%', y: '86%', depth: 0.6, delay: '-4s' },
-  { name: 'PHP', icon: 'php', x: '88%', y: '40%', depth: 0.9, delay: '-2.7s' },
+  { name: 'Tailwind CSS', icon: 'tailwindcss', x: '86%', y: '40%', depth: 0.9, delay: '-2.7s' },
   { name: 'MySQL', icon: 'mysql', iconDark: 'mysql-dark', x: '14%', y: '46%', depth: 1.1, delay: '-0.8s' },
 ]
 
@@ -136,7 +136,7 @@ onBeforeUnmount(() => {
       <span
         v-for="tech in heroTech"
         :key="tech.name"
-        class="hero-tech absolute"
+        class="hero-tech absolute w-max"
         :style="{ left: tech.x, top: tech.y, '--depth': tech.depth }"
       >
         <span
