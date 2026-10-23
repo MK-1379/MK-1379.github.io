@@ -28,6 +28,8 @@ export const techIcons: Record<string, TechIcon> = {
   'Maven': { icon: 'maven', iconDark: 'maven-dark' },
   'Electron': { icon: 'electron', iconDark: 'electron-dark' },
   'electron-builder': { icon: 'electron-builder', iconDark: 'electron-builder-dark' },
+  'Vitest': { icon: 'vitest' },
+  'GitHub Actions': { icon: 'githubactions' },
   'Docker': { icon: 'docker' },
   'Git': { icon: 'git' },
 }

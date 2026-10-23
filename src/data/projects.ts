@@ -107,31 +107,35 @@ export const projects: Project[] = [
     title: 'Kumafy',
     context: { es: 'Proyecto personal', en: 'Personal project' },
     summary: {
-      es: 'Reproductor de música de escritorio con ventana propia y tres listas por género',
-      en: 'Desktop music player with a custom window and three genre playlists',
+      es: 'Reproductor de música de escritorio con visualizador de audio en tiempo real, listas por género y la opción de abrir tus propios archivos. También funciona en el navegador',
+      en: 'Desktop music player with a live audio visualizer, genre playlists and the option to open your own files. It also runs in the browser',
     },
     highlights: [
       {
-        es: 'Controles de reproducción, barra de progreso y avance automático',
-        en: 'Playback controls, progress bar and auto-advance',
+        es: 'Archivos locales servidos por un protocolo propio que solo entrega lo que eligió el usuario, con peticiones Range para poder saltar en la canción',
+        en: 'Local files served through a custom protocol that only returns what the user picked, with range requests so seeking works',
       },
       {
-        es: 'Proceso principal y página separados, comunicados por un puente seguro (preload)',
-        en: 'Main process and page kept separate, communicating through a secure bridge (preload)',
+        es: 'Visualizador con la Web Audio API y canvas, teclas multimedia con la Media Session API, shuffle, repeat y atajos de teclado',
+        en: 'Visualizer built with the Web Audio API and canvas, media keys through the Media Session API, shuffle, repeat and keyboard shortcuts',
       },
-      { es: 'Instalador para Windows publicado en Releases', en: 'Windows installer published in Releases' },
+      {
+        es: '59 tests con Vitest y GitHub Actions que pasa la CI, publica la demo web y genera el instalador de Windows al crear una versión',
+        en: '59 Vitest tests and GitHub Actions that run CI, publish the web demo and build the Windows installer for every release',
+      },
     ],
-    stack: ['Electron', 'JavaScript', 'HTML', 'CSS', 'electron-builder'],
+    stack: ['Electron', 'JavaScript', 'HTML', 'CSS', 'Vitest', 'GitHub Actions', 'electron-builder'],
     repo: 'https://github.com/MK-1379/kumafy',
-    download: 'https://github.com/MK-1379/kumafy/releases',
+    demo: 'https://mk-1379.github.io/kumafy/',
+    download: 'https://github.com/MK-1379/kumafy/releases/latest',
     image: {
       src: '/img/projects/kumafy.webp',
       alt: {
-        es: 'Ventana de Kumafy reproduciendo una canción de la lista de piano',
-        en: 'Kumafy window playing a track from the piano playlist',
+        es: 'Ventana de Kumafy reproduciendo una canción de Pop & Indie con el visualizador de audio sobre la portada',
+        en: 'Kumafy window playing a Pop & Indie track with the audio visualizer over the cover',
       },
-      width: 399,
-      height: 716,
+      width: 400,
+      height: 720,
     },
   },
   {
