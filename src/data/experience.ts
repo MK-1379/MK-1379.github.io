@@ -8,8 +8,8 @@ export const experience: Experience[] = [
     period: 'Mar 2026 – May 2026',
     highlights: [
       {
-        es: 'Maquetación y mantenimiento de interfaces web con Vue, Nuxt, TypeScript y Tailwind CSS.',
-        en: 'Built and maintained web interfaces with Vue, Nuxt, TypeScript and Tailwind CSS.',
+        es: 'Maquetación y mantenimiento de interfaces web con Vue, TypeScript y Tailwind CSS.',
+        en: 'Built and maintained web interfaces with Vue, TypeScript and Tailwind CSS.',
       },
       {
         es: 'Creación y reutilización de componentes, cuidando el detalle visual y la consistencia.',
@@ -24,7 +24,7 @@ export const experience: Experience[] = [
         en: 'Worked in a team using Git and professional development practices.',
       },
     ],
-    stack: ['Vue', 'Nuxt', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'Git'],
+    stack: ['Vue', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'Git'],
     note: {
       es: 'El código de las prácticas pertenece a la empresa, por eso no lo enseño aquí.',
       en: "The code from the internship belongs to the company, so I can't show it here.",
