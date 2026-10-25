@@ -26,7 +26,7 @@ const es = {
     cvSr: ' en PDF',
     highlights: 'Datos destacados',
     stats: {
-      projects: 'proyectos en GitHub',
+      projects: 'proyectos destacados',
       internship: 'prácticas de frontend',
       english: 'inglés certificado',
     },
@@ -113,7 +113,7 @@ const en: typeof es = {
     cvSr: ' as PDF',
     highlights: 'Highlights',
     stats: {
-      projects: 'projects on GitHub',
+      projects: 'featured projects',
       internship: 'frontend internship',
       english: 'certified English',
     },
