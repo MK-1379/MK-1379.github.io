@@ -2,6 +2,7 @@
 import { profile } from '@/data/profile'
 import { useLocale } from '@/i18n/locale'
 import WordReveal from '@/components/WordReveal.vue'
+import { vPauseOffscreen } from '@/directives/pauseOffscreen'
 
 const { t, tr } = useLocale()
 </script>
@@ -13,7 +14,7 @@ const { t, tr } = useLocale()
     class="scroll-mt-20 border-t border-muted/20 py-20 md:py-28"
   >
     <div class="mx-auto grid max-w-6xl gap-10 px-6 md:grid-cols-[18rem_1fr] md:gap-16">
-      <div class="glow-border w-full max-w-xs self-start rounded-lg p-[3px] md:max-w-none">
+      <div v-pause-offscreen class="glow-border w-full max-w-xs self-start rounded-lg p-[3px] md:max-w-none">
         <img
           src="/img/mario-800.webp"
           srcset="/img/mario-400.webp 400w, /img/mario-800.webp 800w"

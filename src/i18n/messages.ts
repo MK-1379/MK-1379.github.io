@@ -65,6 +65,8 @@ const es = {
     classText: 'Lo que he hecho en clase con PHP, Java y bases de datos.',
     cvText: 'Mi currículum en una página, en PDF.',
     more: 'Leer más sobre mí',
+    sound: 'Sonidos del escritorio',
+    mobileHint: 'Toca un objeto o elige abajo',
   },
   summary: {
     open: 'Resumen en 30 s',
@@ -181,6 +183,8 @@ const en: typeof es = {
     classText: 'What I have built in class with PHP, Java and databases.',
     cvText: 'My one-page CV as a PDF.',
     more: 'Read more about me',
+    sound: 'Desk sounds',
+    mobileHint: 'Tap an object or pick below',
   },
   summary: {
     open: '30-second summary',

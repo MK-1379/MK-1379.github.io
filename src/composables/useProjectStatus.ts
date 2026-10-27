@@ -52,18 +52,29 @@ async function isReachable(url: string) {
   }
 }
 
+function afterLoadWhenIdle(task: () => void) {
+  function schedule() {
+    if ('requestIdleCallback' in window) window.requestIdleCallback(task, { timeout: 3000 })
+    else setTimeout(task, 1000)
+  }
+  if (document.readyState === 'complete') schedule()
+  else window.addEventListener('load', schedule, { once: true })
+}
+
 export function useProjectStatus(repo: string, demo?: string) {
   const pushedAt = ref<Date | null>(null)
   const reachability = ref<Reachability>('checking')
 
-  onMounted(async () => {
+  async function check() {
     const [pushed, reachable] = await Promise.all([
       fetchPushedAt(repoPath(repo)),
       demo ? isReachable(demo) : Promise.resolve(false),
     ])
     pushedAt.value = pushed ? new Date(pushed) : null
     reachability.value = reachable ? 'online' : 'offline'
-  })
+  }
+
+  onMounted(() => afterLoadWhenIdle(check))
 
   return { pushedAt, reachability }
 }

@@ -1,18 +1,7 @@
 import type * as ThreeModule from 'three'
+import type { DeskItemId } from '@/scenes/deskItems'
 
 type Three = typeof ThreeModule
-
-export const deskItemIds = [
-  'lolstats',
-  'bracketly',
-  'kumafy',
-  'clase',
-  'cv',
-  'about',
-  'contact',
-] as const
-
-export type DeskItemId = (typeof deskItemIds)[number]
 
 export interface DeskItem {
   id: DeskItemId
@@ -24,6 +13,10 @@ export interface DeskItem {
 export interface DeskState {
   hovered: DeskItemId | null
   active: DeskItemId | null
+}
+
+export interface DeskOptions {
+  screenshot?: (id: DeskItemId) => string | undefined
 }
 
 export interface Desk {
@@ -92,6 +85,7 @@ function easeOutBounce(value: number) {
 }
 
 function drawScreen(ctx: CanvasRenderingContext2D, seconds: number) {
+  ctx.setTransform(2, 0, 0, 2, 0, 0)
   const gradient = ctx.createLinearGradient(0, 0, 512, 300)
   gradient.addColorStop(0, '#1e1b3a')
   gradient.addColorStop(1, '#312a63')
@@ -156,6 +150,25 @@ function drawScreen(ctx: CanvasRenderingContext2D, seconds: number) {
   ctx.fillText('online', 348, 219)
 }
 
+function drawScreenshot(ctx: CanvasRenderingContext2D, image: HTMLImageElement, alpha: number) {
+  const { width, height } = ctx.canvas
+  const scale = Math.min(width / image.naturalWidth, height / image.naturalHeight)
+  const imageWidth = image.naturalWidth * scale
+  const imageHeight = image.naturalHeight * scale
+  ctx.setTransform(1, 0, 0, 1, 0, 0)
+  ctx.globalAlpha = alpha
+  ctx.fillStyle = '#16132c'
+  ctx.fillRect(0, 0, width, height)
+  ctx.drawImage(
+    image,
+    (width - imageWidth) / 2,
+    (height - imageHeight) / 2,
+    imageWidth,
+    imageHeight,
+  )
+  ctx.globalAlpha = 1
+}
+
 function drawNote(ctx: CanvasRenderingContext2D, symbol: string) {
   ctx.fillStyle = '#a78bfa'
   ctx.font = '700 52px sans-serif'
@@ -193,7 +206,7 @@ function drawDuotone(ctx: CanvasRenderingContext2D, image: HTMLImageElement) {
   ctx.putImageData(pixels, 0, 0)
 }
 
-export function buildDesk(THREE: Three): Desk {
+export function buildDesk(THREE: Three, options: DeskOptions = {}): Desk {
   const scene = new THREE.Scene()
 
   const hemisphere = new THREE.HemisphereLight(0xf3edff, 0x6d4bb8, 1.4)
@@ -327,7 +340,7 @@ export function buildDesk(THREE: Three): Desk {
   addBox([0.5, 0.06, 0.36], materials.dark, [0, 1.66, -2.55], monitor)
   addBox([0.1, 0.55, 0.1], materials.dark, [0, 1.95, -2.6], monitor)
   addBox([2.3, 1.36, 0.1], materials.dark, [0, 2.75, -2.6], monitor)
-  const screenCanvas = drawCanvas(512, 300, (ctx) => drawScreen(ctx, 0))
+  const screenCanvas = drawCanvas(1024, 600, (ctx) => drawScreen(ctx, 0))
   const screenContext = screenCanvas.getContext('2d')
   const screenTexture = canvasTexture(screenCanvas)
   addMesh(
@@ -577,6 +590,9 @@ export function buildDesk(THREE: Three): Desk {
   let flapOpen = 0
   let screenStart = 0
   let lastScreenDraw = -1
+  const screenshots = new Map<DeskItemId, HTMLImageElement>()
+  let shownScreenshot: HTMLImageElement | undefined
+  let screenshotMix = 0
   let now = 0
   let delta = 0
 
@@ -656,10 +672,32 @@ export function buildDesk(THREE: Three): Desk {
     })
   }
 
-  function updateScreen() {
+  function screenshotFor(id: DeskItemId | null) {
+    if (!id || !options.screenshot) return undefined
+    let image = screenshots.get(id)
+    if (!image) {
+      const src = options.screenshot(id)
+      if (!src) return undefined
+      image = new Image()
+      image.src = src
+      screenshots.set(id, image)
+    }
+    return image.complete && image.naturalWidth > 0 ? image : undefined
+  }
+
+  function updateScreen(state: DeskState) {
+    const wanted = screenshotFor(state.active)
+    if (wanted && wanted !== shownScreenshot) {
+      shownScreenshot = wanted
+      screenshotMix = 0
+    }
+    screenshotMix = damp(screenshotMix, wanted ? 1 : 0, 6)
     if (!screenContext || now - lastScreenDraw < 1 / 20) return
     lastScreenDraw = now
     drawScreen(screenContext, (now - screenStart) % 10)
+    if (shownScreenshot && screenshotMix > 0.01) {
+      drawScreenshot(screenContext, shownScreenshot, screenshotMix)
+    }
     screenTexture.needsUpdate = true
   }
 
@@ -704,7 +742,7 @@ export function buildDesk(THREE: Three): Desk {
         sphere.position.y = baseY + Math.sin(seconds * 0.9 + index * 2) * 0.12
       })
       animateReactions(state)
-      updateScreen()
+      updateScreen(state)
       updateLighting()
     },
     react(id) {

@@ -1,5 +1,6 @@
 import { onMounted, onUnmounted, type Ref } from 'vue'
 import type * as ThreeModule from 'three'
+import { hasHardwareWebGL } from '@/scenes/gpu'
 
 
 type Three = typeof ThreeModule
@@ -44,7 +45,7 @@ export function useGlassScene({
     const wideScreen = window.matchMedia('(min-width: 768px)').matches
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduceMotion || !canvas.value) return
-    if (!wideScreen) {
+    if (!wideScreen || !hasHardwareWebGL()) {
       onFail?.()
       return
     }

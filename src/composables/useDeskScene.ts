@@ -1,15 +1,17 @@
 import { onMounted, onUnmounted, ref, watch, type Ref } from 'vue'
 import type * as ThreeModule from 'three'
-import type { DeskItemId } from '@/scenes/desk'
+import type { DeskItemId } from '@/scenes/deskItems'
+import { hasHardwareWebGL } from '@/scenes/gpu'
 
 interface DeskSceneOptions {
   canvas: Ref<HTMLCanvasElement | null>
   labels: Ref<Partial<Record<DeskItemId, HTMLElement>>>
+  screenshot?: (id: DeskItemId) => string | undefined
   onReady?: () => void
   onFail?: () => void
 }
 
-export function useDeskScene({ canvas, labels, onReady, onFail }: DeskSceneOptions) {
+export function useDeskScene({ canvas, labels, screenshot, onReady, onFail }: DeskSceneOptions) {
   const hovered = ref<DeskItemId | null>(null)
   const active = ref<DeskItemId | null>(null)
   const introDone = ref(false)
@@ -19,7 +21,7 @@ export function useDeskScene({ canvas, labels, onReady, onFail }: DeskSceneOptio
     const wideScreen = window.matchMedia('(min-width: 768px)').matches
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (!canvas.value) return
-    if (!wideScreen || reduceMotion) {
+    if (!wideScreen || reduceMotion || !hasHardwareWebGL()) {
       onFail?.()
       return
     }
@@ -48,7 +50,7 @@ export function useDeskScene({ canvas, labels, onReady, onFail }: DeskSceneOptio
     renderer.shadowMap.enabled = true
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
-    const desk = buildDesk(THREE)
+    const desk = buildDesk(THREE, { screenshot })
     const camera = new THREE.PerspectiveCamera(24, 1, 0.1, 100)
     const viewDirection = new THREE.Vector3(14.2, 9.9, 15.8).normalize()
     const cameraBase = new THREE.Vector3()

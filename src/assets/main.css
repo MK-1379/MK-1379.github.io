@@ -564,6 +564,10 @@
   opacity: 0.5;
 }
 
+.glow-border.is-offscreen {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .glow-border {
     animation: none;
@@ -704,4 +708,43 @@
   color: var(--accent);
   pointer-events: none;
   filter: drop-shadow(0 6px 10px color-mix(in srgb, var(--accent) 35%, transparent));
+}
+
+.desk-dot {
+  width: 1.25rem;
+  height: 1.25rem;
+  translate: -50% -50%;
+  border-radius: 9999px;
+  background: var(--accent);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--surface) 85%, transparent),
+    0 4px 12px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.desk-dot.is-active {
+  background: var(--accent-2);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .desk-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--accent);
+    animation: desk-dot-ping 2s ease-out infinite;
+    animation-delay: calc(var(--i) * 250ms);
+  }
+}
+
+@keyframes desk-dot-ping {
+  from {
+    opacity: 0.6;
+    scale: 1;
+  }
+  70%,
+  to {
+    opacity: 0;
+    scale: 2.4;
+  }
 }

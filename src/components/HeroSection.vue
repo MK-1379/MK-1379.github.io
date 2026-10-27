@@ -6,6 +6,7 @@ import { experience } from '@/data/experience'
 import { languages } from '@/data/languages'
 import { useLocale } from '@/i18n/locale'
 import DeskScene from '@/components/DeskScene.vue'
+import DeskStatic from '@/components/DeskStatic.vue'
 import QuickSummary from '@/components/QuickSummary.vue'
 import { vMagnetic } from '@/directives/magnetic'
 
@@ -98,18 +99,18 @@ onBeforeUnmount(() => {
     @pointerleave="hideSpot"
   >
     <div
-      class="scene-fallback hero-bg animate-hero-bg absolute -inset-[4%] -z-20"
+      class="scene-fallback hero-bg animate-hero-bg absolute -inset-[4%] -z-20 md:hidden"
       :class="{ 'scene-failed': sceneFailed }"
       aria-hidden="true"
     ></div>
     <div
       class="hero-light pointer-events-none absolute inset-0 -z-[5] transition-opacity duration-1000 max-md:hidden"
-      :class="sceneReady ? 'opacity-100' : 'opacity-0'"
+      :class="sceneReady || sceneFailed ? 'opacity-100' : 'opacity-0'"
       aria-hidden="true"
     ></div>
     <div
       class="hero-grid pointer-events-none absolute inset-0 -z-20 transition-opacity duration-1000 max-md:hidden"
-      :class="sceneReady ? 'opacity-100' : 'opacity-0'"
+      :class="sceneReady || sceneFailed ? 'opacity-100' : 'opacity-0'"
       aria-hidden="true"
     ></div>
     <div
@@ -143,15 +144,15 @@ onBeforeUnmount(() => {
           </span>
           <span class="animate-rise block text-muted" style="animation-delay: 300ms">
             <span class="sr-only">{{ roleText }}</span>
-            <span aria-hidden="true">
-              <template v-if="scrambledRole">
+            <span aria-hidden="true" class="relative block">
+              <span :class="{ invisible: scrambledRole }">{{ roleText }}</span>
+              <span v-if="scrambledRole" class="absolute inset-0">
                 <span
                   v-for="(char, index) in scrambledRole"
                   :key="index"
                   :class="{ 'text-accent': char.scrambled }"
                 >{{ char.letter }}</span>
-              </template>
-              <template v-else>{{ roleText }}</template>
+              </span>
             </span>
           </span>
         </h1>
@@ -227,6 +228,8 @@ onBeforeUnmount(() => {
             <dd class="text-sm text-muted" aria-hidden="true">{{ t.hero.stats.english }}</dd>
           </div>
         </dl>
+
+        <DeskStatic compact class="mt-12 md:hidden" />
       </div>
     </div>
 
@@ -236,5 +239,11 @@ onBeforeUnmount(() => {
       @ready="sceneReady = true"
       @failed="sceneFailed = true"
     />
+    <div
+      v-if="sceneFailed"
+      class="absolute top-0 right-0 flex h-full w-1/2 items-center pr-6 max-md:hidden"
+    >
+      <DeskStatic class="relative w-full" />
+    </div>
   </section>
 </template>
