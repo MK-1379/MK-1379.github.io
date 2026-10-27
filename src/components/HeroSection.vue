@@ -103,6 +103,16 @@ onBeforeUnmount(() => {
       aria-hidden="true"
     ></div>
     <div
+      class="hero-light pointer-events-none absolute inset-0 -z-[5] transition-opacity duration-1000 max-md:hidden"
+      :class="sceneReady ? 'opacity-100' : 'opacity-0'"
+      aria-hidden="true"
+    ></div>
+    <div
+      class="hero-grid pointer-events-none absolute inset-0 -z-20 transition-opacity duration-1000 max-md:hidden"
+      :class="sceneReady ? 'opacity-100' : 'opacity-0'"
+      aria-hidden="true"
+    ></div>
+    <div
       class="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-bg via-bg/70 to-transparent md:via-bg/40"
       aria-hidden="true"
     ></div>
