@@ -6,6 +6,7 @@ import { experience } from '@/data/experience'
 import { languages } from '@/data/languages'
 import { useLocale } from '@/i18n/locale'
 import HeroScene from '@/components/HeroScene.vue'
+import QuickSummary from '@/components/QuickSummary.vue'
 import { vMagnetic } from '@/directives/magnetic'
 
 const { t, tr } = useLocale()
@@ -204,6 +205,18 @@ onBeforeUnmount(() => {
         </h1>
 
         <p
+          v-if="profile.availability"
+          class="animate-rise mt-5 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-sm font-semibold text-emerald-700 dark:text-emerald-400"
+          style="animation-delay: 500ms"
+        >
+          <span class="relative flex size-2" aria-hidden="true">
+            <span class="absolute inline-flex size-full rounded-full bg-emerald-500 opacity-60 motion-safe:animate-ping"></span>
+            <span class="relative inline-flex size-2 rounded-full bg-emerald-500"></span>
+          </span>
+          {{ tr(profile.availability) }}
+        </p>
+
+        <p
           class="animate-rise mt-6 text-lg text-muted md:max-w-md"
           style="animation-delay: 650ms"
         >
@@ -268,6 +281,7 @@ onBeforeUnmount(() => {
           >
             {{ t.hero.cv }}<span class="sr-only">{{ t.hero.cvSr }}</span>
           </a>
+          <QuickSummary />
         </div>
 
         <dl

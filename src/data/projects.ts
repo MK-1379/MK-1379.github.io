@@ -26,6 +26,7 @@ export const projects: Project[] = [
     stack: ['React', 'TypeScript', 'Tailwind CSS', 'TanStack Query', 'Node.js', 'Express', 'Prisma', 'MySQL', 'Docker'],
     repo: 'https://github.com/MK-1379/bracketly',
     demo: 'https://bracketly-mk.duckdns.org',
+    hosting: 'Oracle Cloud',
     image: {
       src: '/img/projects/bracketly.webp',
       alt: {
@@ -61,6 +62,7 @@ export const projects: Project[] = [
     stack: ['React', 'TypeScript', 'Tailwind CSS', 'TanStack Query', 'Node.js', 'Express', 'Prisma', 'MySQL', 'Docker'],
     repo: 'https://github.com/MK-1379/lol-stats',
     demo: 'https://lolstats-mk.duckdns.org',
+    hosting: 'Oracle Cloud',
     image: {
       src: '/img/projects/lolstats.webp',
       alt: {
@@ -127,6 +129,7 @@ export const projects: Project[] = [
     stack: ['Electron', 'JavaScript', 'HTML', 'CSS', 'Vitest', 'GitHub Actions', 'electron-builder'],
     repo: 'https://github.com/MK-1379/kumafy',
     demo: 'https://mk-1379.github.io/kumafy/',
+    hosting: 'GitHub Pages',
     download: 'https://github.com/MK-1379/kumafy/releases/latest',
     image: {
       src: '/img/projects/kumafy.webp',

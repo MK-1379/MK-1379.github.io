@@ -2,6 +2,7 @@
 import { projects } from '@/data/projects'
 import { useLocale } from '@/i18n/locale'
 import TechIcon from '@/components/TechIcon.vue'
+import ProjectStatus from '@/components/ProjectStatus.vue'
 
 const { t, tr } = useLocale()
 
@@ -70,6 +71,7 @@ function resetShot(event: PointerEvent) {
                 <h3 class="mt-2 font-display text-2xl font-bold tracking-tight text-text md:text-3xl">
                   {{ project.title }}
                 </h3>
+                <ProjectStatus :project="project" />
                 <p class="mt-3 max-w-2xl text-lg text-muted">{{ tr(project.summary) }}</p>
 
                 <ul class="mt-5 max-w-2xl list-disc space-y-2 pl-5 text-muted marker:text-accent-2">

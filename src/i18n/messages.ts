@@ -42,6 +42,19 @@ const es = {
     demoSr: (title: string) => ` de ${title}`,
     download: 'Descargar',
     downloadSr: (title: string) => ` ${title} para Windows`,
+    status: {
+      label: 'Estado del proyecto',
+      checking: 'Comprobando',
+      online: 'Online',
+      offline: 'Sin respuesta',
+      lastPush: 'último push',
+    },
+  },
+  summary: {
+    open: 'Resumen en 30 s',
+    eyebrow: 'Para ir rápido',
+    title: 'Mario en 30 segundos',
+    close: 'Cerrar resumen',
   },
   skills: {
     title: 'Skills',
@@ -129,6 +142,19 @@ const en: typeof es = {
     demoSr: (title: string) => ` of ${title}`,
     download: 'Download',
     downloadSr: (title: string) => ` ${title} for Windows`,
+    status: {
+      label: 'Project status',
+      checking: 'Checking',
+      online: 'Online',
+      offline: 'Not responding',
+      lastPush: 'last push',
+    },
+  },
+  summary: {
+    open: '30-second summary',
+    eyebrow: 'The short version',
+    title: 'Mario in 30 seconds',
+    close: 'Close summary',
   },
   skills: {
     title: 'Skills',

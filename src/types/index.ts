@@ -5,7 +5,9 @@ export interface Profile {
   role: Localized
   location: string
   status: Localized
+  availability?: Localized
   tagline: Localized
+  summary: Localized[]
   email: string
   github: string
   linkedin: string
@@ -37,6 +39,7 @@ export interface Project {
   stack: string[]
   repo: string
   demo?: string
+  hosting?: string
   download?: string
   image?: ProjectImage
 }

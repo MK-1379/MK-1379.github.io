@@ -9,6 +9,24 @@ export const profile: Profile = {
     es: 'Frontend con React, Vue y TypeScript. Backend con Node.js, Express y MySQL.',
     en: 'Frontend with React, Vue and TypeScript. Backend with Node.js, Express and MySQL.',
   },
+  summary: [
+    {
+      es: 'Estudiante de 2º de DAW en Logroño, con prácticas de frontend en Globant GUT con Vue, TypeScript y Tailwind CSS.',
+      en: '2nd-year Web Development student in Logroño, with a frontend internship at Globant GUT using Vue, TypeScript and Tailwind CSS.',
+    },
+    {
+      es: 'Hago aplicaciones completas con React y TypeScript en el frontend y Node.js, Express, Prisma y MySQL en el backend.',
+      en: 'I build full stack apps with React and TypeScript on the frontend and Node.js, Express, Prisma and MySQL on the backend.',
+    },
+    {
+      es: 'Dos aplicaciones en producción con tests, CI y despliegue automático: Bracketly y LoLStats.',
+      en: 'Two apps in production with tests, CI and automatic deploys: Bracketly and LoLStats.',
+    },
+    {
+      es: 'Inglés B2 certificado (Cambridge B2 First).',
+      en: 'Certified B2 English (Cambridge B2 First).',
+    },
+  ],
   email: 'mariodiaz2007@gmail.com',
   github: 'https://github.com/MK-1379',
   linkedin: 'https://www.linkedin.com/in/mario-díaz-gonzález-561a99234/',

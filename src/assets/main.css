@@ -457,17 +457,21 @@
   }
 }
 
-.command-palette[open] {
+.command-palette[open],
+.quick-summary[open] {
   animation: palette-in 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.command-palette[open]::backdrop {
+.command-palette[open]::backdrop,
+.quick-summary[open]::backdrop {
   animation: hero-fade 0.2s ease-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .command-palette[open],
-  .command-palette[open]::backdrop {
+  .command-palette[open]::backdrop,
+  .quick-summary[open],
+  .quick-summary[open]::backdrop {
     animation: none;
   }
 }
