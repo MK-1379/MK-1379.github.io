@@ -12,6 +12,7 @@ interface DeskSceneOptions {
 export function useDeskScene({ canvas, labels, onReady, onFail }: DeskSceneOptions) {
   const hovered = ref<DeskItemId | null>(null)
   const active = ref<DeskItemId | null>(null)
+  const introDone = ref(false)
   let cleanup: (() => void) | null = null
 
   onMounted(async () => {
@@ -51,14 +52,27 @@ export function useDeskScene({ canvas, labels, onReady, onFail }: DeskSceneOptio
     const camera = new THREE.PerspectiveCamera(24, 1, 0.1, 100)
     const viewDirection = new THREE.Vector3(14.2, 9.9, 15.8).normalize()
     const cameraBase = new THREE.Vector3()
+    const screenRight = new THREE.Vector3().crossVectors(camera.up, viewDirection).normalize()
     const lookTarget = desk.center.clone()
     const lookCurrent = desk.center.clone()
+    const zoomTarget = new THREE.Vector3()
+    const halfFov = THREE.MathUtils.degToRad(camera.fov / 2)
+    let baseDistance = 0
 
-    function applyTheme() {
-      desk.applyTheme(document.documentElement.classList.contains('dark'))
+    const focusPoints = new Map(
+      desk.items.map((item) => {
+        const sphere = new THREE.Box3()
+          .setFromObject(item.object)
+          .getBoundingSphere(new THREE.Sphere())
+        return [item.id, sphere]
+      }),
+    )
+
+    function applyTheme(instant = false) {
+      desk.applyTheme(document.documentElement.classList.contains('dark'), instant)
     }
-    applyTheme()
-    const themeObserver = new MutationObserver(applyTheme)
+    applyTheme(true)
+    const themeObserver = new MutationObserver(() => applyTheme())
     themeObserver.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ['class'],
@@ -82,6 +96,7 @@ export function useDeskScene({ canvas, labels, onReady, onFail }: DeskSceneOptio
         if (roomFits(middle)) far = middle
         else near = middle
       }
+      baseDistance = far
       cameraBase.copy(desk.center).addScaledVector(viewDirection, far)
       camera.position.copy(cameraBase)
       camera.lookAt(lookCurrent)
@@ -93,6 +108,7 @@ export function useDeskScene({ canvas, labels, onReady, onFail }: DeskSceneOptio
       camera.aspect = width / height
       camera.updateProjectionMatrix()
       fitCamera()
+      aimCamera(active.value)
     }
     const resizeObserver = new ResizeObserver(resize)
     resizeObserver.observe(el)
@@ -129,10 +145,30 @@ export function useDeskScene({ canvas, labels, onReady, onFail }: DeskSceneOptio
     el.addEventListener('pointerleave', onPointerLeave)
     el.addEventListener('click', onClick)
 
+    function aimCamera(id: DeskItemId | null) {
+      const focus = id ? focusPoints.get(id) : undefined
+      if (!focus) {
+        lookTarget.copy(desk.center)
+        zoomTarget.copy(cameraBase)
+        return
+      }
+      const panelWidth = 24 * 16
+      const covered = Math.min(0.7, panelWidth / el.clientWidth)
+      const visibleWidth = Math.min(1, camera.aspect * (1 - covered))
+      const distance = THREE.MathUtils.clamp(
+        (focus.radius * 1.2) / (Math.tan(halfFov) * visibleWidth),
+        5,
+        baseDistance * 0.7,
+      )
+      const halfWidth = distance * Math.tan(halfFov) * camera.aspect
+      lookTarget.copy(focus.center).addScaledVector(screenRight, halfWidth * covered)
+      zoomTarget.copy(lookTarget).addScaledVector(viewDirection, distance)
+    }
+    aimCamera(null)
+
     const stopActiveWatch = watch(active, (id) => {
-      const item = desk.items.find((candidate) => candidate.id === id)
-      lookTarget.copy(desk.center)
-      if (item) lookTarget.lerp(item.anchor, 0.35)
+      if (id) desk.react(id)
+      aimCamera(id)
     })
 
     let visible = true
@@ -155,27 +191,27 @@ export function useDeskScene({ canvas, labels, onReady, onFail }: DeskSceneOptio
 
     const cameraTarget = new THREE.Vector3()
     const timer = new THREE.Timer()
+    let elapsed = 0
     let frameId = 0
     let firstFrame = true
     function animate(timestamp: number) {
       frameId = requestAnimationFrame(animate)
       if (!visible || document.hidden) return
       timer.update(timestamp)
-      desk.update(timer.getElapsed())
+      const delta = Math.min(timer.getDelta(), 0.1)
+      elapsed += delta
+      const follow = 1 - Math.exp(-3.5 * delta)
+      desk.update(elapsed, { hovered: hovered.value, active: active.value })
+      if (!introDone.value && elapsed > desk.introDuration) introDone.value = true
 
+      const sway = active.value ? 0.25 : 1
       cameraTarget
-        .copy(cameraBase)
-        .add(new THREE.Vector3(parallax.x * 0.9, parallax.y * 0.5, -parallax.x * 0.6))
-      if (active.value) cameraTarget.lerp(desk.center, 0.08)
-      camera.position.lerp(cameraTarget, 0.06)
-      lookCurrent.lerp(lookTarget, 0.06)
+        .set(parallax.x * 0.9, parallax.y * 0.5, -parallax.x * 0.6)
+        .multiplyScalar(sway)
+        .add(zoomTarget)
+      camera.position.lerp(cameraTarget, follow)
+      lookCurrent.lerp(lookTarget, follow)
       camera.lookAt(lookCurrent)
-
-      for (const item of desk.items) {
-        const lifted = item.id === hovered.value || item.id === active.value
-        const targetY = item.baseY + (lifted ? 0.12 : 0)
-        item.object.position.y += (targetY - item.object.position.y) * 0.15
-      }
 
       renderer.render(desk.scene, camera)
       placeLabels()
@@ -202,5 +238,5 @@ export function useDeskScene({ canvas, labels, onReady, onFail }: DeskSceneOptio
 
   onUnmounted(() => cleanup?.())
 
-  return { hovered, active }
+  return { hovered, active, introDone }
 }

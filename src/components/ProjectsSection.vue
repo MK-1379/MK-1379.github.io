@@ -3,6 +3,7 @@ import { projects } from '@/data/projects'
 import { useLocale } from '@/i18n/locale'
 import TechIcon from '@/components/TechIcon.vue'
 import ProjectStatus from '@/components/ProjectStatus.vue'
+import WordReveal from '@/components/WordReveal.vue'
 
 const { t, tr } = useLocale()
 
@@ -41,7 +42,7 @@ function resetShot(event: PointerEvent) {
         id="proyectos-titulo"
         class="section-title font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
       >
-        {{ t.projects.title }}
+        <WordReveal :text="t.projects.title" />
       </h2>
 
       <div class="relative mt-14">

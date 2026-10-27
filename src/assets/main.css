@@ -196,6 +196,20 @@
   transition: opacity 0.3s ease;
 }
 
+.project-shot::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  z-index: 1;
+  width: 3px;
+  border-radius: 9999px;
+  background: linear-gradient(to bottom, var(--accent), var(--accent-2));
+  box-shadow: 0 0 16px 2px color-mix(in srgb, var(--accent) 60%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+
 .project-entry:hover .project-shot {
   --lift: -4px;
   box-shadow: 0 18px 40px -18px color-mix(in srgb, var(--accent) 45%, transparent);
@@ -272,6 +286,31 @@
   }
 }
 
+@keyframes shot-wipe {
+  from {
+    clip-path: inset(0 100% 0 0 round 0.375rem);
+    scale: 1.04;
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 0.375rem);
+    scale: 1;
+  }
+}
+
+@keyframes shot-edge {
+  from {
+    left: 0;
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  to {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .graph-line {
@@ -284,6 +323,18 @@
       animation: entry-in linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 60%;
+    }
+
+    .project-shot img {
+      animation: shot-wipe linear both;
+      animation-timeline: view();
+      animation-range: entry 15% cover 45%;
+    }
+
+    .project-shot::before {
+      animation: shot-edge linear both;
+      animation-timeline: view();
+      animation-range: entry 15% cover 45%;
     }
 
     .section-title::after {
@@ -581,7 +632,21 @@
   transition:
     background-color 0.2s,
     color 0.2s,
+    opacity 0.3s,
     scale 0.2s;
+  animation: desk-label-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i) * 70ms) backwards;
+}
+
+.desk-label.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes desk-label-in {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
 }
 
 .desk-label.is-active {
@@ -601,4 +666,42 @@
 .desk-panel-leave-to {
   opacity: 0;
   translate: 24px 0;
+}
+
+.word-slot {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+  vertical-align: bottom;
+}
+
+.word-slot + .word-slot {
+  margin-left: 0.25em;
+}
+
+.word {
+  display: inline-block;
+}
+
+.word-reveal.is-waiting .word {
+  translate: 0 110%;
+}
+
+.word-reveal.is-playing .word {
+  animation: word-up 0.75s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--w) * 90ms) both;
+}
+
+@keyframes word-up {
+  from {
+    translate: 0 110%;
+  }
+}
+
+.paper-plane {
+  position: fixed;
+  z-index: 60;
+  color: var(--accent);
+  pointer-events: none;
+  filter: drop-shadow(0 6px 10px color-mix(in srgb, var(--accent) 35%, transparent));
 }

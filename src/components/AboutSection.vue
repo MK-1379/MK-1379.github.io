@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { profile } from '@/data/profile'
 import { useLocale } from '@/i18n/locale'
+import WordReveal from '@/components/WordReveal.vue'
 
 const { t, tr } = useLocale()
 </script>
@@ -31,7 +32,7 @@ const { t, tr } = useLocale()
           id="sobre-mi-titulo"
           class="section-title mt-2 font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
         >
-          {{ t.about.title }}
+          <WordReveal :text="t.about.title" />
         </h2>
 
         <div class="mt-6 max-w-2xl space-y-4 text-lg text-muted">

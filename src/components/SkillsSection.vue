@@ -4,6 +4,7 @@ import { languages } from '@/data/languages'
 import { skills } from '@/data/skills'
 import type { SkillLevel } from '@/types'
 import { useLocale } from '@/i18n/locale'
+import WordReveal from '@/components/WordReveal.vue'
 
 const { t, tr } = useLocale()
 
@@ -71,7 +72,7 @@ onBeforeUnmount(() => observer?.disconnect())
         id="skills-titulo"
         class="section-title font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
       >
-        {{ t.skills.title }}
+        <WordReveal :text="t.skills.title" />
       </h2>
 
       <div

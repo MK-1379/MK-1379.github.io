@@ -21,13 +21,20 @@ export interface DeskItem {
   baseY: number
 }
 
+export interface DeskState {
+  hovered: DeskItemId | null
+  active: DeskItemId | null
+}
+
 export interface Desk {
   scene: ThreeModule.Scene
   items: DeskItem[]
   bounds: ThreeModule.Vector3[]
   center: ThreeModule.Vector3
-  update: (seconds: number) => void
-  applyTheme: (dark: boolean) => void
+  introDuration: number
+  update: (seconds: number, state: DeskState) => void
+  react: (id: DeskItemId) => void
+  applyTheme: (dark: boolean, instant?: boolean) => void
   dispose: () => void
 }
 
@@ -55,7 +62,36 @@ function drawCanvas(width: number, height: number, draw: (ctx: CanvasRenderingCo
   return canvas
 }
 
-function drawScreen(ctx: CanvasRenderingContext2D) {
+const chartPoints = [40, 70, 55, 95, 88, 120, 110, 150, 140, 135, 170]
+const codeLines = ['const games = await', '  riot.matches(puuid)', '', 'chart(games)']
+
+function clamp01(value: number) {
+  return Math.min(1, Math.max(0, value))
+}
+
+function progress(seconds: number, start: number, duration: number) {
+  return clamp01((seconds - start) / duration)
+}
+
+function easeOutCubic(value: number) {
+  return 1 - (1 - value) ** 3
+}
+
+function easeOutBack(value: number) {
+  const overshoot = 1.70158
+  return 1 + (overshoot + 1) * (value - 1) ** 3 + overshoot * (value - 1) ** 2
+}
+
+function easeOutBounce(value: number) {
+  const strength = 7.5625
+  const step = 2.75
+  if (value < 1 / step) return strength * value ** 2
+  if (value < 2 / step) return strength * (value - 1.5 / step) ** 2 + 0.75
+  if (value < 2.5 / step) return strength * (value - 2.25 / step) ** 2 + 0.9375
+  return strength * (value - 2.625 / step) ** 2 + 0.984375
+}
+
+function drawScreen(ctx: CanvasRenderingContext2D, seconds: number) {
   const gradient = ctx.createLinearGradient(0, 0, 512, 300)
   gradient.addColorStop(0, '#1e1b3a')
   gradient.addColorStop(1, '#312a63')
@@ -67,22 +103,74 @@ function drawScreen(ctx: CanvasRenderingContext2D) {
   ctx.fillStyle = '#c4b5fd'
   ctx.font = '16px monospace'
   ctx.fillText('Diamante IV', 26, 72)
+
+  const drawn = easeOutCubic(progress(seconds, 0.3, 2.4)) * (chartPoints.length - 1)
+  const point = (index: number) => ({ x: 26 + index * 26, y: 250 - (chartPoints[index] ?? 0) })
   ctx.strokeStyle = '#8b5cf6'
   ctx.lineWidth = 4
+  ctx.lineJoin = 'round'
   ctx.beginPath()
-  ;[40, 70, 55, 95, 88, 120, 110, 150, 140, 135, 170].forEach((value, index) => {
-    const x = 26 + index * 26
-    const y = 250 - value
-    if (index === 0) ctx.moveTo(x, y)
-    else ctx.lineTo(x, y)
-  })
-  ctx.stroke()
-  for (let row = 0; row < 4; row++) {
-    ctx.fillStyle = row % 2 ? '#2a2452' : '#3b3470'
-    ctx.fillRect(330, 34 + row * 58, 158, 46)
-    ctx.fillStyle = row % 3 ? '#4ade80' : '#f87171'
-    ctx.fillRect(330, 34 + row * 58, 6, 46)
+  const start = point(0)
+  ctx.moveTo(start.x, start.y)
+  const whole = Math.floor(drawn)
+  for (let index = 1; index <= whole; index++) {
+    const next = point(index)
+    ctx.lineTo(next.x, next.y)
   }
+  const from = point(whole)
+  const to = point(Math.min(whole + 1, chartPoints.length - 1))
+  const head = {
+    x: from.x + (to.x - from.x) * (drawn - whole),
+    y: from.y + (to.y - from.y) * (drawn - whole),
+  }
+  ctx.lineTo(head.x, head.y)
+  ctx.stroke()
+  ctx.fillStyle = '#ede9fe'
+  ctx.beginPath()
+  ctx.arc(head.x, head.y, 6, 0, Math.PI * 2)
+  ctx.fill()
+
+  ctx.fillStyle = '#16132c'
+  ctx.fillRect(318, 26, 170, 210)
+  ctx.font = '13px monospace'
+  let typed = Math.floor(Math.max(0, seconds - 1) * 16)
+  let cursor = { x: 330, y: 52 }
+  codeLines.forEach((line, index) => {
+    const visible = line.slice(0, Math.max(0, typed))
+    typed -= line.length
+    const y = 52 + index * 22
+    ctx.fillStyle = index === 3 ? '#4ade80' : '#c4b5fd'
+    ctx.fillText(visible, 330, y)
+    if (visible.length > 0 || index === 0) cursor = { x: 330 + ctx.measureText(visible).width, y }
+  })
+  if (Math.floor(seconds * 2.5) % 2 === 0) {
+    ctx.fillStyle = '#ede9fe'
+    ctx.fillRect(cursor.x + 2, cursor.y - 12, 7, 15)
+  }
+
+  ctx.fillStyle = '#4ade80'
+  ctx.beginPath()
+  ctx.arc(336, 214, 5, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.fillStyle = '#c4b5fd'
+  ctx.fillText('online', 348, 219)
+}
+
+function drawNote(ctx: CanvasRenderingContext2D, symbol: string) {
+  ctx.fillStyle = '#a78bfa'
+  ctx.font = '700 52px sans-serif'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText(symbol, 32, 34)
+}
+
+function drawGlow(ctx: CanvasRenderingContext2D) {
+  const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64)
+  gradient.addColorStop(0, 'rgba(255, 230, 190, 0.9)')
+  gradient.addColorStop(0.35, 'rgba(255, 210, 160, 0.35)')
+  gradient.addColorStop(1, 'rgba(255, 200, 150, 0)')
+  ctx.fillStyle = gradient
+  ctx.fillRect(0, 0, 128, 128)
 }
 
 function drawDuotone(ctx: CanvasRenderingContext2D, image: HTMLImageElement) {
@@ -108,7 +196,8 @@ function drawDuotone(ctx: CanvasRenderingContext2D, image: HTMLImageElement) {
 export function buildDesk(THREE: Three): Desk {
   const scene = new THREE.Scene()
 
-  scene.add(new THREE.HemisphereLight(0xf3edff, 0x6d4bb8, 1.4))
+  const hemisphere = new THREE.HemisphereLight(0xf3edff, 0x6d4bb8, 1.4)
+  scene.add(hemisphere)
   const sun = new THREE.DirectionalLight(0xffffff, 2.2)
   sun.position.set(6, 10, 7)
   sun.castShadow = true
@@ -135,6 +224,16 @@ export function buildDesk(THREE: Three): Desk {
       side: THREE.DoubleSide,
     }),
     violet: new THREE.MeshStandardMaterial({ color: 0x7c4fd0, roughness: 0.35 }),
+    shade: new THREE.MeshStandardMaterial({
+      color: 0x7c4fd0,
+      roughness: 0.35,
+      side: THREE.DoubleSide,
+    }),
+    bulb: new THREE.MeshStandardMaterial({
+      color: 0xfff4e0,
+      emissive: 0xffd9a0,
+      emissiveIntensity: 0,
+    }),
     blue: new THREE.MeshStandardMaterial({ color: 0x2563eb, roughness: 0.45 }),
     teal: new THREE.MeshStandardMaterial({ color: 0x0e7490, roughness: 0.5 }),
     glass: new THREE.MeshPhysicalMaterial({
@@ -147,6 +246,12 @@ export function buildDesk(THREE: Three): Desk {
       ior: 1.4,
     }),
   }
+
+  const themed = (['floor', 'edge', 'wall', 'wood', 'rug'] as const).map((key) => ({
+    material: materials[key],
+    light: new THREE.Color(lightColors[key]),
+    dark: new THREE.Color(darkColors[key]),
+  }))
 
   function addBox(
     size: [number, number, number],
@@ -175,30 +280,38 @@ export function buildDesk(THREE: Three): Desk {
     return mesh
   }
 
-  function canvasMaterial(canvas: HTMLCanvasElement) {
+  function canvasTexture(canvas: HTMLCanvasElement) {
     const texture = new THREE.CanvasTexture(canvas)
     texture.colorSpace = THREE.SRGBColorSpace
-    return new THREE.MeshBasicMaterial({ map: texture, toneMapped: false })
+    return texture
   }
 
-  addBox([9, 0.35, 7], materials.floor, [0, -0.175, 0])
-  addBox([9, 0.12, 7], materials.edge, [0, -0.41, 0])
-  addBox([9, 4.6, 0.25], materials.wall, [0, 2.3, -3.375])
-  addBox([0.25, 4.6, 7], materials.wall, [-4.375, 2.3, 0])
+  function addGroup(parent: ThreeModule.Object3D = scene) {
+    const group = new THREE.Group()
+    parent.add(group)
+    return group
+  }
+
+  const floor = addBox([9, 0.35, 7], materials.floor, [0, -0.175, 0])
+  const floorEdge = addBox([9, 0.12, 7], materials.edge, [0, -0.41, 0])
+  const walls = addGroup()
+  addBox([9, 4.6, 0.25], materials.wall, [0, 2.3, -3.375], walls)
+  addBox([0.25, 4.6, 7], materials.wall, [-4.375, 2.3, 0], walls)
 
   const rug = new THREE.Mesh(new THREE.CylinderGeometry(2.2, 2.2, 0.03, 48), materials.rug)
   rug.position.set(0.6, 0.015, 1.1)
   rug.receiveShadow = true
   scene.add(rug)
 
-  addBox([4.6, 0.16, 1.9], materials.wood, [0, 1.55, -2.2])
+  const table = addGroup()
+  addBox([4.6, 0.16, 1.9], materials.wood, [0, 1.55, -2.2], table)
   for (const [x, z] of [
     [-2.15, -3.0],
     [2.15, -3.0],
     [-2.15, -1.4],
     [2.15, -1.4],
   ] as const) {
-    addBox([0.12, 1.5, 0.12], materials.wood, [x, 0.75, z])
+    addBox([0.12, 1.5, 0.12], materials.wood, [x, 0.75, z], table)
   }
 
   const items: DeskItem[] = []
@@ -214,9 +327,12 @@ export function buildDesk(THREE: Three): Desk {
   addBox([0.5, 0.06, 0.36], materials.dark, [0, 1.66, -2.55], monitor)
   addBox([0.1, 0.55, 0.1], materials.dark, [0, 1.95, -2.6], monitor)
   addBox([2.3, 1.36, 0.1], materials.dark, [0, 2.75, -2.6], monitor)
+  const screenCanvas = drawCanvas(512, 300, (ctx) => drawScreen(ctx, 0))
+  const screenContext = screenCanvas.getContext('2d')
+  const screenTexture = canvasTexture(screenCanvas)
   addMesh(
     new THREE.PlaneGeometry(2.16, 1.22),
-    canvasMaterial(drawCanvas(512, 300, drawScreen)),
+    new THREE.MeshBasicMaterial({ map: screenTexture, toneMapped: false }),
     [0, 2.75, -2.545],
     monitor,
   )
@@ -271,6 +387,20 @@ export function buildDesk(THREE: Three): Desk {
     cone.scale.y = 0.4
     cones.push(cone)
   }
+  const notes = ['♪', '♫', '♪', '♫', '♪'].map((symbol) => {
+    const sprite = new THREE.Sprite(
+      new THREE.SpriteMaterial({
+        map: canvasTexture(drawCanvas(64, 64, (ctx) => drawNote(ctx, symbol))),
+        transparent: true,
+        opacity: 0,
+        depthWrite: false,
+      }),
+    )
+    sprite.scale.setScalar(0.38)
+    sprite.position.set(0, 2.15, 0)
+    speaker.add(sprite)
+    return sprite
+  })
   speaker.position.set(-1.75, 0, -2.45)
   speaker.rotation.y = 0.25
   addItem('kumafy', speaker, [-2.15, 2.85, -1.9])
@@ -284,7 +414,7 @@ export function buildDesk(THREE: Three): Desk {
     materials.white,
     materials.violet,
   ]
-  bookMaterials.forEach((material, index) => {
+  const books = bookMaterials.map((material, index) => {
     const height = 0.5 + (index % 3) * 0.08
     const book = addBox(
       [0.17, height, 0.42],
@@ -296,13 +426,14 @@ export function buildDesk(THREE: Three): Desk {
       book.rotation.z = -0.35
       book.position.x += 0.08
     }
+    return { book, baseRotation: book.rotation.z }
   })
   addMesh(new THREE.SphereGeometry(0.22, 32, 16), materials.glass, [0.75, 3.56, 0], shelf)
   shelf.position.set(-2.5, 0, -3.05)
   addItem('clase', shelf, [-2.7, 4.15, -3.05])
 
   const papers = new THREE.Group()
-  for (let index = 0; index < 4; index++) {
+  const sheets = Array.from({ length: 4 }, (_, index) => {
     const sheet = addBox(
       [0.62, 0.02, 0.86],
       materials.white,
@@ -310,7 +441,8 @@ export function buildDesk(THREE: Three): Desk {
       papers,
     )
     sheet.rotation.y = (index - 1.5) * 0.06
-  }
+    return { sheet, baseY: sheet.position.y }
+  })
   const lines = addMesh(
     new THREE.PlaneGeometry(0.4, 0.5),
     new THREE.MeshBasicMaterial({ color: 0x8b5cf6, transparent: true, opacity: 0.35 }),
@@ -327,10 +459,7 @@ export function buildDesk(THREE: Three): Desk {
   const photoMaterial = new THREE.MeshBasicMaterial({ color: 0xd8c8fb, toneMapped: false })
   const photo = new Image()
   photo.onload = () => {
-    const canvas = drawCanvas(256, 256, (ctx) => drawDuotone(ctx, photo))
-    const texture = new THREE.CanvasTexture(canvas)
-    texture.colorSpace = THREE.SRGBColorSpace
-    photoMaterial.map = texture
+    photoMaterial.map = canvasTexture(drawCanvas(256, 256, (ctx) => drawDuotone(ctx, photo)))
     photoMaterial.color.set(0xffffff)
     photoMaterial.needsUpdate = true
   }
@@ -342,6 +471,7 @@ export function buildDesk(THREE: Three): Desk {
 
   const envelope = new THREE.Group()
   addBox([0.8, 0.05, 0.55], materials.white, [0, 0.05, 0], envelope)
+  const letter = addBox([0.62, 0.015, 0.4], materials.lilac, [0, 0.05, 0.02], envelope)
   const flapShape = new THREE.Shape(
     [
       [-0.4, 0],
@@ -356,10 +486,53 @@ export function buildDesk(THREE: Three): Desk {
     envelope,
   )
   flap.rotation.x = -Math.PI / 2
-  addMesh(new THREE.SphereGeometry(0.07, 16, 10), materials.violet, [0, 0.09, 0.02], envelope)
+  const seal = addMesh(
+    new THREE.SphereGeometry(0.07, 16, 10),
+    materials.violet,
+    [0, 0.09, 0.02],
+    envelope,
+  )
   envelope.position.set(2.1, 0.02, 1.3)
   envelope.rotation.y = -0.4
   addItem('contact', envelope, [2.1, 0.75, 1.3])
+
+  const lamp = addGroup()
+  addMesh(new THREE.CylinderGeometry(0.32, 0.36, 0.08, 24), materials.dark, [0, 0.04, 0], lamp)
+  addMesh(new THREE.CylinderGeometry(0.035, 0.035, 3.3, 10), materials.dark, [0, 1.69, 0], lamp)
+  addMesh(new THREE.SphereGeometry(0.06, 12, 8), materials.dark, [0, 3.34, 0], lamp)
+  const lampArm = addMesh(
+    new THREE.CylinderGeometry(0.03, 0.03, 0.95, 10),
+    materials.dark,
+    [-0.42, 3.47, 0.16],
+    lamp,
+  )
+  lampArm.rotation.set(0, 0.35, Math.PI / 2 - 0.3)
+  const lampHead = addGroup(lamp)
+  lampHead.position.set(-0.85, 3.6, 0.32)
+  lampHead.rotation.set(-0.3, 0, -0.45)
+  addMesh(
+    new THREE.CylinderGeometry(0.08, 0.28, 0.34, 24, 1, true),
+    materials.shade,
+    [0, -0.12, 0],
+    lampHead,
+  )
+  addMesh(new THREE.SphereGeometry(0.09, 16, 10), materials.bulb, [0, -0.22, 0], lampHead)
+  const lampLight = new THREE.PointLight(0xffd9a0, 0, 7, 1.6)
+  lampLight.position.set(0, -0.32, 0)
+  lampHead.add(lampLight)
+  const lampGlow = new THREE.Sprite(
+    new THREE.SpriteMaterial({
+      map: canvasTexture(drawCanvas(128, 128, drawGlow)),
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    }),
+  )
+  lampGlow.position.set(0, -0.28, 0)
+  lampGlow.scale.setScalar(1.6)
+  lampHead.add(lampGlow)
+  lamp.position.set(3.55, 0, -2.75)
 
   const chair = new THREE.Group()
   addBox([1, 0.12, 1], materials.violet, [0, 0.95, 0], chair)
@@ -391,34 +564,168 @@ export function buildDesk(THREE: Three): Desk {
     }
   }
 
+  const itemDropStart = 1
+  const itemDropGap = 0.12
+  const introDuration = itemDropStart + items.length * itemDropGap + 0.8
+  const lifts = new Map<DeskItemId, number>(items.map((item) => [item.id, 0]))
+  const reactions = new Map<DeskItemId, number>()
+  let darkness = 0
+  let darknessMix = 0
+  let lampSwitchedOn = Number.POSITIVE_INFINITY
+  let lampLevel = 0
+  let notesLevel = 0
+  let flapOpen = 0
+  let screenStart = 0
+  let lastScreenDraw = -1
+  let now = 0
+  let delta = 0
+
+  function damp(current: number, target: number, speed: number) {
+    return THREE.MathUtils.damp(current, target, speed, delta)
+  }
+
+  function spread(object: ThreeModule.Object3D, amount: number) {
+    object.scale.set(Math.max(amount, 0.0001), 1, Math.max(amount, 0.0001))
+  }
+
+  function rise(object: ThreeModule.Object3D, amount: number) {
+    object.scale.set(1, Math.max(amount, 0.0001), 1)
+  }
+
+  function pop(object: ThreeModule.Object3D, amount: number) {
+    object.scale.setScalar(Math.max(amount, 0.0001))
+  }
+
+  function playIntro(seconds: number) {
+    spread(floor, easeOutBack(progress(seconds, 0, 0.55)))
+    spread(floorEdge, easeOutBack(progress(seconds, 0, 0.55)))
+    rise(walls, easeOutCubic(progress(seconds, 0.3, 0.6)))
+    rise(table, easeOutBack(progress(seconds, 0.6, 0.5)))
+    spread(rug, easeOutBack(progress(seconds, 0.7, 0.5)))
+    pop(chair, easeOutBack(progress(seconds, 0.9, 0.5)))
+    pop(lamp, easeOutBack(progress(seconds, 1.4, 0.5)))
+    floaters.forEach(({ sphere }, index) => {
+      pop(sphere, easeOutBack(progress(seconds, 1.9 + index * 0.1, 0.5)))
+    })
+  }
+
+  function since(id: DeskItemId) {
+    const start = reactions.get(id)
+    return start === undefined ? Number.POSITIVE_INFINITY : now - start
+  }
+
+  function animateReactions(state: DeskState) {
+    const spin = since('bracketly')
+    trophy.rotation.y = easeOutCubic(clamp01(spin / 1.2)) * Math.PI * 2
+
+    const shake = since('clase')
+    books.forEach(({ book, baseRotation }, index) => {
+      const wave = progress(shake, index * 0.08, 0.45)
+      book.rotation.z = baseRotation - Math.sin(wave * Math.PI) * 0.28
+    })
+
+    const flutter = since('cv')
+    sheets.forEach(({ sheet, baseY }, index) => {
+      const wave = progress(flutter, index * 0.07, 0.7)
+      sheet.position.y = baseY + Math.sin(wave * Math.PI) * 0.18 * (index + 1)
+      sheet.rotation.z = Math.sin(wave * Math.PI * 4) * 0.1 * (1 - wave)
+    })
+
+    const swing = since('about')
+    frame.rotation.z = swing < 3 ? Math.sin(swing * 9) * 0.22 * Math.exp(-swing * 2.2) : 0
+
+    const opening = state.active === 'contact' ? 1 : 0
+    flapOpen = damp(flapOpen, opening, 7)
+    flap.rotation.x = -Math.PI / 2 - flapOpen * Math.PI * 0.62
+    seal.visible = flapOpen < 0.15
+    const letterOut = clamp01(flapOpen * 1.6 - 0.6)
+    letter.position.y = 0.05 + easeOutCubic(letterOut) * 0.38
+    letter.rotation.x = -letterOut * 0.35
+
+    notesLevel = damp(notesLevel, state.active === 'kumafy' ? 1 : 0, 4)
+    notes.forEach((note, index) => {
+      const phase = (now * 0.55 + index / notes.length) % 1
+      note.visible = notesLevel > 0.01
+      note.position.set(Math.sin(phase * 6 + index) * 0.25, 2.75 + phase * 1.5, 0.35)
+      note.material.opacity = notesLevel * Math.sin(phase * Math.PI)
+    })
+    const beatStrength = 0.5 + notesLevel * 0.6
+    const beat = 1 + Math.max(0, Math.sin(now * 7.5)) ** 4 * beatStrength
+    cones.forEach((cone) => {
+      cone.scale.y = 0.4 * beat
+    })
+  }
+
+  function updateScreen() {
+    if (!screenContext || now - lastScreenDraw < 1 / 20) return
+    lastScreenDraw = now
+    drawScreen(screenContext, (now - screenStart) % 10)
+    screenTexture.needsUpdate = true
+  }
+
+  function updateLighting() {
+    darknessMix = damp(darknessMix, darkness, 2.5)
+    for (const { material, light, dark } of themed) {
+      material.color.lerpColors(light, dark, darknessMix)
+    }
+    rim.intensity = 18 + 22 * darknessMix
+    sun.intensity = 2.2 - 0.9 * darknessMix
+    hemisphere.intensity = 1.4 - 0.25 * darknessMix
+
+    const sinceSwitch = now - lampSwitchedOn
+    const flicker = sinceSwitch < 0.08 || (sinceSwitch > 0.18 && sinceSwitch < 0.26)
+    const lampOn = darkness === 1 && (flicker || sinceSwitch > 0.4)
+    lampLevel = damp(lampLevel, lampOn ? 1 : 0, lampOn ? 40 : 5)
+    materials.bulb.emissiveIntensity = lampLevel * 3
+    lampLight.intensity = lampLevel * 9
+    lampGlow.material.opacity = lampLevel * 0.85
+  }
+
   return {
     scene,
     items,
     bounds,
     center: new THREE.Vector3(0, 1.9, 0),
-    update(seconds) {
+    introDuration,
+    update(seconds, state) {
+      delta = Math.min(seconds - now, 0.1)
+      now = seconds
+      playIntro(seconds)
+      items.forEach((item, index) => {
+        const lifted = item.id === state.hovered || item.id === state.active
+        const lift = lifts.get(item.id) ?? 0
+        const nextLift = damp(lift, lifted ? 0.12 : 0, 10)
+        lifts.set(item.id, nextLift)
+        const drop = progress(seconds, itemDropStart + index * itemDropGap, 0.75)
+        item.object.position.y = item.baseY + nextLift + (1 - easeOutBounce(drop)) * 2.8
+        pop(item.object, drop > 0 ? 1 : 0)
+      })
       floaters.forEach(({ sphere, baseY }, index) => {
         sphere.position.y = baseY + Math.sin(seconds * 0.9 + index * 2) * 0.12
       })
-      const beat = 1 + Math.max(0, Math.sin(seconds * 7.5)) ** 4 * 0.5
-      cones.forEach((cone) => {
-        cone.scale.y = 0.4 * beat
-      })
+      animateReactions(state)
+      updateScreen()
+      updateLighting()
     },
-    applyTheme(dark) {
-      const colors = dark ? darkColors : lightColors
-      materials.floor.color.set(colors.floor)
-      materials.edge.color.set(colors.edge)
-      materials.wall.color.set(colors.wall)
-      materials.wood.color.set(colors.wood)
-      materials.rug.color.set(colors.rug)
-      rim.intensity = dark ? 40 : 18
-      sun.intensity = dark ? 1.3 : 2.2
+    react(id) {
+      reactions.set(id, now)
+      if (id === 'lolstats') screenStart = now
+    },
+    applyTheme(dark, instant = false) {
+      const next = dark ? 1 : 0
+      if (next === darkness && !instant) return
+      darkness = next
+      if (instant) {
+        darknessMix = darkness
+        lampSwitchedOn = introDuration
+      } else if (dark) {
+        lampSwitchedOn = now
+      }
     },
     dispose() {
       scene.traverse((object) => {
-        if (!(object instanceof THREE.Mesh)) return
-        object.geometry.dispose()
+        if (!(object instanceof THREE.Mesh) && !(object instanceof THREE.Sprite)) return
+        if (object instanceof THREE.Mesh) object.geometry.dispose()
         const material = object.material as ThreeModule.MeshBasicMaterial
         material.map?.dispose()
         material.dispose()

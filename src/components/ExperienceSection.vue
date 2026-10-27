@@ -4,6 +4,7 @@ import { experience } from '@/data/experience'
 import { useLocale } from '@/i18n/locale'
 import TechIcon from '@/components/TechIcon.vue'
 import ExperienceScene from '@/components/ExperienceScene.vue'
+import WordReveal from '@/components/WordReveal.vue'
 
 const { t, tr } = useLocale()
 
@@ -22,72 +23,84 @@ const sceneFailed = ref(false)
         id="experiencia-titulo"
         class="section-title font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
       >
-        {{ t.experience.title }}
+        <WordReveal :text="t.experience.title" />
       </h2>
 
-      <ol class="mt-12 space-y-16">
-        <li
-          v-for="job in experience"
-          :key="job.company"
-          class="grid gap-8"
-          :class="job.image ? 'lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-16' : ''"
-        >
-          <div class="min-w-0">
-            <p class="font-mono text-sm text-muted">{{ job.period }}</p>
-            <h3 class="mt-2 font-display text-2xl font-bold tracking-tight text-text md:text-3xl">
-              {{ tr(job.role) }}
-            </h3>
-            <p class="mt-1 text-lg font-semibold">
-              <a
-                v-if="job.companyUrl"
-                :href="job.companyUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-accent-2 underline decoration-accent-2/40 underline-offset-4 transition-colors hover:decoration-accent-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-              >
-                {{ job.company }}<span class="sr-only">{{ t.experience.newTab }}</span>
-              </a>
-              <span v-else class="text-accent-2">{{ job.company }}</span>
-            </p>
+      <div class="relative mt-12">
+        <div
+          class="graph-line absolute bottom-6 left-[0.4375rem] top-2 w-0.5 rounded-full"
+          aria-hidden="true"
+        ></div>
 
-            <ul class="mt-5 max-w-2xl list-disc space-y-2 pl-5 text-lg text-muted marker:text-accent">
-              <li v-for="item in job.highlights" :key="item.es">{{ tr(item) }}</li>
-            </ul>
+        <ol class="space-y-16">
+          <li
+            v-for="job in experience"
+            :key="job.company"
+            class="project-entry relative grid gap-8 pl-10 md:pl-14"
+            :class="job.image ? 'lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-16' : ''"
+          >
+            <span
+              class="graph-node absolute left-0 top-1.5 size-4 rounded-full text-accent"
+              aria-hidden="true"
+            ></span>
 
-            <ul class="mt-6 flex flex-wrap gap-2" :aria-label="t.tech">
-              <li
-                v-for="tech in job.stack"
-                :key="tech"
-                class="inline-flex items-center gap-1.5 rounded border border-muted/30 px-2 py-1 font-display text-xs text-muted"
-              >
-                <TechIcon :name="tech" />
-                {{ tech }}
-              </li>
-            </ul>
+            <div class="min-w-0">
+              <p class="font-mono text-sm text-muted">{{ job.period }}</p>
+              <h3 class="mt-2 font-display text-2xl font-bold tracking-tight text-text md:text-3xl">
+                {{ tr(job.role) }}
+              </h3>
+              <p class="mt-1 text-lg font-semibold">
+                <a
+                  v-if="job.companyUrl"
+                  :href="job.companyUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-accent-2 underline decoration-accent-2/40 underline-offset-4 transition-colors hover:decoration-accent-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  {{ job.company }}<span class="sr-only">{{ t.experience.newTab }}</span>
+                </a>
+                <span v-else class="text-accent-2">{{ job.company }}</span>
+              </p>
 
-            <p v-if="job.note" class="mt-5 max-w-2xl text-sm text-muted">{{ tr(job.note) }}</p>
-          </div>
+              <ul class="mt-5 max-w-2xl list-disc space-y-2 pl-5 text-lg text-muted marker:text-accent">
+                <li v-for="item in job.highlights" :key="item.es">{{ tr(item) }}</li>
+              </ul>
 
-          <div v-if="job.image" class="relative mx-auto w-full max-w-56 self-center lg:max-w-none">
-            <img
-              :src="job.image.src"
-              :alt="tr(job.image.alt)"
-              :width="job.image.width"
-              :height="job.image.height"
-              loading="lazy"
-              decoding="async"
-              class="animate-float pointer-events-none h-auto w-full scene-fallback"
-              :class="{ 'scene-failed': sceneFailed }"
-            />
-            <ExperienceScene
-              class="absolute inset-0 h-full w-full transition-opacity duration-700"
-              :class="sceneReady ? 'opacity-100' : 'opacity-0'"
-              @ready="sceneReady = true"
-              @failed="sceneFailed = true"
-            />
-          </div>
-        </li>
-      </ol>
+              <ul class="mt-6 flex flex-wrap gap-2" :aria-label="t.tech">
+                <li
+                  v-for="tech in job.stack"
+                  :key="tech"
+                  class="inline-flex items-center gap-1.5 rounded border border-muted/30 px-2 py-1 font-display text-xs text-muted"
+                >
+                  <TechIcon :name="tech" />
+                  {{ tech }}
+                </li>
+              </ul>
+
+              <p v-if="job.note" class="mt-5 max-w-2xl text-sm text-muted">{{ tr(job.note) }}</p>
+            </div>
+
+            <div v-if="job.image" class="relative mx-auto w-full max-w-56 self-center lg:max-w-none">
+              <img
+                :src="job.image.src"
+                :alt="tr(job.image.alt)"
+                :width="job.image.width"
+                :height="job.image.height"
+                loading="lazy"
+                decoding="async"
+                class="animate-float pointer-events-none h-auto w-full scene-fallback"
+                :class="{ 'scene-failed': sceneFailed }"
+              />
+              <ExperienceScene
+                class="absolute inset-0 h-full w-full transition-opacity duration-700"
+                :class="sceneReady ? 'opacity-100' : 'opacity-0'"
+                @ready="sceneReady = true"
+                @failed="sceneFailed = true"
+              />
+            </div>
+          </li>
+        </ol>
+      </div>
     </div>
   </section>
 </template>

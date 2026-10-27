@@ -3,6 +3,8 @@ import { ref } from 'vue'
 import { profile } from '@/data/profile'
 import { useLocale } from '@/i18n/locale'
 import ContactScene from '@/components/ContactScene.vue'
+import WordReveal from '@/components/WordReveal.vue'
+import { launchPaperPlane } from '@/effects/paperPlane'
 
 const { t } = useLocale()
 
@@ -12,10 +14,12 @@ const sceneFailed = ref(false)
 const copied = ref(false)
 let resetTimer: ReturnType<typeof setTimeout> | undefined
 
-async function copyEmail() {
+async function copyEmail(event: MouseEvent) {
+  const button = event.currentTarget as HTMLElement
   try {
     await navigator.clipboard.writeText(profile.email)
     copied.value = true
+    launchPaperPlane(button)
     clearTimeout(resetTimer)
     resetTimer = setTimeout(() => (copied.value = false), 2000)
   } catch {
@@ -55,7 +59,7 @@ async function copyEmail() {
         id="contacto-titulo"
         class="section-title mt-2 font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
       >
-        {{ t.contact.title }}
+        <WordReveal :text="t.contact.title" />
       </h2>
       <p class="mt-4 max-w-2xl text-lg text-muted">
         {{ t.contact.text }}

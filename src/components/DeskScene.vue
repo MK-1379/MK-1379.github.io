@@ -5,6 +5,7 @@ import { projects } from '@/data/projects'
 import { useLocale } from '@/i18n/locale'
 import { useDeskScene } from '@/composables/useDeskScene'
 import { deskItemIds, type DeskItemId } from '@/scenes/desk'
+import { launchPaperPlane } from '@/effects/paperPlane'
 
 const emit = defineEmits<{ ready: []; failed: [] }>()
 
@@ -16,7 +17,7 @@ const heading = ref<HTMLElement | null>(null)
 const ready = ref(false)
 const copied = ref(false)
 
-const { hovered, active } = useDeskScene({
+const { hovered, active, introDone } = useDeskScene({
   canvas,
   labels,
   onReady: () => {
@@ -66,10 +67,12 @@ watch(active, async (id) => {
   heading.value?.focus({ preventScroll: true })
 })
 
-async function copyEmail() {
+async function copyEmail(event: MouseEvent) {
+  const button = event.currentTarget as HTMLElement
   try {
     await navigator.clipboard.writeText(profile.email)
     copied.value = true
+    launchPaperPlane(button)
   } catch {
     copied.value = false
   }
@@ -89,14 +92,18 @@ defineExpose({ open })
   <div class="max-md:hidden">
     <canvas ref="canvas" class="absolute inset-0 block size-full" aria-hidden="true"></canvas>
 
-    <div v-show="ready" class="pointer-events-none absolute inset-0">
+    <div v-show="ready && introDone" class="pointer-events-none absolute inset-0">
       <button
-        v-for="id in deskItemIds"
+        v-for="(id, index) in deskItemIds"
         :key="id"
         :ref="(element) => setLabel(id, element)"
         type="button"
         class="desk-label pointer-events-auto absolute top-0 left-0 rounded-full border border-accent/30 bg-surface/85 px-3 py-1.5 font-display text-sm font-semibold whitespace-nowrap text-text shadow-lg backdrop-blur-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        :class="{ 'is-active': id === hovered || id === active }"
+        :class="{
+          'is-active': id === hovered || id === active,
+          'is-hidden': active && id !== active,
+        }"
+        :style="{ '--i': index }"
         :aria-expanded="id === active"
         aria-controls="escritorio-panel"
         @click="open(id)"
