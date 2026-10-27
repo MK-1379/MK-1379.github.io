@@ -5,7 +5,7 @@ import { projects } from '@/data/projects'
 import { experience } from '@/data/experience'
 import { languages } from '@/data/languages'
 import { useLocale } from '@/i18n/locale'
-import HeroScene from '@/components/HeroScene.vue'
+import DeskScene from '@/components/DeskScene.vue'
 import QuickSummary from '@/components/QuickSummary.vue'
 import { vMagnetic } from '@/directives/magnetic'
 
@@ -15,34 +15,17 @@ const spotX = ref('70%')
 const spotY = ref('40%')
 const spotActive = ref(false)
 
-const parallaxX = ref(0)
-const parallaxY = ref(0)
-
 function moveSpot(event: PointerEvent) {
   if (event.pointerType !== 'mouse') return
   const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
   spotX.value = `${event.clientX - rect.left}px`
   spotY.value = `${event.clientY - rect.top}px`
   spotActive.value = true
-  parallaxX.value = (event.clientX - rect.left) / rect.width - 0.5
-  parallaxY.value = (event.clientY - rect.top) / rect.height - 0.5
 }
 
 function hideSpot() {
   spotActive.value = false
-  parallaxX.value = 0
-  parallaxY.value = 0
 }
-
-const heroTech = [
-  { name: 'React', icon: 'react', x: '30%', y: '20%', depth: 1.2, delay: '0s' },
-  { name: 'Vue', icon: 'vuejs', x: '74%', y: '14%', depth: 0.8, delay: '-1.6s' },
-  { name: 'TypeScript', icon: 'typescript', x: '82%', y: '68%', depth: 1, delay: '-3.1s' },
-  { name: 'Node.js', icon: 'nodejs', x: '26%', y: '74%', depth: 1.4, delay: '-2.2s' },
-  { name: 'Docker', icon: 'docker', x: '56%', y: '86%', depth: 0.6, delay: '-4s' },
-  { name: 'Tailwind CSS', icon: 'tailwindcss', x: '86%', y: '40%', depth: 0.9, delay: '-2.7s' },
-  { name: 'MySQL', icon: 'mysql', iconDark: 'mysql-dark', x: '14%', y: '46%', depth: 1.1, delay: '-0.8s' },
-]
 
 const projectCount = ref(projects.length)
 const internship = experience[0]
@@ -119,51 +102,10 @@ onBeforeUnmount(() => {
       :class="{ 'scene-failed': sceneFailed }"
       aria-hidden="true"
     ></div>
-    <HeroScene
-      class="absolute top-0 right-0 -z-20 h-full w-1/2 transition-opacity duration-700"
-      :class="sceneReady ? 'opacity-100' : 'opacity-0'"
-      @ready="sceneReady = true"
-      @failed="sceneFailed = true"
-    />
     <div
-      class="absolute inset-0 -z-10 bg-gradient-to-r from-bg via-bg/70 to-transparent md:via-bg/40"
+      class="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-bg via-bg/70 to-transparent md:via-bg/40"
       aria-hidden="true"
     ></div>
-    <div
-      class="pointer-events-none absolute top-0 right-0 -z-10 h-full w-1/2 max-xl:hidden"
-      :style="{ '--hero-px': parallaxX, '--hero-py': parallaxY }"
-      aria-hidden="true"
-    >
-      <span
-        v-for="tech in heroTech"
-        :key="tech.name"
-        class="hero-tech absolute w-max"
-        :style="{ left: tech.x, top: tech.y, '--depth': tech.depth }"
-      >
-        <span
-          class="hero-tech-chip inline-flex items-center gap-2 rounded-full border border-muted/25 bg-surface/50 px-3.5 py-1.5 font-display text-sm text-text shadow-lg backdrop-blur-md"
-          :style="{ '--float-delay': tech.delay }"
-        >
-          <img
-            :src="`/img/skills/${tech.icon}.svg`"
-            alt=""
-            width="18"
-            height="18"
-            class="size-[18px]"
-            :class="{ 'dark:hidden': tech.iconDark }"
-          />
-          <img
-            v-if="tech.iconDark"
-            :src="`/img/skills/${tech.iconDark}.svg`"
-            alt=""
-            width="18"
-            height="18"
-            class="hidden size-[18px] dark:block"
-          />
-          {{ tech.name }}
-        </span>
-      </span>
-    </div>
     <div
       class="hero-spotlight pointer-events-none absolute inset-0 -z-10"
       :class="{ 'is-active': spotActive }"
@@ -171,8 +113,8 @@ onBeforeUnmount(() => {
       aria-hidden="true"
     ></div>
 
-    <div class="mx-auto w-full max-w-6xl px-6 py-16 md:py-24">
-      <div class="md:max-w-xl">
+    <div class="pointer-events-none relative z-10 mx-auto w-full max-w-6xl px-6 py-16 md:py-24">
+      <div class="pointer-events-auto md:max-w-xl">
         <p class="animate-rise font-mono text-sm text-accent">
           {{ tr(profile.status) }} · {{ profile.location }}
         </p>
@@ -222,36 +164,6 @@ onBeforeUnmount(() => {
         >
           {{ tr(profile.tagline) }}
         </p>
-
-        <ul
-          class="animate-rise mt-6 flex flex-wrap gap-2 xl:hidden"
-          style="animation-delay: 700ms"
-          :aria-label="t.tech"
-        >
-          <li
-            v-for="tech in heroTech"
-            :key="tech.name"
-            class="inline-flex items-center gap-1.5 rounded-full border border-muted/25 bg-surface/50 px-3 py-1 font-display text-xs text-text backdrop-blur-md"
-          >
-            <img
-              :src="`/img/skills/${tech.icon}.svg`"
-              alt=""
-              width="14"
-              height="14"
-              class="size-3.5"
-              :class="{ 'dark:hidden': tech.iconDark }"
-            />
-            <img
-              v-if="tech.iconDark"
-              :src="`/img/skills/${tech.iconDark}.svg`"
-              alt=""
-              width="14"
-              height="14"
-              class="hidden size-3.5 dark:block"
-            />
-            {{ tech.name }}
-          </li>
-        </ul>
 
         <div
           class="animate-rise mt-10 flex flex-wrap gap-4"
@@ -307,5 +219,12 @@ onBeforeUnmount(() => {
         </dl>
       </div>
     </div>
+
+    <DeskScene
+      class="absolute top-0 right-0 h-full w-1/2 transition-opacity duration-700"
+      :class="sceneReady ? 'opacity-100' : 'opacity-0'"
+      @ready="sceneReady = true"
+      @failed="sceneFailed = true"
+    />
   </section>
 </template>
