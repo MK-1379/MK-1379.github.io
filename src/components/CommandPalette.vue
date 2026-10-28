@@ -5,6 +5,22 @@ import { projects } from '@/data/projects'
 import { useLocale } from '@/i18n/locale'
 import { useTheme } from '@/composables/useTheme'
 import { useCommandPalette } from '@/composables/useCommandPalette'
+import type { IconComponent } from '@animateicons/vue'
+import {
+  BriefcaseIcon,
+  CopyIcon,
+  ExternalLinkIcon,
+  FileDownIcon,
+  FolderOpenIcon,
+  GithubIcon,
+  LanguagesIcon,
+  LinkedinIcon,
+  MailIcon,
+  SunMoonIcon,
+  UserIcon,
+  WrenchIcon,
+} from '@animateicons/vue/lucide'
+import AnimatedIcon from '@/components/AnimatedIcon.vue'
 
 type Group = 'navigate' | 'actions' | 'links'
 
@@ -12,6 +28,7 @@ interface Command {
   id: string
   label: string
   group: Group
+  icon: IconComponent
   keepOpen?: boolean
   run: () => void | Promise<void>
 }
@@ -56,20 +73,20 @@ async function copyEmail() {
 const commands = computed<Command[]>(() => {
   const links = t.value.nav.links
   const list: Command[] = [
-    { id: 'experience', label: links.experience, group: 'navigate', run: () => goTo('#experiencia') },
-    { id: 'projects', label: links.projects, group: 'navigate', run: () => goTo('#proyectos') },
-    { id: 'skills', label: links.skills, group: 'navigate', run: () => goTo('#skills') },
-    { id: 'about', label: links.about, group: 'navigate', run: () => goTo('#sobre-mi') },
-    { id: 'contact', label: links.contact, group: 'navigate', run: () => goTo('#contacto') },
-    { id: 'theme', label: t.value.palette.theme, group: 'actions', run: () => toggleTheme() },
-    { id: 'language', label: t.value.palette.language, group: 'actions', run: toggleLocale },
-    { id: 'email', label: t.value.palette.copyEmail, group: 'actions', keepOpen: true, run: copyEmail },
-    { id: 'cv', label: t.value.palette.downloadCv, group: 'actions', run: downloadCv },
-    { id: 'github', label: 'GitHub', group: 'links', run: () => openLink(profile.github) },
-    { id: 'linkedin', label: 'LinkedIn', group: 'links', run: () => openLink(profile.linkedin) },
+    { id: 'experience', label: links.experience, group: 'navigate', icon: BriefcaseIcon, run: () => goTo('#experiencia') },
+    { id: 'projects', label: links.projects, group: 'navigate', icon: FolderOpenIcon, run: () => goTo('#proyectos') },
+    { id: 'skills', label: links.skills, group: 'navigate', icon: WrenchIcon, run: () => goTo('#skills') },
+    { id: 'about', label: links.about, group: 'navigate', icon: UserIcon, run: () => goTo('#sobre-mi') },
+    { id: 'contact', label: links.contact, group: 'navigate', icon: MailIcon, run: () => goTo('#contacto') },
+    { id: 'theme', label: t.value.palette.theme, group: 'actions', icon: SunMoonIcon, run: () => toggleTheme() },
+    { id: 'language', label: t.value.palette.language, group: 'actions', icon: LanguagesIcon, run: toggleLocale },
+    { id: 'email', label: t.value.palette.copyEmail, group: 'actions', icon: CopyIcon, keepOpen: true, run: copyEmail },
+    { id: 'cv', label: t.value.palette.downloadCv, group: 'actions', icon: FileDownIcon, run: downloadCv },
+    { id: 'github', label: 'GitHub', group: 'links', icon: GithubIcon, run: () => openLink(profile.github) },
+    { id: 'linkedin', label: 'LinkedIn', group: 'links', icon: LinkedinIcon, run: () => openLink(profile.linkedin) },
   ]
   if (lolstatsDemo) {
-    list.push({ id: 'lolstats', label: 'LoLStats', group: 'links', run: () => openLink(lolstatsDemo) })
+    list.push({ id: 'lolstats', label: 'LoLStats', group: 'links', icon: ExternalLinkIcon, run: () => openLink(lolstatsDemo) })
   }
   return list
 })
@@ -222,7 +239,10 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onGlobalKeydown))
             @mousemove="activeIndex = results.indexOf(command)"
             @click="runCommand(command)"
           >
-            {{ command.label }}
+            <span class="flex items-center gap-3">
+              <AnimatedIcon :icon="command.icon" :active="command.id === activeCommand?.id" />
+              {{ command.label }}
+            </span>
             <span
               v-if="command.id === 'email' && feedback"
               class="font-mono text-xs text-accent"

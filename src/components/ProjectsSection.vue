@@ -4,6 +4,8 @@ import { useLocale } from '@/i18n/locale'
 import TechIcon from '@/components/TechIcon.vue'
 import ProjectStatus from '@/components/ProjectStatus.vue'
 import WordReveal from '@/components/WordReveal.vue'
+import { CodeIcon, DownloadIcon, ExternalLinkIcon } from '@animateicons/vue/lucide'
+import AnimatedIcon from '@/components/AnimatedIcon.vue'
 
 const { t, tr } = useLocale()
 
@@ -96,16 +98,18 @@ function resetShot(event: PointerEvent) {
                     :href="project.demo"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="rounded-md bg-accent px-4 py-2 text-bg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                    class="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-bg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   >
+                    <AnimatedIcon :icon="ExternalLinkIcon" />
                     {{ t.projects.demo }}<span class="sr-only">{{ t.projects.demoSr(project.title) }}</span>
                   </a>
                   <a
                     :href="project.repo"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="rounded-md border border-muted/40 px-4 py-2 text-text transition-colors hover:border-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                    class="inline-flex items-center gap-2 rounded-md border border-muted/40 px-4 py-2 text-text transition-colors hover:border-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   >
+                    <AnimatedIcon :icon="CodeIcon" />
                     {{ t.projects.code }}<span class="sr-only">{{ t.projects.codeSr(project.title) }}</span>
                   </a>
                   <a
@@ -113,8 +117,9 @@ function resetShot(event: PointerEvent) {
                     :href="project.download"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="rounded-md bg-accent px-4 py-2 text-bg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                    class="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-bg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   >
+                    <AnimatedIcon :icon="DownloadIcon" />
                     {{ t.projects.download }}<span class="sr-only">{{ t.projects.downloadSr(project.title) }}</span>
                   </a>
                 </div>

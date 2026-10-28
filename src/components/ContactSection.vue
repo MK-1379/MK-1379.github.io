@@ -5,6 +5,8 @@ import { useLocale } from '@/i18n/locale'
 import ContactScene from '@/components/ContactScene.vue'
 import WordReveal from '@/components/WordReveal.vue'
 import { launchPaperPlane } from '@/effects/paperPlane'
+import { CheckIcon, CopyIcon, FileDownIcon, GithubIcon, LinkedinIcon, MailIcon } from '@animateicons/vue/lucide'
+import AnimatedIcon from '@/components/AnimatedIcon.vue'
 
 const { t } = useLocale()
 
@@ -68,15 +70,17 @@ async function copyEmail(event: MouseEvent) {
       <div class="mt-10 flex flex-wrap items-center gap-4">
         <a
           :href="`mailto:${profile.email}`"
-          class="break-all font-display text-2xl font-bold tracking-tight text-text underline decoration-accent decoration-2 underline-offset-8 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent md:text-3xl"
+          class="inline-flex items-center gap-3 break-all font-display text-2xl font-bold tracking-tight text-text underline decoration-accent decoration-2 underline-offset-8 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent md:text-3xl"
         >
+          <AnimatedIcon :icon="MailIcon" :size="28" class="translate-y-[4px] text-accent max-md:hidden" />
           {{ profile.email }}
         </a>
         <button
           type="button"
-          class="rounded-md border border-muted/40 px-3 py-2 text-sm font-semibold text-text transition-colors hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          class="inline-flex items-center gap-2 rounded-md border border-muted/40 px-3 py-2 text-sm font-semibold text-text transition-colors hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           @click="copyEmail"
         >
+          <AnimatedIcon :icon="copied ? CheckIcon : CopyIcon" />
           {{ copied ? t.contact.copied : t.contact.copy }}
         </button>
         <p role="status" class="sr-only">{{ copied ? t.contact.copiedStatus : '' }}</p>
@@ -88,8 +92,9 @@ async function copyEmail(event: MouseEvent) {
             :href="profile.github"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-block py-2 text-accent underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="inline-flex items-center gap-2 py-2 text-accent underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
+            <AnimatedIcon :icon="GithubIcon" />
             GitHub
           </a>
         </li>
@@ -98,8 +103,9 @@ async function copyEmail(event: MouseEvent) {
             :href="profile.linkedin"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-block py-2 text-accent underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="inline-flex items-center gap-2 py-2 text-accent underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
+            <AnimatedIcon :icon="LinkedinIcon" />
             LinkedIn
           </a>
         </li>
@@ -107,8 +113,9 @@ async function copyEmail(event: MouseEvent) {
           <a
             :href="t.cvFile"
             download
-            class="inline-block py-2 text-accent underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="inline-flex items-center gap-2 py-2 text-accent underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
+            <AnimatedIcon :icon="FileDownIcon" />
             {{ t.contact.cv }}
           </a>
         </li>

@@ -2,6 +2,8 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import ThemeToggle from '@/components/ThemeToggle.vue'
 import LanguageToggle from '@/components/LanguageToggle.vue'
+import { MenuIcon, SearchIcon, XIcon } from '@animateicons/vue/lucide'
+import AnimatedIcon from '@/components/AnimatedIcon.vue'
 import { useLocale } from '@/i18n/locale'
 import { useCommandPalette } from '@/composables/useCommandPalette'
 
@@ -74,13 +76,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
             aria-keyshortcuts="Control+K Meta+K"
             @click="openPalette"
           >
-            <svg
-              width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"
-            >
-              <circle cx="11" cy="11" r="7" />
-              <path d="m20 20-3.5-3.5" />
-            </svg>
+            <AnimatedIcon :icon="SearchIcon" />
             <kbd class="hidden font-mono text-xs md:inline" aria-hidden="true">Ctrl K</kbd>
           </button>
           <LanguageToggle />
@@ -94,20 +90,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
             :aria-label="menuOpen ? t.nav.closeMenu : t.nav.openMenu"
             @click="toggleMenu"
           >
-            <svg
-              v-if="!menuOpen"
-              width="22" height="22" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"
-            >
-              <path d="M4 7h16M4 12h16M4 17h16" />
-            </svg>
-            <svg
-              v-else
-              width="22" height="22" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"
-            >
-              <path d="M6 6l12 12M18 6L6 18" />
-            </svg>
+            <AnimatedIcon :icon="menuOpen ? XIcon : MenuIcon" :size="22" />
           </button>
         </div>
       </div>

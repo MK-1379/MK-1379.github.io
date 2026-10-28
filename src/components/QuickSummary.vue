@@ -3,6 +3,8 @@ import { ref } from 'vue'
 import { profile } from '@/data/profile'
 import { useLocale } from '@/i18n/locale'
 import { vMagnetic } from '@/directives/magnetic'
+import { TimerIcon } from '@animateicons/vue/lucide'
+import AnimatedIcon from '@/components/AnimatedIcon.vue'
 
 const { t, tr } = useLocale()
 
@@ -29,21 +31,7 @@ function onDialogClick(event: MouseEvent) {
     aria-haspopup="dialog"
     @click="open"
   >
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="text-accent"
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="13" r="8" />
-      <path d="M12 9v4l2 2M10 2h4" />
-    </svg>
+    <AnimatedIcon :icon="TimerIcon" class="text-accent" />
     {{ t.summary.open }}
   </button>
 

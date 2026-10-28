@@ -8,6 +8,8 @@ import { useLocale } from '@/i18n/locale'
 import DeskScene from '@/components/DeskScene.vue'
 import DeskStatic from '@/components/DeskStatic.vue'
 import QuickSummary from '@/components/QuickSummary.vue'
+import { ArrowRightIcon, FileDownIcon, GithubIcon } from '@animateicons/vue/lucide'
+import AnimatedIcon from '@/components/AnimatedIcon.vue'
 import { vMagnetic } from '@/directives/magnetic'
 
 const { t, tr } = useLocale()
@@ -183,25 +185,28 @@ onBeforeUnmount(() => {
           <a
             v-magnetic
             href="#proyectos"
-            class="rounded-md bg-accent px-5 py-3 text-sm font-semibold text-bg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-3 text-sm font-semibold text-bg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             {{ t.hero.projects }}
+            <AnimatedIcon :icon="ArrowRightIcon" />
           </a>
           <a
             v-magnetic
             :href="profile.github"
             target="_blank"
             rel="noopener noreferrer"
-            class="rounded-md border border-muted/40 px-5 py-3 text-sm font-semibold text-text transition-colors hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="inline-flex items-center gap-2 rounded-md border border-muted/40 px-5 py-3 text-sm font-semibold text-text transition-colors hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
+            <AnimatedIcon :icon="GithubIcon" />
             GitHub
           </a>
           <a
             v-magnetic
             :href="t.cvFile"
             download
-            class="rounded-md border border-muted/40 px-5 py-3 text-sm font-semibold text-text transition-colors hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="inline-flex items-center gap-2 rounded-md border border-muted/40 px-5 py-3 text-sm font-semibold text-text transition-colors hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
+            <AnimatedIcon :icon="FileDownIcon" />
             {{ t.hero.cv }}<span class="sr-only">{{ t.hero.cvSr }}</span>
           </a>
           <QuickSummary />
