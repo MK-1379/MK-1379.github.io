@@ -19,6 +19,8 @@ export const skills: Skill[] = [
   { name: 'Linux', level: 'conocimientos-base', icon: 'linux', iconDark: 'linux-dark' },
   { name: 'Azure', level: 'conocimientos-base', icon: 'azure' },
   { name: 'Apache', level: 'conocimientos-base', icon: 'apache' },
+  { name: 'Bootstrap', level: 'conocimientos-base', icon: 'bootstrap' },
+  { name: 'Vagrant', level: 'conocimientos-base', icon: 'vagrant' },
 
   { name: 'Laravel', level: 'siguiente-paso', icon: 'laravel' },
   { name: 'Angular', level: 'siguiente-paso', icon: 'angular' },
