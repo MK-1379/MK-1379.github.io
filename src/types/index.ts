@@ -8,6 +8,7 @@ export interface Profile {
   availability?: Localized
   tagline: Localized
   summary: Localized[]
+  automatedTests: number
   email: string
   github: string
   linkedin: string

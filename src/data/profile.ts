@@ -2,12 +2,12 @@ import type { Profile } from '@/types'
 
 export const profile: Profile = {
   name: 'Mario Díaz González',
-  role: { es: 'Desarrollador Web Junior', en: 'Junior Web Developer' },
+  role: { es: 'Desarrollador Frontend Junior', en: 'Junior Frontend Developer' },
   location: 'Logroño, La Rioja',
   status: { es: 'Estudiante de 2º de DAW', en: '2nd-year Web Development student' },
   tagline: {
-    es: 'Frontend con React, Vue y TypeScript. Backend con Node.js, Express y MySQL.',
-    en: 'Frontend with React, Vue and TypeScript. Backend with Node.js, Express and MySQL.',
+    es: 'Desarrollo interfaces web modernas, responsive y accesibles con React, TypeScript y Vue, y sé conectarlas a un backend con Node.js.',
+    en: 'I build modern, responsive and accessible web interfaces with React, TypeScript and Vue, and I can connect them to a Node.js backend.',
   },
   summary: [
     {
@@ -15,8 +15,8 @@ export const profile: Profile = {
       en: '2nd-year Web Development student in Logroño, with a frontend internship at Globant GUT using Vue, TypeScript and Tailwind CSS.',
     },
     {
-      es: 'Hago aplicaciones completas con React y TypeScript en el frontend y Node.js, Express, Prisma y MySQL en el backend.',
-      en: 'I build full stack apps with React and TypeScript on the frontend and Node.js, Express, Prisma and MySQL on the backend.',
+      es: 'Frontend con React, TypeScript y Tailwind CSS: componentes reutilizables, TanStack Query, formularios con validación y animaciones. Cuando hace falta, también monto el backend con Node.js, Express y MySQL.',
+      en: 'Frontend with React, TypeScript and Tailwind CSS: reusable components, TanStack Query, validated forms and animations. When needed, I also build the backend with Node.js, Express and MySQL.',
     },
     {
       es: 'Dos aplicaciones en producción con tests, CI y despliegue automático: Bracketly y LoLStats.',
@@ -27,6 +27,7 @@ export const profile: Profile = {
       en: 'Certified B2 English (Cambridge B2 First).',
     },
   ],
+  automatedTests: 190,
   email: 'mariodiaz2007@gmail.com',
   github: 'https://github.com/MK-1379',
   linkedin: 'https://www.linkedin.com/in/mario-díaz-gonzález-561a99234/',

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { profile } from '@/data/profile'
-import { projects } from '@/data/projects'
 import { experience } from '@/data/experience'
 import { languages } from '@/data/languages'
 import { useLocale } from '@/i18n/locale'
@@ -30,19 +29,19 @@ function hideSpot() {
   spotActive.value = false
 }
 
-const projectCount = ref(projects.length)
+const testCount = ref(profile.automatedTests)
 const internship = experience[0]
 const english = languages.find((language) => language.name.en === 'English')
 
-function countProjects() {
-  const target = projects.length
+function countTests() {
+  const target = profile.automatedTests
   const duration = 900
   let start = 0
-  projectCount.value = 0
+  testCount.value = 0
   function step(timestamp: number) {
     start ||= timestamp + 850
     const progress = Math.min(1, Math.max(0, (timestamp - start) / duration))
-    projectCount.value = Math.round(target * (1 - (1 - progress) ** 3))
+    testCount.value = Math.round(target * (1 - (1 - progress) ** 3))
     if (progress < 1) countFrame = requestAnimationFrame(step)
   }
   countFrame = requestAnimationFrame(step)
@@ -86,7 +85,7 @@ function scrambleRole() {
 onMounted(() => {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
   scrambleRole()
-  countProjects()
+  countTests()
 })
 onBeforeUnmount(() => {
   cancelAnimationFrame(frameId)
@@ -218,9 +217,9 @@ onBeforeUnmount(() => {
           :aria-label="t.hero.highlights"
         >
           <div class="border-l-2 border-accent/60 pl-3">
-            <dt class="sr-only">{{ t.hero.stats.projects }}</dt>
-            <dd class="font-display text-2xl font-bold tabular-nums text-text">{{ projectCount }}</dd>
-            <dd class="text-sm text-muted" aria-hidden="true">{{ t.hero.stats.projects }}</dd>
+            <dt class="sr-only">{{ t.hero.stats.tests }}</dt>
+            <dd class="font-display text-2xl font-bold tabular-nums text-text">+{{ testCount }}</dd>
+            <dd class="text-sm text-muted" aria-hidden="true">{{ t.hero.stats.tests }}</dd>
           </div>
           <div v-if="internship" class="border-l-2 border-accent-2/60 pl-3">
             <dt class="sr-only">{{ t.hero.stats.internship }}</dt>

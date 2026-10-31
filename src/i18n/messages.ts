@@ -1,8 +1,8 @@
 const es = {
   meta: {
-    title: 'Mario Díaz González · Desarrollador web',
+    title: 'Mario Díaz González · Desarrollador Frontend',
     description:
-      'Portfolio de Mario Díaz González, estudiante de 2º de Desarrollo de Aplicaciones Web en Logroño. Proyectos con Vue, React, TypeScript, Node.js y MySQL.',
+      'Portfolio de Mario Díaz González, desarrollador frontend junior y estudiante de 2º de DAW en Logroño. Proyectos con React, TypeScript, Vue y Tailwind CSS.',
   },
   nav: {
     label: 'Principal',
@@ -26,7 +26,7 @@ const es = {
     cvSr: ' en PDF',
     highlights: 'Datos destacados',
     stats: {
-      projects: 'proyectos destacados',
+      tests: 'tests automatizados',
       internship: 'prácticas de frontend',
       english: 'inglés certificado',
     },
@@ -118,9 +118,9 @@ const es = {
 
 const en: typeof es = {
   meta: {
-    title: 'Mario Díaz González · Web Developer',
+    title: 'Mario Díaz González · Frontend Developer',
     description:
-      'Portfolio of Mario Díaz González, a second-year Web Application Development student in Logroño, Spain. Projects with Vue, React, TypeScript, Node.js and MySQL.',
+      'Portfolio of Mario Díaz González, a junior frontend developer and second-year Web Development student in Logroño, Spain. Projects with React, TypeScript, Vue and Tailwind CSS.',
   },
   nav: {
     label: 'Main',
@@ -144,7 +144,7 @@ const en: typeof es = {
     cvSr: ' as PDF',
     highlights: 'Highlights',
     stats: {
-      projects: 'featured projects',
+      tests: 'automated tests',
       internship: 'frontend internship',
       english: 'certified English',
     },
