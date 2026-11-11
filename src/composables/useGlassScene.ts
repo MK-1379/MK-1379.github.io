@@ -3,7 +3,7 @@ import type * as ThreeModule from 'three'
 import { hasHardwareWebGL } from '@/scenes/gpu'
 
 
-type Three = typeof ThreeModule
+type Three = typeof import('@/scenes/three')
 
 export interface GlassFigure {
   object: ThreeModule.Object3D
@@ -41,7 +41,7 @@ export function useGlassScene({
 }: GlassSceneOptions) {
   let cleanup: (() => void) | null = null
 
-  onMounted(async () => {
+  onMounted(() => {
     const wideScreen = window.matchMedia('(min-width: 768px)').matches
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduceMotion || !canvas.value) return
@@ -50,19 +50,32 @@ export function useGlassScene({
       return
     }
 
+    const el = canvas.value
+    const nearViewport = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return
+        nearViewport.disconnect()
+        start(el)
+      },
+      { rootMargin: '100% 0px' },
+    )
+    nearViewport.observe(el)
+    cleanup = () => nearViewport.disconnect()
+  })
+
+  async function start(el: HTMLCanvasElement) {
     let THREE: Three
     let RoomEnvironment: typeof import('three/addons/environments/RoomEnvironment.js').RoomEnvironment
     try {
       ;[THREE, { RoomEnvironment }] = await Promise.all([
-        import('three'),
+        import('@/scenes/three'),
         import('three/addons/environments/RoomEnvironment.js'),
       ])
     } catch {
       onFail?.()
       return
     }
-    const el = canvas.value
-    if (!el) return
+    if (!canvas.value) return
 
     let renderer: ThreeModule.WebGLRenderer
     try {
@@ -239,7 +252,7 @@ export function useGlassScene({
       pmrem.dispose()
       renderer.dispose()
     }
-  })
+  }
 
   onUnmounted(() => cleanup?.())
 }

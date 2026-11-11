@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { profile } from '@/data/profile'
-import { projects } from '@/data/projects'
 import { useLocale } from '@/i18n/locale'
 import { deskProject, useDeskLabels } from '@/composables/useDeskContent'
 import { launchPaperPlane } from '@/effects/paperPlane'
@@ -17,8 +16,6 @@ const heading = ref<HTMLElement | null>(null)
 const copied = ref(false)
 
 const activeProject = computed(() => deskProject(props.active))
-
-const classProjects = projects.filter((project) => project.context.en === 'Class project')
 
 async function focusHeading() {
   await nextTick()
@@ -119,23 +116,6 @@ async function copyEmail(event: MouseEvent) {
           }}<span class="sr-only">{{ t.projects.codeSr(activeProject.title) }}</span>
         </a>
       </div>
-    </template>
-
-    <template v-else-if="active === 'clase'">
-      <p class="text-sm text-muted">{{ t.desk.classText }}</p>
-      <ul class="grid gap-3">
-        <li v-for="project in classProjects" :key="project.slug" class="text-sm">
-          <a
-            :href="project.repo"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="font-semibold text-text underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
-          >
-            {{ project.title }}<span class="sr-only">{{ t.projects.codeSr(project.title) }}</span>
-          </a>
-          <p class="mt-0.5 text-muted">{{ tr(project.summary) }}</p>
-        </li>
-      </ul>
     </template>
 
     <template v-else-if="active === 'cv'">

@@ -13,20 +13,18 @@ import { vMagnetic } from '@/directives/magnetic'
 
 const { t, tr } = useLocale()
 
-const spotX = ref('70%')
-const spotY = ref('40%')
-const spotActive = ref(false)
+const spotlight = ref<HTMLElement | null>(null)
 
 function moveSpot(event: PointerEvent) {
-  if (event.pointerType !== 'mouse') return
+  if (event.pointerType !== 'mouse' || !spotlight.value) return
   const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
-  spotX.value = `${event.clientX - rect.left}px`
-  spotY.value = `${event.clientY - rect.top}px`
-  spotActive.value = true
+  spotlight.value.style.setProperty('--spot-x', `${event.clientX - rect.left}px`)
+  spotlight.value.style.setProperty('--spot-y', `${event.clientY - rect.top}px`)
+  spotlight.value.classList.add('is-active')
 }
 
 function hideSpot() {
-  spotActive.value = false
+  spotlight.value?.classList.remove('is-active')
 }
 
 const testCount = ref(profile.automatedTests)
@@ -119,9 +117,8 @@ onBeforeUnmount(() => {
       aria-hidden="true"
     ></div>
     <div
+      ref="spotlight"
       class="hero-spotlight pointer-events-none absolute inset-0 -z-10"
-      :class="{ 'is-active': spotActive }"
-      :style="{ '--spot-x': spotX, '--spot-y': spotY }"
       aria-hidden="true"
     ></div>
 

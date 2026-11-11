@@ -15,6 +15,8 @@ const { t, tr } = useLocale()
   >
     <div class="mx-auto grid max-w-6xl gap-10 px-6 md:grid-cols-[18rem_1fr] md:gap-16">
       <div v-pause-offscreen class="glow-border w-full max-w-xs self-start rounded-lg p-[3px] md:max-w-none">
+        <span class="glow-border-halo" aria-hidden="true"></span>
+        <span class="glow-border-ring" aria-hidden="true"></span>
         <img
           src="/img/mario-800.webp"
           srcset="/img/mario-400.webp 400w, /img/mario-800.webp 800w"

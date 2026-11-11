@@ -352,13 +352,25 @@
 }
 
 .hero-spotlight {
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.hero-spotlight::before {
+  content: "";
+  position: absolute;
+  top: -28rem;
+  left: -28rem;
+  width: 56rem;
+  height: 56rem;
   background: radial-gradient(
-    28rem circle at var(--spot-x, 70%) var(--spot-y, 40%),
+    closest-side,
     color-mix(in srgb, var(--accent-2) 22%, transparent),
     transparent 70%
   );
-  opacity: 0;
-  transition: opacity 0.4s ease;
+  transform: translate3d(var(--spot-x, 0px), var(--spot-y, 0px), 0);
+  will-change: transform;
 }
 
 .hero-spotlight.is-active {
@@ -471,13 +483,25 @@
 }
 
 .cursor-glow {
+  overflow: hidden;
   opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.cursor-glow::before {
+  content: "";
+  position: absolute;
+  top: -36rem;
+  left: -36rem;
+  width: 72rem;
+  height: 72rem;
   background: radial-gradient(
-    36rem circle at var(--glow-x, 50%) var(--glow-y, 50%),
+    closest-side,
     color-mix(in srgb, var(--accent) 10%, transparent),
     transparent 70%
   );
-  transition: opacity 0.4s ease;
+  transform: translate3d(var(--glow-x, 0px), var(--glow-y, 0px), 0);
+  will-change: transform;
 }
 
 .cursor-glow.is-active {
@@ -527,23 +551,37 @@
   }
 }
 
-@property --border-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-
 @keyframes border-spin {
   to {
-    --border-angle: 360deg;
+    transform: rotate(360deg);
   }
 }
 
 .glow-border {
   position: relative;
   isolation: isolate;
+}
+
+.glow-border-ring,
+.glow-border-halo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.glow-border-halo {
+  filter: blur(22px);
+  opacity: 0.5;
+}
+
+.glow-border-ring::before,
+.glow-border-halo::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
   background: conic-gradient(
-    from var(--border-angle),
     color-mix(in srgb, var(--accent) 18%, transparent) 0deg 190deg,
     var(--accent) 250deg,
     var(--accent-2) 305deg,
@@ -553,23 +591,14 @@
   animation: border-spin 6s linear infinite;
 }
 
-.glow-border::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: inherit;
-  filter: blur(22px);
-  opacity: 0.5;
-}
-
-.glow-border.is-offscreen {
+.glow-border.is-offscreen .glow-border-ring::before,
+.glow-border.is-offscreen .glow-border-halo::before {
   animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .glow-border {
+  .glow-border-ring::before,
+  .glow-border-halo::before {
     animation: none;
   }
 }

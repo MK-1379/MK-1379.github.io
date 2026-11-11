@@ -53,7 +53,7 @@ defineExpose({ open })
         :key="id"
         :ref="(element) => setLabel(id, element)"
         type="button"
-        class="desk-label pointer-events-auto absolute top-0 left-0 rounded-full border border-accent/30 bg-surface/85 px-3 py-1.5 font-display text-sm font-semibold whitespace-nowrap text-text shadow-lg backdrop-blur-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        class="desk-label pointer-events-auto absolute top-0 left-0 rounded-full border border-accent/30 bg-surface/90 px-3 py-1.5 font-display text-sm font-semibold whitespace-nowrap text-text shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         :class="{
           'is-active': id === hovered || id === active,
           'is-hidden': active && id !== active,

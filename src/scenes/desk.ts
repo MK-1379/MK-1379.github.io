@@ -1,7 +1,7 @@
 import type * as ThreeModule from 'three'
 import type { DeskItemId } from '@/scenes/deskItems'
 
-type Three = typeof ThreeModule
+type Three = typeof import('@/scenes/three')
 
 export interface DeskItem {
   id: DeskItemId
@@ -427,7 +427,7 @@ export function buildDesk(THREE: Three, options: DeskOptions = {}): Desk {
     materials.white,
     materials.violet,
   ]
-  const books = bookMaterials.map((material, index) => {
+  bookMaterials.forEach((material, index) => {
     const height = 0.5 + (index % 3) * 0.08
     const book = addBox(
       [0.17, height, 0.42],
@@ -439,11 +439,9 @@ export function buildDesk(THREE: Three, options: DeskOptions = {}): Desk {
       book.rotation.z = -0.35
       book.position.x += 0.08
     }
-    return { book, baseRotation: book.rotation.z }
   })
   addMesh(new THREE.SphereGeometry(0.22, 32, 16), materials.glass, [0.75, 3.56, 0], shelf)
   shelf.position.set(-2.5, 0, -3.05)
-  addItem('clase', shelf, [-2.7, 4.15, -3.05])
 
   const papers = new THREE.Group()
   const sheets = Array.from({ length: 4 }, (_, index) => {
@@ -633,12 +631,6 @@ export function buildDesk(THREE: Three, options: DeskOptions = {}): Desk {
   function animateReactions(state: DeskState) {
     const spin = since('bracketly')
     trophy.rotation.y = easeOutCubic(clamp01(spin / 1.2)) * Math.PI * 2
-
-    const shake = since('clase')
-    books.forEach(({ book, baseRotation }, index) => {
-      const wave = progress(shake, index * 0.08, 0.45)
-      book.rotation.z = baseRotation - Math.sin(wave * Math.PI) * 0.28
-    })
 
     const flutter = since('cv')
     sheets.forEach(({ sheet, baseY }, index) => {

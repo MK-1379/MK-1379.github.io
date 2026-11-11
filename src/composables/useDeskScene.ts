@@ -26,10 +26,10 @@ export function useDeskScene({ canvas, labels, screenshot, onReady, onFail }: De
       return
     }
 
-    let THREE: typeof ThreeModule
+    let THREE: typeof import('@/scenes/three')
     let buildDesk: typeof import('@/scenes/desk').buildDesk
     try {
-      ;[THREE, { buildDesk }] = await Promise.all([import('three'), import('@/scenes/desk')])
+      ;[THREE, { buildDesk }] = await Promise.all([import('@/scenes/three'), import('@/scenes/desk')])
     } catch {
       onFail?.()
       return
@@ -44,7 +44,8 @@ export function useDeskScene({ canvas, labels, screenshot, onReady, onFail }: De
       onFail?.()
       return
     }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
+    let pixelRatio = Math.min(window.devicePixelRatio, 1.5)
+    renderer.setPixelRatio(pixelRatio)
     renderer.transmissionResolutionScale = 0.5
     renderer.toneMapping = THREE.ACESFilmicToneMapping
     renderer.shadowMap.enabled = true
@@ -104,8 +105,11 @@ export function useDeskScene({ canvas, labels, screenshot, onReady, onFail }: De
       camera.lookAt(lookCurrent)
     }
 
+    const canvasSize = { width: 1, height: 1 }
     function resize() {
       const { clientWidth: width, clientHeight: height } = el
+      canvasSize.width = width
+      canvasSize.height = height
       renderer.setSize(width, height, false)
       camera.aspect = width / height
       camera.updateProjectionMatrix()
@@ -155,7 +159,7 @@ export function useDeskScene({ canvas, labels, screenshot, onReady, onFail }: De
         return
       }
       const panelWidth = 24 * 16
-      const covered = Math.min(0.7, panelWidth / el.clientWidth)
+      const covered = Math.min(0.7, panelWidth / canvasSize.width)
       const visibleWidth = Math.min(1, camera.aspect * (1 - covered))
       const distance = THREE.MathUtils.clamp(
         (focus.radius * 1.2) / (Math.tan(halfFov) * visibleWidth),
@@ -180,15 +184,37 @@ export function useDeskScene({ canvas, labels, screenshot, onReady, onFail }: De
     intersectionObserver.observe(el)
 
     const projected = new THREE.Vector3()
+    const labelPositions = new Map<DeskItemId, string>()
     function placeLabels() {
-      const { clientWidth: width, clientHeight: height } = el
+      const { width, height } = canvasSize
       for (const item of desk.items) {
         const label = labels.value[item.id]
         if (!label) continue
         projected.copy(item.anchor).project(camera)
-        label.style.left = `${(projected.x * 0.5 + 0.5) * width}px`
-        label.style.top = `${(-projected.y * 0.5 + 0.5) * height}px`
+        const x = Math.round((projected.x * 0.5 + 0.5) * width * 2) / 2
+        const y = Math.round((-projected.y * 0.5 + 0.5) * height * 2) / 2
+        const position = `calc(${x}px - 50%) calc(${y}px - 100%)`
+        if (labelPositions.get(item.id) === position) continue
+        labelPositions.set(item.id, position)
+        label.style.translate = position
       }
+    }
+
+    const slowFrame = 1 / 40
+    const sampleSize = 45
+    let sampledFrames = 0
+    let sampledTime = 0
+    function adaptQuality(delta: number) {
+      if (pixelRatio <= 1 || elapsed < desk.introDuration) return
+      sampledFrames++
+      sampledTime += delta
+      if (sampledFrames < sampleSize) return
+      if (sampledTime / sampledFrames > slowFrame) {
+        pixelRatio = Math.max(1, pixelRatio - 0.25)
+        renderer.setPixelRatio(pixelRatio)
+      }
+      sampledFrames = 0
+      sampledTime = 0
     }
 
     const cameraTarget = new THREE.Vector3()
@@ -217,6 +243,7 @@ export function useDeskScene({ canvas, labels, screenshot, onReady, onFail }: De
 
       renderer.render(desk.scene, camera)
       placeLabels()
+      adaptQuality(delta)
       if (firstFrame) {
         firstFrame = false
         onReady?.()

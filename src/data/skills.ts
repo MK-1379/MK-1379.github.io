@@ -9,6 +9,7 @@ export const skills: Skill[] = [
   { name: 'Tailwind CSS', level: 'con-proyectos', icon: 'tailwindcss' },
   { name: 'Vue.js', level: 'con-proyectos', icon: 'vuejs' },
   { name: 'React.js', level: 'con-proyectos', icon: 'react' },
+  { name: 'Three.js', level: 'con-proyectos', icon: 'threejs', iconDark: 'threejs-dark' },
   { name: { es: 'Java (POO, JDBC)', en: 'Java (OOP, JDBC)' }, level: 'con-proyectos', icon: 'java', iconDark: 'java-dark' },
   { name: 'Node.js (Express)', level: 'con-proyectos', icon: 'nodejs' },
   { name: 'PHP (MVC, PDO)', level: 'con-proyectos', icon: 'php' },

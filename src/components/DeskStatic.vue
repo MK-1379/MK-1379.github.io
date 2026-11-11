@@ -13,7 +13,6 @@ const spots: Record<DeskItemId, { x: number; y: number }> = {
   lolstats: { x: 65.1, y: 22.6 },
   bracketly: { x: 71.4, y: 33.3 },
   kumafy: { x: 47.0, y: 26.7 },
-  clase: { x: 49.7, y: 11.2 },
   cv: { x: 66.1, y: 43.4 },
   about: { x: 21.9, y: 20.4 },
   contact: { x: 55.4, y: 67.8 },

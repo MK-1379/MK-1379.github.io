@@ -8,11 +8,6 @@ const projectSlugs: Partial<Record<DeskItemId, string>> = {
   kumafy: 'kumafy',
 }
 
-const screenSlugs: Partial<Record<DeskItemId, string>> = {
-  ...projectSlugs,
-  clase: 'medicita',
-}
-
 function findProject(slug: string | undefined) {
   return slug ? projects.find((project) => project.slug === slug) : undefined
 }
@@ -22,7 +17,7 @@ export function deskProject(id: DeskItemId | null) {
 }
 
 export function deskScreenshot(id: DeskItemId) {
-  return findProject(screenSlugs[id])?.image?.src
+  return findProject(projectSlugs[id])?.image?.src
 }
 
 export function useDeskLabels() {

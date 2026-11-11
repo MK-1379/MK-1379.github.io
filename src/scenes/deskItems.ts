@@ -2,7 +2,6 @@ export const deskItemIds = [
   'lolstats',
   'bracketly',
   'kumafy',
-  'clase',
   'cv',
   'about',
   'contact',
