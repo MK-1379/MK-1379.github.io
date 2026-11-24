@@ -42,21 +42,21 @@ export const projects: Project[] = [
     title: 'LoLStats',
     context: { es: 'Proyecto personal', en: 'Personal project' },
     summary: {
-      es: 'Aplicación web full stack con mis estadísticas de League of Legends: clasificatoria, campeones más jugados e historial con el marcador de cada partida y una puntuación propia de 0 a 10',
-      en: 'Full stack web app with my League of Legends stats: ranked status, most played champions and match history with a per-match scoreboard and a custom 0 to 10 score',
+      es: 'Aplicación web con mis estadísticas de League of Legends: rango en SoloQ y Flex con mi peak, maestrías, historial con el marcador de cada partida, una puntuación propia de 0 a 10 y un coach que me da consejos con IA',
+      en: 'Web app with my League of Legends stats: SoloQ and Flex rank with my peak, champion mastery, match history with a per-match scoreboard, a custom 0 to 10 score and an AI coach that gives me tips',
     },
     highlights: [
       {
-        es: 'Worker con node-cron que sincroniza las partidas con la API de Riot cada 30 minutos, respetando sus límites de peticiones',
-        en: 'node-cron worker that syncs matches from the Riot API every 30 minutes while respecting its rate limits',
+        es: 'Frontend en React y TypeScript con TanStack Query: un filtro SoloQ/Flex global con Context vuelve a pedir los datos de todas las pestañas, y las animaciones respetan "reducir movimiento"',
+        en: 'React and TypeScript frontend with TanStack Query: a global SoloQ/Flex filter built with Context refetches every tab, and animations respect "reduce motion"',
       },
       {
-        es: 'API REST con Express, validación con Zod y Prisma sobre MySQL; tests con Vitest y Supertest',
-        en: 'REST API with Express, Zod validation and Prisma on MySQL; tested with Vitest and Supertest',
+        es: 'Worker con node-cron que sincroniza partidas, rangos y maestrías con la API de Riot cada 30 minutos',
+        en: 'node-cron worker that syncs matches, ranks and champion mastery from the Riot API every 30 minutes',
       },
       {
-        es: 'Cuatro servicios en Docker Compose (MySQL, API, worker y nginx) y CI con GitHub Actions',
-        en: 'Four services in Docker Compose (MySQL, API, worker and nginx) and CI with GitHub Actions',
+        es: 'API REST con Express, Zod y Prisma sobre MySQL; 124 tests con Vitest, Testing Library y Supertest; Docker Compose y despliegue automático con GitHub Actions',
+        en: 'REST API with Express, Zod and Prisma on MySQL; 124 tests with Vitest, Testing Library and Supertest; Docker Compose and automatic deployment with GitHub Actions',
       },
     ],
     stack: ['React', 'TypeScript', 'Tailwind CSS', 'TanStack Query', 'Node.js', 'Express', 'Prisma', 'MySQL', 'Docker'],
