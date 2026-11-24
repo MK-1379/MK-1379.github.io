@@ -77,7 +77,7 @@ onBeforeUnmount(() => observer?.disconnect())
 
       <div
         ref="skillGrid"
-        class="mt-12 grid gap-12 md:grid-cols-3 md:gap-10"
+        class="mt-12 grid gap-12 md:grid-cols-[2fr_1fr_1fr] md:gap-10"
         :class="{ 'chips-hidden': chipsHidden, 'chips-playing': chipsPlaying }"
       >
         <div v-for="group in groups" :key="group.level">
