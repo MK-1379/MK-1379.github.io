@@ -85,7 +85,6 @@ onBeforeUnmount(() => observer?.disconnect())
             <span class="size-2.5 rounded-full" :class="group.dotClass" aria-hidden="true"></span>
             {{ t.skills.groups[group.level].title }}
           </h3>
-          <p class="mt-2 text-muted">{{ t.skills.groups[group.level].description }}</p>
 
           <ul class="mt-5 flex flex-wrap gap-2">
             <li

@@ -77,16 +77,13 @@ const es = {
     languages: 'Idiomas',
     groups: {
       'con-proyectos': {
-        title: 'Con proyectos',
-        description: 'Lo he usado en proyectos de clase, personales o en prácticas',
+        title: 'Conocimientos avanzados',
       },
       'conocimientos-base': {
         title: 'Conocimientos base',
-        description: 'Lo he trabajado en clase o en pruebas, sin un proyecto propio',
       },
       'siguiente-paso': {
         title: 'Siguiente paso',
-        description: 'Lo próximo que voy a aprender',
       },
     },
   },
@@ -193,16 +190,13 @@ const en: typeof es = {
     languages: 'Languages',
     groups: {
       'con-proyectos': {
-        title: 'Used in projects',
-        description: 'I have used it in class, personal or internship projects',
+        title: 'Advanced knowledge',
       },
       'conocimientos-base': {
         title: 'Fundamentals',
-        description: 'I have worked with it in class or in exercises, without a project of my own',
       },
       'siguiente-paso': {
         title: 'Next up',
-        description: 'What I am going to learn next',
       },
     },
   },
